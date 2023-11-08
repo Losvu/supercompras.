@@ -1,7 +1,7 @@
 package Vista;
-public class Proveedores extends javax.swing.JInternalFrame {
+public class ProveedoresJInternalFrame extends javax.swing.JInternalFrame {
 
-    public Proveedores() {
+    public ProveedoresJInternalFrame() {
         initComponents();
     }
 

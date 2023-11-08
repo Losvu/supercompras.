@@ -1,13 +1,6 @@
 package Controlador;
+import Vista.ProductosJInternalFrame;
 import Vista.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 
 public class SistemaSuperComprasMDI extends javax.swing.JFrame {
 
@@ -21,49 +14,7 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
         
         desktopPane.add(Productos);
     }
-public class SistemasSuperComprasMDI extends JFrame {
-    private JDesktopPane desktopPane;
 
-    public SistemasSuperComprasMDI() {
-        // Configura la ventana principal
-        setTitle("Sistemas SuperCompras MDI");
-        setSize(800, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Inicializa el desktopPane
-        desktopPane = new JDesktopPane();
-        getContentPane().add(desktopPane);
-
-        // Crea un menú
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menuOpciones = new JMenu("Opciones");
-
-        // Agrega un elemento de menú "Abrir Productos" al menú
-        JMenuItem menuItemProductos = new JMenuItem("Abrir Productos");
-        menuOpciones.add(menuItemProductos);
-        
-        // Asocia un evento de clic al elemento de menú "Abrir Productos"
-        menuItemProductos.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                abrirProductosFrame();
-            }
-        });
-
-        menuBar.add(menuOpciones);
-        setJMenuBar(menuBar);
-    }
-
-    private void abrirProductosFrame() {
-        ProductosJInternalFrame productosFrame = new ProductosJInternalFrame();
-        desktopPane.add(productosFrame);
-        productosFrame.setVisible(true);
-    }
-
-    public static void main(String[] args) {
-    }
-}
-
- 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -74,15 +25,9 @@ public class SistemasSuperComprasMDI extends JFrame {
         ProductosMenuItem = new javax.swing.JMenuItem();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
-        exitMenuItem = new javax.swing.JMenuItem();
-        editMenu = new javax.swing.JMenu();
-        cutMenuItem = new javax.swing.JMenuItem();
-        copyMenuItem = new javax.swing.JMenuItem();
-        pasteMenuItem = new javax.swing.JMenuItem();
-        deleteMenuItem = new javax.swing.JMenuItem();
-        helpMenu = new javax.swing.JMenu();
-        contentMenuItem = new javax.swing.JMenuItem();
-        aboutMenuItem = new javax.swing.JMenuItem();
+        TransaccionesMenuItem = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -100,56 +45,43 @@ public class SistemasSuperComprasMDI extends JFrame {
 
         saveMenuItem.setMnemonic('s');
         saveMenuItem.setText("Gestion de clientes");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
         fileMenu.add(saveMenuItem);
 
         saveAsMenuItem.setMnemonic('a');
         saveAsMenuItem.setText("Gestion de empleados");
         fileMenu.add(saveAsMenuItem);
 
-        exitMenuItem.setMnemonic('x');
-        exitMenuItem.setText("Transacciones");
-        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        TransaccionesMenuItem.setMnemonic('x');
+        TransaccionesMenuItem.setText("Transacciones");
+        TransaccionesMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                exitMenuItemActionPerformed(evt);
+                TransaccionesMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(exitMenuItem);
+        fileMenu.add(TransaccionesMenuItem);
+
+        jMenuItem1.setText("Gestion de Proveedores");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jMenuItem1);
+
+        jMenuItem2.setText("Salir");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
+        fileMenu.add(jMenuItem2);
 
         menuBar.add(fileMenu);
-
-        editMenu.setMnemonic('e');
-        editMenu.setText("Edit");
-
-        cutMenuItem.setMnemonic('t');
-        cutMenuItem.setText("Cut");
-        editMenu.add(cutMenuItem);
-
-        copyMenuItem.setMnemonic('y');
-        copyMenuItem.setText("Copy");
-        editMenu.add(copyMenuItem);
-
-        pasteMenuItem.setMnemonic('p');
-        pasteMenuItem.setText("Paste");
-        editMenu.add(pasteMenuItem);
-
-        deleteMenuItem.setMnemonic('d');
-        deleteMenuItem.setText("Delete");
-        editMenu.add(deleteMenuItem);
-
-        menuBar.add(editMenu);
-
-        helpMenu.setMnemonic('h');
-        helpMenu.setText("Help");
-
-        contentMenuItem.setMnemonic('c');
-        contentMenuItem.setText("Contents");
-        helpMenu.add(contentMenuItem);
-
-        aboutMenuItem.setMnemonic('a');
-        aboutMenuItem.setText("About");
-        helpMenu.add(aboutMenuItem);
-
-        menuBar.add(helpMenu);
 
         setJMenuBar(menuBar);
 
@@ -167,14 +99,26 @@ public class SistemasSuperComprasMDI extends JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
-        System.exit(0);
-    }//GEN-LAST:event_exitMenuItemActionPerformed
+    private void TransaccionesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransaccionesMenuItemActionPerformed
+
+    }//GEN-LAST:event_TransaccionesMenuItemActionPerformed
 
     private void ProductosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductosMenuItemActionPerformed
-ProductosJInternalFrame frmControl = new ProductosJInternalFrame(); desktopPane.add(frmControl);
-   frmControl.show();
+Productos.obtenerDatos();
+Productos.setVisible(true);
     }//GEN-LAST:event_ProductosMenuItemActionPerformed
+
+    private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
+
+    }//GEN-LAST:event_saveMenuItemActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -210,18 +154,12 @@ ProductosJInternalFrame frmControl = new ProductosJInternalFrame(); desktopPane.
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem ProductosMenuItem;
-    private javax.swing.JMenuItem aboutMenuItem;
-    private javax.swing.JMenuItem contentMenuItem;
-    private javax.swing.JMenuItem copyMenuItem;
-    private javax.swing.JMenuItem cutMenuItem;
-    private javax.swing.JMenuItem deleteMenuItem;
+    private javax.swing.JMenuItem TransaccionesMenuItem;
     private javax.swing.JDesktopPane desktopPane;
-    private javax.swing.JMenu editMenu;
-    private javax.swing.JMenuItem exitMenuItem;
     private javax.swing.JMenu fileMenu;
-    private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuBar menuBar;
-    private javax.swing.JMenuItem pasteMenuItem;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;
     // End of variables declaration//GEN-END:variables

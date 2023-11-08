@@ -1,16 +1,47 @@
 package Vista;
+import Conexion.DAOProducto;
+import Modelo.Producto;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
 public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
 
     public ProductosJInternalFrame() {
         initComponents();
+        
+    }
+public void limpiarCampos(){
+jTextNombre.setText("");
+jTextCategoria.setText("");
+jTextPrecioUnitario.setText("");
+jTextMarca.setText("");
+}
+
+
+public void obtenerDatos() {
+    List<Producto> productos = new DAOProducto().obtenerDatos();
+
+    DefaultTableModel modelo = new DefaultTableModel();
+    String[] columnas = {"ID Producto", "Nombre", "Categoría", "Precio Unitario", "Marca", "Relación Tabla ID"};
+    modelo.setColumnIdentifiers(columnas);
+
+    for (Producto producto : productos) {
+        String[] renglon = {
+            String.valueOf(producto.getIdProducto()),
+            producto.getNombre(),
+            producto.getCategoria(),
+            String.valueOf(producto.getPrecioUnitario()),
+            producto.getMarca(),
+            String.valueOf(producto.getRelacionTablaId())
+        };
+        modelo.addRow(renglon);
     }
 
-    public void obtenerDatos() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    jTableProductos.setModel(modelo);
+}
+
 
     public void serVisible(boolean b) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -396,7 +427,17 @@ public class ProductosFrame extends JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
+// Captura de datos de las cajas de texto
+String nomb = jTextNombre.getText();
+String cat = jTextCategoria.getText();
+String precio = jTextPrecioUnitario.getText();
+String marca = jTextMarca.getText();
 
+// Comprueba que las cajas de texto no estén vacías
+if (nomb.isEmpty() || cat.isEmpty() || precio.isEmpty() || marca.isEmpty()) {
+    JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
+}
+//objeto para acceder al metodo insertar de DAOProducto
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -441,7 +482,6 @@ public class ProductosFrame extends JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
@@ -453,10 +493,6 @@ public class ProductosFrame extends JInternalFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -467,18 +503,12 @@ public class ProductosFrame extends JInternalFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableProductos;
     private javax.swing.JTextField jTextCategoria;
-    private javax.swing.JTextField jTextCategoria1;
     private javax.swing.JTextField jTextFieldBuscar;
-    private javax.swing.JTextField jTextFieldBuscar1;
     private javax.swing.JTextField jTextMarca;
-    private javax.swing.JTextField jTextMarca1;
     private javax.swing.JTextField jTextNombre;
-    private javax.swing.JTextField jTextNombre1;
     private javax.swing.JTextField jTextPrecioUnitario;
-    private javax.swing.JTextField jTextPrecioUnitario1;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,5 +1,6 @@
-package Modelo;
+package Conexion;
 import Conexion.database;
+import Modelo.Producto;
 import java.util.*;
 import java.sql.Date;
 
@@ -31,7 +32,7 @@ public class DAOProducto {
         return new database().Actualizar(transaccion);
     }
 
-    public List<Producto> ObtenerDatos() {
+    public List<Producto> obtenerDatos() {
         String transaccion = "SELECT * FROM Productos";
 
         List<Map> registros = new database().Listar(transaccion);

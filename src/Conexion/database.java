@@ -26,9 +26,6 @@ public class database {
     }
  }
 
-    public database() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
 //-------------------------------------------------------------------------------------------------------
 // cerrar conexion con la bd
     public void cerrarConexion(){
