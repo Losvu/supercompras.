@@ -1,37 +1,42 @@
 package Modelo;
-import java.sql.Date;
 
 public class Producto {
     
-    private int id_producto; //identificador del producto
+    private int id_producto; // Identificador del producto
     private String nombre;
     private String categoria;
     private double precio_unitario;
     private String marca;
-    private int cantidadStock; // Cantidad en stock, añadirlo en la base de datos
-    
-    
-    //contructor 1
+    private String stock; // Cantidad en stock como cadena
+
     public Producto(int id_producto, String nombre, String categoria, double precio_unitario, String marca) {
         this.id_producto = id_producto;
         this.nombre = nombre;
         this.categoria = categoria;
         this.precio_unitario = precio_unitario;
         this.marca = marca;
-        this.cantidadStock = cantidadStock;
+        this.stock = "0"; // Inicialmente, el stock se establece en 0.
     }
 
-    //constructor 2
-    public Producto(String nombre, String categoria, double precio_unitario, String marca) {
+    public Producto(String nombre, String categoria, double precio_unitario, String marca, String stock) {
         this.nombre = nombre;
         this.categoria = categoria;
         this.precio_unitario = precio_unitario;
         this.marca = marca;
-        this.cantidadStock = cantidadStock;
+        this.stock = stock;
     }
 
-    //getter and setter, metodos de acceso para los atributos
+    public Producto(int id_producto, String nombre, String categoria, double precio_unitario, String marca, String stock) {
+        this.id_producto = id_producto;
+        this.nombre = nombre;
+        this.categoria = categoria;
+        this.precio_unitario = precio_unitario;
+        this.marca = marca;
+        this.stock = stock;
+    }
     
+    
+
     public int getId_producto() {
         return id_producto;
     }
@@ -72,39 +77,29 @@ public class Producto {
         this.marca = marca;
     }
 
-    public int getCantidadStock() {
-        return cantidadStock;
+    public String getStock() {
+        return stock;
     }
 
-    public void setCantidadStock(int cantidadStock) {
-        this.cantidadStock = cantidadStock;
+    public void setStock(String stock) {
+        this.stock = stock;
     }
-    
-    
-     // Métodos relacionados con la gestión de inventarios
+
+    // Métodos relacionados con la gestión de inventarios
     public void agregarStock(int cantidad) {
-        this.cantidadStock += cantidad;
+        int stockActual = Integer.parseInt(stock);
+        stockActual += cantidad;
+        stock = String.valueOf(stockActual);
     }
     
     public void reducirStock(int cantidad) {
-        if (cantidadStock >= cantidad) {
-            this.cantidadStock -= cantidad;
+        int stockActual = Integer.parseInt(stock);
+        if (stockActual >= cantidad) {
+            stockActual -= cantidad;
+            stock = String.valueOf(stockActual);
         } else {
             System.out.println("No hay suficiente stock disponible.");
         }
     }
-
-    public Object getIdProducto() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public Object getPrecioUnitario() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    public Object getRelacionTablaId() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-    
 }
 

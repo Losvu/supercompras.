@@ -1,6 +1,5 @@
 package Conexion;
 
-import java.net.URL;
 import java.sql.*;
 import java.util.*;
 import java.math.BigDecimal;
@@ -8,23 +7,22 @@ import java.util.Date;
 
 public class database {
     
-    private final String url ="jdbc:mysql://localhost:3306/dbsupercompras";
-    private final String user ="sandia";
-    private final String password= "ytz12345678";
+    private final String url = "jdbc:mysql://localhost:3306/dbsupercompras";
+    private final String user = "sandia";
+    private final String password = "ytz12345678";
     
     private Connection conexion;
 
-    public database(Connection conexion) {
-        this.conexion = conexion;
-    try{
-            String URL = null;
-    conexion=DriverManager.getConnection(URL, user, password);
-    System.out.println("Conexion establecida");
-    }catch(SQLException e) {
-    System.out.println("Error de conexion");
-    e.printStackTrace();
+    public database() {
+        try {
+            // Establecer la conexión utilizando los valores de URL, usuario y contraseña
+            conexion = DriverManager.getConnection(url, user, password);
+            System.out.println("Conexión establecida");
+        } catch (SQLException e) {
+            System.out.println("Error de conexión");
+            e.printStackTrace();
+        }
     }
- }
 
 //-------------------------------------------------------------------------------------------------------
 // cerrar conexion con la bd
@@ -49,7 +47,6 @@ public class database {
     }
     //---------------------------------------------------------------------------------------------------
     //metodo para organizar datos antes de enlistarlos en las tablas
-    
 private List<Map<String, Object>> organizarDatos(ResultSet rs) {
     List<Map<String, Object>> filas = new ArrayList<>();
     try {
@@ -71,7 +68,6 @@ private List<Map<String, Object>> organizarDatos(ResultSet rs) {
 
     //-----------------------------------------------------------------------------------------------
 //metodo para listar datos
-
 public List Lister(String consulta) {
    ResultSet rs=null;
    List resultado=new ArrayList();

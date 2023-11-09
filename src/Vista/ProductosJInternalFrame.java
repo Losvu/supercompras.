@@ -1,67 +1,48 @@
 package Vista;
-import Conexion.DAOProducto;
+import Modelo.DAOProducto;
 import Modelo.Producto;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+
 public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
 
     public ProductosJInternalFrame() {
         initComponents();
-        
-    }
-public void limpiarCampos(){
-jTextNombre.setText("");
-jTextCategoria.setText("");
-jTextPrecioUnitario.setText("");
-jTextMarca.setText("");
-}
+        obtenerDatos();
 
-
-public void obtenerDatos() {
-    List<Producto> productos = new DAOProducto().obtenerDatos();
-
-    DefaultTableModel modelo = new DefaultTableModel();
-    String[] columnas = {"ID Producto", "Nombre", "Categoría", "Precio Unitario", "Marca", "Relación Tabla ID"};
-    modelo.setColumnIdentifiers(columnas);
-
-    for (Producto producto : productos) {
-        String[] renglon = {
-            String.valueOf(producto.getIdProducto()),
-            producto.getNombre(),
-            producto.getCategoria(),
-            String.valueOf(producto.getPrecioUnitario()),
-            producto.getMarca(),
-            String.valueOf(producto.getRelacionTablaId())
-        };
-        modelo.addRow(renglon);
     }
 
-    jTableProductos.setModel(modelo);
-}
-
-
-    public void serVisible(boolean b) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void limpiarCampos() {
+        jTextNombre.setText("");
+        jTextCategoria.setText("");
+        jTextPrecioUnitario.setText("");
+        jTextMarca.setText("");
     }
 
+    public void obtenerDatos() {
+        List<Producto> productos = new DAOProducto().obtenerDatos();
 
-public class ProductosFrame extends JInternalFrame {
+        DefaultTableModel modelo = new DefaultTableModel();
+        String[] columnas = {"ID Producto", "Nombre", "Categoría", "Precio Unitario", "Marca", "Stock"};
+        modelo.setColumnIdentifiers(columnas);
 
-    public ProductosFrame() {
-        // Configura el título, el cierre, el tamaño y otros atributos del marco interno
-        setTitle("Gestión de Productos");
-        setClosable(true);
-        setMaximizable(true);
-        setResizable(true);
-        setSize(600, 400);
+        for (Producto producto : productos) {
+            String[] renglon = {
+                String.valueOf(producto.getId_producto()),
+                producto.getNombre(),
+                producto.getCategoria(),
+                String.valueOf(producto.getPrecio_unitario()),
+                producto.getMarca(),
+                String.valueOf(producto.getStock())
+            };
+            modelo.addRow(renglon);
+        }
 
-        // Agrega componentes Swing, como botones y tablas, para gestionar productos e inventario
-        // Aquí puedes diseñar la interfaz de usuario para la gestión de productos
+        jTableProductos.setModel(modelo);
     }
-}
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -91,6 +72,8 @@ public class ProductosFrame extends JInternalFrame {
         jTextMarca = new javax.swing.JTextField();
         jTextFieldBuscar = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
+        jTextStock = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableProductos = new javax.swing.JTable();
@@ -195,7 +178,7 @@ public class ProductosFrame extends JInternalFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(73, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(204, 204, 204));
@@ -300,6 +283,10 @@ public class ProductosFrame extends JInternalFrame {
             }
         });
 
+        jLabel13.setFont(new java.awt.Font("Yu Gothic UI", 1, 12)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel13.setText("Stock:");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -325,11 +312,14 @@ public class ProductosFrame extends JInternalFrame {
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                             .addComponent(jTextMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(50, 50, 50)
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextFieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                        .addComponent(jTextFieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jTextStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -350,11 +340,15 @@ public class ProductosFrame extends JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(jTextMarca, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 27, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(jTextStock, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton9))
-                .addGap(21, 21, 21))
+                .addGap(20, 20, 20))
         );
 
         jPanel5.setBackground(new java.awt.Color(204, 204, 204));
@@ -410,15 +404,11 @@ public class ProductosFrame extends JInternalFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(5, 5, 5))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(3, 3, 3)))
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 501, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
@@ -427,17 +417,41 @@ public class ProductosFrame extends JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
-// Captura de datos de las cajas de texto
-String nomb = jTextNombre.getText();
-String cat = jTextCategoria.getText();
-String precio = jTextPrecioUnitario.getText();
-String marca = jTextMarca.getText();
+  // Captura de datos de las cajas de texto
+    String nomb = jTextNombre.getText();
+    String cat = jTextCategoria.getText();
+    String precioStr = jTextPrecioUnitario.getText();
+    String marca = jTextMarca.getText();
+    String stockStr = jTextStock.getText();
 
-// Comprueba que las cajas de texto no estén vacías
-if (nomb.isEmpty() || cat.isEmpty() || precio.isEmpty() || marca.isEmpty()) {
-    JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
-}
-//objeto para acceder al metodo insertar de DAOProducto
+    try {
+        // Comprueba que las cajas de texto no estén vacías
+        if (nomb.isEmpty() || cat.isEmpty() || precioStr.isEmpty() || marca.isEmpty() || stockStr.isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
+        } else {
+            // Intenta convertir el precio a un valor numérico
+            try {
+                double precio = Double.parseDouble(precioStr);
+
+                // Crea un nuevo producto y llama al método Insertar de DAOProducto
+                Producto producto = new DAOProducto().Insertar(nomb, cat, precioStr, marca, stockStr);
+
+                if (producto != null) {
+                    JOptionPane.showMessageDialog(rootPane, "Registro agregado");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "No se pudo agregar el registro");
+                }
+
+                obtenerDatos();
+                limpiarCampos();
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(rootPane, "El precio debe ser un número válido.");
+            }
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(rootPane, "No se pudo agregar el registro");
+    }
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -493,6 +507,7 @@ if (nomb.isEmpty() || cat.isEmpty() || precio.isEmpty() || marca.isEmpty()) {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -510,5 +525,6 @@ if (nomb.isEmpty() || cat.isEmpty() || precio.isEmpty() || marca.isEmpty()) {
     private javax.swing.JTextField jTextMarca;
     private javax.swing.JTextField jTextNombre;
     private javax.swing.JTextField jTextPrecioUnitario;
+    private javax.swing.JTextField jTextStock;
     // End of variables declaration//GEN-END:variables
 }
