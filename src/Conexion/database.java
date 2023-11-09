@@ -68,7 +68,7 @@ private List<Map<String, Object>> organizarDatos(ResultSet rs) {
 
     //-----------------------------------------------------------------------------------------------
 //metodo para listar datos
-public List Lister(String consulta) {
+public List Listar(String consulta) {
    ResultSet rs=null;
    List resultado=new ArrayList();
    try{
@@ -83,11 +83,7 @@ public List Lister(String consulta) {
 }
 //---------------------------------------------------------------------------------------------------
 // clases java
-
-    public List<Map> Listar(String transaccion) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
+//quitar
 
 public class Productos {
     private int id;

@@ -459,6 +459,9 @@
               </Properties>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextMarca">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextMarcaActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="jTextFieldBuscar">
             </Component>

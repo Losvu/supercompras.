@@ -19,20 +19,48 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        jMenu2 = new javax.swing.JMenu();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuBar2 = new javax.swing.JMenuBar();
+        jMenu4 = new javax.swing.JMenu();
+        jMenu5 = new javax.swing.JMenu();
         desktopPane = new javax.swing.JDesktopPane();
         menuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         ProductosMenuItem = new javax.swing.JMenuItem();
+        jMenu6 = new javax.swing.JMenu();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
-        TransaccionesMenuItem = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        TransaccionesMenuItem = new javax.swing.JMenuItem();
+        jMenu8 = new javax.swing.JMenu();
+        jMenu9 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
+
+        jMenuItem3.setText("jMenuItem3");
+
+        jMenu1.setText("File");
+        jMenuBar1.add(jMenu1);
+
+        jMenu2.setText("Edit");
+        jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("jMenu3");
+
+        jMenu4.setText("File");
+        jMenuBar2.add(jMenu4);
+
+        jMenu5.setText("Edit");
+        jMenuBar2.add(jMenu5);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         fileMenu.setMnemonic('f');
-        fileMenu.setText("Funcionalidades");
+        fileMenu.setText("Productos");
 
         ProductosMenuItem.setMnemonic('o');
         ProductosMenuItem.setText("Productos/Inventario");
@@ -43,6 +71,10 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
         });
         fileMenu.add(ProductosMenuItem);
 
+        menuBar.add(fileMenu);
+
+        jMenu6.setText("Gestion");
+
         saveMenuItem.setMnemonic('s');
         saveMenuItem.setText("Gestion de clientes");
         saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
@@ -50,11 +82,23 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
                 saveMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(saveMenuItem);
+        jMenu6.add(saveMenuItem);
 
         saveAsMenuItem.setMnemonic('a');
         saveAsMenuItem.setText("Gestion de empleados");
-        fileMenu.add(saveAsMenuItem);
+        jMenu6.add(saveAsMenuItem);
+
+        jMenuItem1.setText("Gestion de Proveedores");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem1);
+
+        menuBar.add(jMenu6);
+
+        jMenu7.setText("Transacciones");
 
         TransaccionesMenuItem.setMnemonic('x');
         TransaccionesMenuItem.setText("Transacciones");
@@ -63,15 +107,14 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
                 TransaccionesMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(TransaccionesMenuItem);
+        jMenu7.add(TransaccionesMenuItem);
 
-        jMenuItem1.setText("Gestion de Proveedores");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        fileMenu.add(jMenuItem1);
+        menuBar.add(jMenu7);
+
+        jMenu8.setText("Reportes");
+        menuBar.add(jMenu8);
+
+        jMenu9.setText("Salir");
 
         jMenuItem2.setText("Salir");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
@@ -79,9 +122,9 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
                 jMenuItem2ActionPerformed(evt);
             }
         });
-        fileMenu.add(jMenuItem2);
+        jMenu9.add(jMenuItem2);
 
-        menuBar.add(fileMenu);
+        menuBar.add(jMenu9);
 
         setJMenuBar(menuBar);
 
@@ -157,8 +200,20 @@ Productos.setVisible(true);
     private javax.swing.JMenuItem TransaccionesMenuItem;
     private javax.swing.JDesktopPane desktopPane;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenu jMenu5;
+    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenu jMenu8;
+    private javax.swing.JMenu jMenu9;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuBar jMenuBar2;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuBar menuBar;
     private javax.swing.JMenuItem saveAsMenuItem;
     private javax.swing.JMenuItem saveMenuItem;

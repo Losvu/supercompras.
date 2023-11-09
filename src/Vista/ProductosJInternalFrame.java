@@ -273,6 +273,12 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
         jLabel12.setForeground(new java.awt.Color(0, 0, 0));
         jLabel12.setText("Marca:");
 
+        jTextMarca.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextMarcaActionPerformed(evt);
+            }
+        });
+
         jButton9.setBackground(new java.awt.Color(204, 255, 204));
         jButton9.setFont(new java.awt.Font("Sitka Text", 1, 12)); // NOI18N
         jButton9.setForeground(new java.awt.Color(0, 0, 0));
@@ -521,6 +527,25 @@ int fila = this.jTableProductos.getSelectedRow();
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
 
+    private void jTextMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextMarcaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextMarcaActionPerformed
+public void actualizarProducto(){
+String nom=this.jTextNombre.getText();
+String ape=this.jTextCategoria.getText();
+String corr=this.jTextPrecioUnitario.getText();
+String marca=this.jTextMarca.getText();
+String stock=this.jTextStock.getText();
+
+DAOProducto dao=new DAOProducto();
+int res=dao.Actualizar(nom,ape,corr,marca,stock);
+if(res==1){
+JOptionPane.showMessageDialog(rootPane, "Inventario Actualizado!");
+}
+else{
+JOptionPane.showMessageDialog(rootPane, "Ocurrio un ERROR!");
+}
+} 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

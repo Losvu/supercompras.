@@ -1,7 +1,6 @@
 package Modelo;
 import Conexion.database;
 import java.util.*;
-import java.sql.Date;
 
 public class DAOProducto {
 //metodo insertar 
