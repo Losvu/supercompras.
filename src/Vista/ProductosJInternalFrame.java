@@ -524,7 +524,7 @@ int fila = this.jTableProductos.getSelectedRow();
     }//GEN-LAST:event_jTextPrecioUnitarioActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-
+        // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jTextMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextMarcaActionPerformed
