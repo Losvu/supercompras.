@@ -455,7 +455,34 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+int fila = this.jTableProductos.getSelectedRow();
+
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
+    } else {
+        try {
+            // Obtener el modelo de la tabla
+            DefaultTableModel modelo = (DefaultTableModel) jTableProductos.getModel();
+
+            // Obtener los valores de las celdas de la fila seleccionada
+            String nombre = modelo.getValueAt(fila, 0).toString(); // Suponiendo que la columna 0 es el nombre
+            String categoria = modelo.getValueAt(fila, 1).toString(); // Suponiendo que la columna 1 es la categoría
+            double precioUnitario = Double.parseDouble(modelo.getValueAt(fila, 2).toString()); // Suponiendo que la columna 2 es el precio unitario
+            String marca = modelo.getValueAt(fila, 3).toString(); // Suponiendo que la columna 3 es la marca
+            String stock = modelo.getValueAt(fila, 4).toString(); // Suponiendo que la columna 4 es el stock
+
+            // Luego, asigna estos valores a las cajas de texto
+            jTextNombre.setText(nombre);
+            jTextCategoria.setText(categoria);
+            jTextPrecioUnitario.setText(String.valueOf(precioUnitario));
+            jTextMarca.setText(marca);
+            jTextStock.setText(stock);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, "Error al obtener y asignar datos de la fila seleccionada");
+        }
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -493,7 +520,6 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton9ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
