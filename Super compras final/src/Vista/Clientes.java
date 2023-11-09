@@ -1,5 +1,7 @@
 package Vista;
 
+import javax.swing.JOptionPane;
+
 public class Clientes extends javax.swing.JInternalFrame {
 
     /**
@@ -60,6 +62,11 @@ public class Clientes extends javax.swing.JInternalFrame {
 
         jButtonAgregar.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
         jButtonAgregar.setText("Agregar");
+        jButtonAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgregarActionPerformed(evt);
+            }
+        });
 
         jButtonBorrar.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
         jButtonBorrar.setText("Borrar");
@@ -204,6 +211,11 @@ public class Clientes extends javax.swing.JInternalFrame {
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonActualizarActionPerformed
+
+    private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_jButtonAgregarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
