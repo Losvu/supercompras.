@@ -14,8 +14,35 @@ public class Proveedores extends javax.swing.JInternalFrame {
     }
     
    public void limpiarCampos(){
+       jTextIdProvee.setText("");
+       jTextNombres.setText("");
+       jTextApellidos.setText("");
+       jTextCorreo.setText("");
+       jTextDireccion.setText("");
+       jTextTelefono.setText("");
        
    }
+   
+       public void obtenerDatos(){
+       
+       List<Proveedore> proveedores = new DAOProveedores().ObtenerDatos();
+       DefaultTableModel modelo= new DefaultTableModel();
+       
+       String[] columnas ={"id_proveedor","Nombres","Apellidos","Direccion",
+           "Telefono","Correo"  };
+       
+           modelo.setColumnIdentifiers(columnas);
+           for(Proveedore prov:proveedores){
+           
+           String[]renglon = {Integer.toString(prov.getId_proveedor()),
+           prov.getNombres(), prov.getApellidos(),
+           prov.getDireccion(),prov.getTelefono(),  prov.getCorreo()};
+           modelo.addRow (renglon);
+               }
+       
+       }
+               
+       
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -89,12 +116,27 @@ public class Proveedores extends javax.swing.JInternalFrame {
 
         jButtonActualizar.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
         jButtonActualizar.setText("Actualizar");
+        jButtonActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonActualizarActionPerformed(evt);
+            }
+        });
 
         jButtonBorrar.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
         jButtonBorrar.setText("Borrar");
+        jButtonBorrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonBorrarActionPerformed(evt);
+            }
+        });
 
         jButtonEditar.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
         jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
 
         jButtonBuscar.setFont(new java.awt.Font("Yu Gothic UI Light", 1, 14)); // NOI18N
         jButtonBuscar.setText("Buscar");
@@ -247,16 +289,20 @@ public class Proveedores extends javax.swing.JInternalFrame {
         if (nom.contentEquals("")||apel.contentEquals("")||
                 direc.contentEquals("")||tel.contentEquals("")||
                 corr.contentEquals("")||id.contentEquals("")){
-            JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
+            JOptionPane.showMessageDialog(rootPane,
+                    "Todos los campos son obligatorios");
         }else {
             
             try{
                 
-                Modelo3.Proveedores prov  = new DAOProveedores ().Insertar(nom, apel, direc, tel, corr, id);
-                JOptionPane.showMessageDialog(rootPane, "Registro agregado");
+                Modelo3.Proveedore prov  = new DAOProveedores ().Insertar(
+    nom, apel, direc, tel, corr, id);
+                JOptionPane.showMessageDialog(rootPane,
+                        "Registro agregado");
             }catch (Exception e){
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(rootPane, "No se agrego el registro ");
+                JOptionPane.showMessageDialog(rootPane,
+                        "No se agrego el registro ");
             }
         }
         
@@ -265,6 +311,60 @@ public class Proveedores extends javax.swing.JInternalFrame {
         limpiarCampos();
         
     }//GEN-LAST:event_jButtonAgregarActionPerformed
+
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        // TODO add your handling code here:
+        int fila = this.jTableProveedor.getSelectedRow();
+        if (fila==-1){
+            JOptionPane.showMessageDialog(rootPane, 
+                    "Seleccione un registro de la tabla");
+        }
+        else{
+            try{
+                int id=Integer .parseInt((String)this.jTableProveedor.getValueAt(fila, 0).toString());
+                String nom=(String)this.jTableProveedor.getValueAt(fila, 1);
+                String apel=(String)this.jTableProveedor.getValueAt(fila, 2);
+                String direc=(String)this.jTableProveedor.getValueAt(fila, 3);
+                String tel=(String)this.jTableProveedor.getValueAt(fila, 4);
+                String corr=(String)this.jTableProveedor.getValueAt(fila, 5);
+                
+                jTextIdProvee.setText(""+id);
+                jTextNombres.setText(nom);
+                jTextApellidos.setText(apel);
+                jTextDireccion.setText(direc);
+                jTextTelefono.setText(tel);
+                jTextCorreo.setText(corr); 
+            }catch(NumberFormatException e){
+                e.printStackTrace();
+            }
+        }
+        
+        
+        
+    }//GEN-LAST:event_jButtonEditarActionPerformed
+
+    private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
+        // TODO add your handling code here:
+       actualizarProveedores();
+       obtenerDatos();
+       limpiarCampos();
+        
+       
+    }//GEN-LAST:event_jButtonActualizarActionPerformed
+
+    private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
+        // TODO add your handling code here:
+        int fila=this.jTableProveedor.getSelectedRow();
+        if(fila==-1){
+            JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la table");
+        }
+        else{
+            int id=Integer.parseInt((String)this.jTableProveedor.getValueAt(fila, 0).toString());
+            DAOProveedores dao=new DAOProveedores();
+            dao.Eliminar(id);
+            obtenerDatos();
+        }
+    }//GEN-LAST:event_jButtonBorrarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
