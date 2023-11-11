@@ -23,22 +23,32 @@ public class Proveedores extends javax.swing.JInternalFrame {
        
    }
    
+        //Método para listar datos dentro de la tabla
        public void obtenerDatos(){
        
+           //Se crea una lista que almacena los datos obtenidos
        List<Proveedore> proveedores = new DAOProveedores().ObtenerDatos();
+       
+       //Define un modelo para la tabla
        DefaultTableModel modelo= new DefaultTableModel();
        
+       //Arreglo con nombre  de columnas de la tabla
        String[] columnas ={"id_proveedor","Nombres","Apellidos","Direccion",
            "Telefono","Correo"  };
        
+       //Establece los nombres definidos de las columnas 
            modelo.setColumnIdentifiers(columnas);
-           for(Proveedore prov:proveedores){
-           
+           for(Proveedore prov:proveedores){ 
+               
+     //Recorre cada elemento de la lista y los agrega al modelo de la tabla
            String[]renglon = {Integer.toString(prov.getId_proveedor()),
            prov.getNombres(), prov.getApellidos(),
            prov.getDireccion(),prov.getTelefono(),  prov.getCorreo()};
            modelo.addRow (renglon);
                }
+           
+           //Ubica los datos del modelo en la tabla
+           jTableProveedor.setModel(modelo);
        
        }
                
@@ -278,7 +288,7 @@ public class Proveedores extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
-        // TODO add your handling code here:
+        //Captura los datos de las cajas de texto
         String nom=jTextNombres.getText();
         String apel=jTextApellidos.getText();
         String direc=jTextDireccion.getText();
@@ -286,6 +296,7 @@ public class Proveedores extends javax.swing.JInternalFrame {
         String corr=jTextCorreo.getText();
         String id=jTextIdProvee.getText();
         
+        //Comprueba que las cajas de textos no esten vacias 
         if (nom.contentEquals("")||apel.contentEquals("")||
                 direc.contentEquals("")||tel.contentEquals("")||
                 corr.contentEquals("")||id.contentEquals("")){
@@ -295,6 +306,7 @@ public class Proveedores extends javax.swing.JInternalFrame {
             
             try{
                 
+                //Objeto para acceder al método insertar de DAOProveedores
                 Modelo3.Proveedore prov  = new DAOProveedores ().Insertar(
     nom, apel, direc, tel, corr, id);
                 JOptionPane.showMessageDialog(rootPane,
@@ -306,28 +318,34 @@ public class Proveedores extends javax.swing.JInternalFrame {
             }
         }
         
-        
+        //Llama a este método para que se muestre el nuevo registro en la
+        //tabla del formulario
         obtenerDatos();
         limpiarCampos();
         
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
-        // TODO add your handling code here:
-        int fila = this.jTableProveedor.getSelectedRow();
+        
+ int fila = this.jTableProveedor.getSelectedRow();//Se obtiene numero de fila
+// seleccionado
         if (fila==-1){
             JOptionPane.showMessageDialog(rootPane, 
                     "Seleccione un registro de la tabla");
         }
-        else{
+        else{//Se toma cada campo de la tabla del registro seleccionado
+            //y se asigna una variable
+            
             try{
-                int id=Integer .parseInt((String)this.jTableProveedor.getValueAt(fila, 0).toString());
-                String nom=(String)this.jTableProveedor.getValueAt(fila, 1);
-                String apel=(String)this.jTableProveedor.getValueAt(fila, 2);
-                String direc=(String)this.jTableProveedor.getValueAt(fila, 3);
-                String tel=(String)this.jTableProveedor.getValueAt(fila, 4);
-                String corr=(String)this.jTableProveedor.getValueAt(fila, 5);
+       int id=Integer .parseInt((String)this.jTableProveedor.getValueAt(fila,
+               0).toString());
+       String nom=(String)this.jTableProveedor.getValueAt(fila, 1);
+       String apel=(String)this.jTableProveedor.getValueAt(fila, 2);
+       String direc=(String)this.jTableProveedor.getValueAt(fila, 3);
+       String tel=(String)this.jTableProveedor.getValueAt(fila, 4);
+       String corr=(String)this.jTableProveedor.getValueAt(fila, 5);
                 
+       //Se ubican en las cajas de textos los datos capturados de la tabla
                 jTextIdProvee.setText(""+id);
                 jTextNombres.setText(nom);
                 jTextApellidos.setText(apel);
@@ -338,14 +356,34 @@ public class Proveedores extends javax.swing.JInternalFrame {
                 e.printStackTrace();
             }
         }
+        }
+    
+    public void actualizarProveedor(){ 
+        int id=Integer.parseInt(this.jTextIdProvee.getText());
+        String nom=this.jTextNombres.getText();
+        String apel=this.jTextApellidos.getText();
+        String direc=this.jTextDireccion.getText();
+        String tel=this.jTextTelefono.getText();
+        String corr=this.jTextCorreo.getText();
         
-        
+        DAOProveedores dao=new DAOProveedores();
+        int res=dao.Actualizar(id, nom, apel, direc,
+                tel, corr);
+        if(res==-1){
+            
+            JOptionPane.showMessageDialog(rootPane, 
+                    "Proveedor actualizado");
+        }
+        else{
+        JOptionPane.showMessageDialog(rootPane, "Error");
+        }
+             
         
     }//GEN-LAST:event_jButtonEditarActionPerformed
 
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
-        // TODO add your handling code here:
-       actualizarProveedores();
+       
+       actualizarProveedor();
        obtenerDatos();
        limpiarCampos();
         
@@ -353,7 +391,7 @@ public class Proveedores extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jButtonActualizarActionPerformed
 
     private void jButtonBorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarActionPerformed
-        // TODO add your handling code here:
+        
         int fila=this.jTableProveedor.getSelectedRow();
         if(fila==-1){
             JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la table");
