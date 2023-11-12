@@ -1,20 +1,26 @@
 package Controlador;
 import Vista.ProductosJInternalFrame;
+import Vista.EmpleadosJInternalFrame;
 import Vista.*;
 
 public class SistemaSuperComprasMDI extends javax.swing.JFrame {
 
     private ProductosJInternalFrame Productos;
+    private EmpleadosJInternalFrame Empleados;
     
     
     public SistemaSuperComprasMDI() {
         initComponents();
         setTitle("SuperCompras");
-        Productos= new  ProductosJInternalFrame();
         
+        Productos = new ProductosJInternalFrame();
         desktopPane.add(Productos);
+        
+        Empleados = new EmpleadosJInternalFrame();
+        desktopPane.add(Empleados);
     }
-
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -86,6 +92,11 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
 
         saveAsMenuItem.setMnemonic('a');
         saveAsMenuItem.setText("Gestion de empleados");
+        saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsMenuItemActionPerformed(evt);
+            }
+        });
         jMenu6.add(saveAsMenuItem);
 
         jMenuItem1.setText("Gestion de Proveedores");
@@ -162,6 +173,11 @@ Productos.setVisible(true);
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         System.exit(0);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void saveAsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsMenuItemActionPerformed
+Empleados.obtenerDatos();
+Empleados.setVisible(true);
+    }//GEN-LAST:event_saveAsMenuItemActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
