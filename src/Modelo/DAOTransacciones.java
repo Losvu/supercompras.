@@ -93,6 +93,70 @@ public List<Transacciones> obtenerDatos() {
 
     return transacciones;
 }
+    // Método para obtener una transacción por ID
+    public Transacciones obtenerTransaccionPorId(int id) {
+        String query = "SELECT * FROM Transacciones WHERE id_transaccion = ?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-    // Otros métodos (obtenerTransaccionPorId, actualizarTransaccion, eliminarTransaccion)...
+            if (resultSet.next()) {
+                Cliente cliente = new Cliente();
+                cliente.setId_cliente(resultSet.getInt("cliente_id"));
+
+                Proveedores proveedores = new Proveedores();
+                proveedores.setId_proveedor(resultSet.getInt("proveedor_id"));
+
+                Producto producto = new Producto();
+                producto.setId_producto(resultSet.getInt("producto_id"));
+
+                return new Transacciones(
+                        resultSet.getInt("id_transaccion"),
+                        resultSet.getTimestamp("fecha_hora").toLocalDateTime(),
+                        resultSet.getString("tipo"),
+                        resultSet.getDouble("total"),
+                        resultSet.getString("metodo_pago"),
+                        cliente,
+                        proveedores,
+                        producto
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // Método para actualizar una transacción
+    public int actualizarTransaccion(Transacciones transaccion) {
+        String query = "UPDATE Transacciones SET fecha_hora=?, tipo=?, total=?, metodo_pago=?, cliente_id=?, proveedor_id=?, producto_id=? WHERE id_transaccion=?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setObject(1, transaccion.getFechaHora());
+            preparedStatement.setString(2, transaccion.getTipo());
+            preparedStatement.setDouble(3, transaccion.getTotal());
+            preparedStatement.setString(4, transaccion.getMetodoPago());
+            preparedStatement.setInt(5, transaccion.getCliente().getId_cliente());
+            preparedStatement.setInt(6, transaccion.getProveedor().getId_proveedor());
+            preparedStatement.setInt(7, transaccion.getProducto().getId_producto());
+            preparedStatement.setInt(8, transaccion.getIdTransaccion());
+
+            return preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    // Método para eliminar una transacción por ID
+    public int eliminarTransaccion(int id) {
+        String query = "DELETE FROM Transacciones WHERE id_transaccion=?";
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, id);
+            return preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
+
