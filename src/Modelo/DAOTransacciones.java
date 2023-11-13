@@ -1,19 +1,9 @@
 package Modelo;
 
-import Conexion.database;
-import Modelo.Transacciones;
-import Modelo.Cliente;
-import Modelo.Proveedores; // Cambié "Proveedores" a "Proveedor"
-import Modelo.Producto;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class DAOTransacciones {
     private Connection connection;
@@ -22,20 +12,17 @@ public class DAOTransacciones {
         this.connection = connection;
     }
 
-    // Método para insertar una nueva transacción
     public Transacciones insertarTransaccion(Transacciones transaccion) {
-        String query = "INSERT INTO Transacciones (fecha_hora, tipo, total, metodo_pago, cliente_id, proveedor_id, producto_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Transacciones (fecha_hora, tipo, total, metodo_pago, id_cliente, id_proveedor, id_producto) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setObject(1, transaccion.getFechaHora());
+            preparedStatement.setObject(1, Timestamp.valueOf(transaccion.getFechaHora()));
             preparedStatement.setString(2, transaccion.getTipo());
             preparedStatement.setDouble(3, transaccion.getTotal());
             preparedStatement.setString(4, transaccion.getMetodoPago());
-
-            preparedStatement.setInt(5, transaccion.getCliente().getIdCliente());
-            preparedStatement.setInt(6, transaccion.getProveedor().getIdProveedor());
-            preparedStatement.setInt(7, transaccion.getProducto().getIdProducto());
+            preparedStatement.setInt(5, transaccion.getClienteId());
+            preparedStatement.setInt(6, transaccion.getProveedorId());
+            preparedStatement.setInt(7, transaccion.getProductoId());
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
@@ -54,109 +41,69 @@ public class DAOTransacciones {
                     );
                 }
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
         return null;
     }
 
-    // Método para obtener transacciones
-   // Método para obtener transacciones
-public List<Transacciones> obtenerDatos() {
-    String transaccion = "SELECT * FROM Transacciones";
-    List<Map> registros = new database().Listar(transaccion);
+    // Otros métodos...
+public List<Transacciones> obtenerTransacciones() {
+    String query = "SELECT * FROM Transacciones";
     List<Transacciones> transacciones = new ArrayList<>();
 
-    for (Map registro : registros) {
-        // Crear objetos Cliente, Proveedor y Producto con solo el ID y asignarlos a transaccionObj
-        Cliente cliente = new Cliente();
-        cliente.setId_cliente((int) registro.get("cliente_id"));
+    try (Statement statement = connection.createStatement();
+         ResultSet resultSet = statement.executeQuery(query)) {
 
-        Proveedores proveedores = new Proveedores(); // Cambié "Proveedores" a "Proveedor"
-        proveedores.setId_proveedor((int) registro.get("proveedor_id"));
+        while (resultSet.next()) {
+            int idTransaccion = resultSet.getInt("idTransaccion");
+            LocalDateTime fechaHora = resultSet.getTimestamp("fecha_hora").toLocalDateTime();
+            String tipo = resultSet.getString("tipo");
+            double total = resultSet.getDouble("total");
+            String metodoPago = resultSet.getString("metodo_pago");
 
-        Producto producto = new Producto();
-        producto.setId_producto((int) registro.get("producto_id"));
-
-        transacciones.add(new Transacciones(
-                (int) registro.get("id_transaccion"),
-                ((java.sql.Timestamp) registro.get("fecha_hora")).toLocalDateTime(),
-                (String) registro.get("tipo"),
-                (double) registro.get("total"),
-                (String) registro.get("metodo_pago"),
-                cliente,
-                proveedores,
-                producto
-        ));
+            Transacciones transaccion = new Transacciones(idTransaccion, fechaHora, tipo, total, metodoPago);
+            transacciones.add(transaccion);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
 
     return transacciones;
 }
-    // Método para obtener una transacción por ID
-    public Transacciones obtenerTransaccionPorId(int id) {
-        String query = "SELECT * FROM Transacciones WHERE id_transaccion = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                Cliente cliente = new Cliente();
-                cliente.setId_cliente(resultSet.getInt("cliente_id"));
+    public List<String> obtenerTiposDeTransacciones() {
+        String query = "SELECT DISTINCT tipo FROM Transacciones";
+        List<String> tipos = new ArrayList<>();
 
-                Proveedores proveedores = new Proveedores();
-                proveedores.setId_proveedor(resultSet.getInt("proveedor_id"));
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
 
-                Producto producto = new Producto();
-                producto.setId_producto(resultSet.getInt("producto_id"));
-
-                return new Transacciones(
-                        resultSet.getInt("id_transaccion"),
-                        resultSet.getTimestamp("fecha_hora").toLocalDateTime(),
-                        resultSet.getString("tipo"),
-                        resultSet.getDouble("total"),
-                        resultSet.getString("metodo_pago"),
-                        cliente,
-                        proveedores,
-                        producto
-                );
+            while (resultSet.next()) {
+                tipos.add(resultSet.getString("tipo"));
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+
+        return tipos;
     }
 
-    // Método para actualizar una transacción
-    public int actualizarTransaccion(Transacciones transaccion) {
-        String query = "UPDATE Transacciones SET fecha_hora=?, tipo=?, total=?, metodo_pago=?, cliente_id=?, proveedor_id=?, producto_id=? WHERE id_transaccion=?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setObject(1, transaccion.getFechaHora());
-            preparedStatement.setString(2, transaccion.getTipo());
-            preparedStatement.setDouble(3, transaccion.getTotal());
-            preparedStatement.setString(4, transaccion.getMetodoPago());
-            preparedStatement.setInt(5, transaccion.getCliente().getId_cliente());
-            preparedStatement.setInt(6, transaccion.getProveedor().getId_proveedor());
-            preparedStatement.setInt(7, transaccion.getProducto().getId_producto());
-            preparedStatement.setInt(8, transaccion.getIdTransaccion());
+    public List<String> obtenerMetodosDePago() {
+        String query = "SELECT DISTINCT metodo_pago FROM Transacciones";
+        List<String> metodosPago = new ArrayList<>();
 
-            return preparedStatement.executeUpdate();
-        } catch (Exception e) {
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(query)) {
+
+            while (resultSet.next()) {
+                metodosPago.add(resultSet.getString("metodo_pago"));
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return 0;
-    }
 
-    // Método para eliminar una transacción por ID
-    public int eliminarTransaccion(int id) {
-        String query = "DELETE FROM Transacciones WHERE id_transaccion=?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, id);
-            return preparedStatement.executeUpdate();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+        return metodosPago;
     }
 }
-

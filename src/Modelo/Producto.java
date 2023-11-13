@@ -9,6 +9,9 @@ public class Producto {
     private String marca;
     private String stock; // Cantidad en stock como cadena
 
+    public Producto() {
+    }
+
     public Producto(int id_producto, String nombre, String categoria, double precio_unitario, String marca) {
         this.id_producto = id_producto;
         this.nombre = nombre;
@@ -34,8 +37,6 @@ public class Producto {
         this.marca = marca;
         this.stock = stock;
     }
-    
-    
 
     public int getId_producto() {
         return id_producto;
@@ -102,4 +103,3 @@ public class Producto {
         }
     }
 }
-

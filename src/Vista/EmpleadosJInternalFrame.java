@@ -38,7 +38,6 @@ public class EmpleadosJInternalFrame extends javax.swing.JInternalFrame {
         jTextId.setText("");
     }
 
-    // método obtenerDatos
   // método obtenerDatos
 public void obtenerDatos() {
     // Crear una instancia de DAOEmpleados con la conexión

@@ -23,6 +23,10 @@ public class Proveedores {
     public int getId_proveedor() {
         return id_proveedor;
     }
+    
+     public int getIdProveedor() {
+        return id_proveedor;
+    }
 
     public void setId_proveedor(int id_proveedor) {
         this.id_proveedor = id_proveedor;

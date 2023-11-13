@@ -1,4 +1,5 @@
 package Modelo;
+
 public class Cliente {
     private int id_cliente;
     private String nombre;
@@ -57,7 +58,10 @@ public class Cliente {
         this.correo_electronico = correo_electronico;
     }
 
-
+    // Agregar el método getIdCliente()
+    public int getIdCliente() {
+        return id_cliente;
+    }
 }
 
 

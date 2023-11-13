@@ -10,22 +10,39 @@ public class Transacciones {
     private double total;
     private String metodoPago;
     private Cliente cliente;
-    private Proveedor proveedor;
+    private Proveedores proveedor;
     private Producto producto;
 
     public Transacciones() {
     }
 
- public Transacciones(int idTransaccion, LocalDateTime fechaHora, String tipo, double total, String metodoPago, Cliente cliente, Proveedor proveedor, Producto producto) {
-    this.idTransaccion = idTransaccion;
-    this.fechaHora = fechaHora;
-    this.tipo = tipo;
-    this.total = total;
-    this.metodoPago = metodoPago;
-    this.cliente = cliente;
-    this.proveedor = proveedor;
-    this.producto = producto;
-}
+    public Transacciones(int idTransaccion, LocalDateTime fechaHora, String tipo, double total, String metodoPago,
+                         Cliente cliente, Proveedores proveedor, Producto producto) {
+        this.idTransaccion = idTransaccion;
+        this.fechaHora = fechaHora;
+        this.tipo = tipo;
+        this.total = total;
+        this.metodoPago = metodoPago;
+        this.cliente = cliente;
+        this.proveedor = proveedor;
+        this.producto = producto;
+    }
+
+    
+    
+    
+    
+     public int getClienteId() {
+        return cliente.getId_cliente();
+    }
+
+    public int getProveedorId() {
+        return proveedor.getId_proveedor();
+    }
+
+    public int getProductoId() {
+        return producto.getId_producto();
+    }
 
     public int getIdTransaccion() {
         return idTransaccion;
@@ -66,6 +83,12 @@ public class Transacciones {
     public void setMetodoPago(String metodoPago) {
         this.metodoPago = metodoPago;
     }
+    
+    
+    
+    
+    
+    // Métodos getter y setter para los atributos adicionales
 
     public Cliente getCliente() {
         return cliente;
@@ -75,11 +98,11 @@ public class Transacciones {
         this.cliente = cliente;
     }
 
-    public Proveedor getProveedor() {
+    public Proveedores getProveedor() {
         return proveedor;
     }
 
-    public void setProveedor(Proveedor proveedor) {
+    public void setProveedor(Proveedores proveedor) {
         this.proveedor = proveedor;
     }
 
@@ -91,93 +114,19 @@ public class Transacciones {
         this.producto = producto;
     }
 
-// Constructor clientes y getters y setters
-class Cliente {
-    private int idCliente;
-    private String nombre;
+    // Resto de los métodos getter y setter
 
-    public Cliente() {
+    @Override
+    public String toString() {
+        return "Transacciones{" +
+                "idTransaccion=" + idTransaccion +
+                ", fechaHora=" + fechaHora +
+                ", tipo='" + tipo + '\'' +
+                ", total=" + total +
+                ", metodoPago='" + metodoPago + '\'' +
+                ", cliente=" + cliente +
+                ", proveedor=" + proveedor +
+                ", producto=" + producto +
+                '}';
     }
-
-    public Cliente(int idCliente, String nombre) {
-        this.idCliente = idCliente;
-        this.nombre = nombre;
-    }
-
-    public int getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(int idCliente) {
-        this.idCliente = idCliente;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-}
-
-// Constructor productos y getters y setters
-class Producto {
-    private int idProducto;
-    private String nombre;
-
-    public Producto() {
-    }
-
-    public Producto(int idProducto, String nombre) {
-        this.idProducto = idProducto;
-        this.nombre = nombre;
-    }
-
-    public int getIdProducto() {
-        return idProducto;
-    }
-
-    public void setIdProducto(int idProducto) {
-        this.idProducto = idProducto;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-}
-
-// Constructor proveedores y getters y setters
-class Proveedor {
-    private int idProveedor;
-    private String nombre;
-
-    public Proveedor() {
-    }
-
-    public Proveedor(int idProveedor, String nombre) {
-        this.idProveedor = idProveedor;
-        this.nombre = nombre;
-    }
-
-    public int getIdProveedor() {
-        return idProveedor;
-    }
-
-    public void setIdProveedor(int idProveedor) {
-        this.idProveedor = idProveedor;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-}
 }
