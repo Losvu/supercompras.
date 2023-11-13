@@ -1,6 +1,8 @@
 package Vista;
+
 import Modelo.DAOProducto;
 import Modelo.Producto;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,7 +16,8 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
         obtenerDatos();
 
     }
-
+//metodo limpiarCampos
+    
     public void limpiarCampos() {
         jTextNombre.setText("");
         jTextCategoria.setText("");
@@ -470,7 +473,7 @@ int filaSeleccionada = this.jTableProductos.getSelectedRow();
             String marca = jTextMarca.getText();
             String stock = jTextStock.getText();
 
-            // Actualizar los valores en la base de datos
+            // actualizar los valores en la base de datos
             int res = new DAOProducto().Actualizar(id, nombre, categoria, precioUnitario, marca, stock);
 
             // Verificar el resultado de la actualización
@@ -478,7 +481,7 @@ int filaSeleccionada = this.jTableProductos.getSelectedRow();
                 JOptionPane.showMessageDialog(rootPane, "Producto actualizado con éxito");
                 limpiarCampos();
             } else {
-                JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el producto.");
+                JOptionPane.showMessageDialog( rootPane, "Ocurrió un ERROR al actualizar el producto.");
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");

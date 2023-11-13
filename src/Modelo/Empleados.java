@@ -1,19 +1,20 @@
 package Modelo;
-import java.time.LocalTime;
+
+import java.time.LocalDateTime;
 
 public class Empleados {
     
     private int id_empleado; // identificador del empleado
     private String nombre;
     private String rol;
-    private LocalTime horario_inicio;
-    private LocalTime horario_fin;
+    private LocalDateTime horario_inicio; 
+    private LocalDateTime horario_fin;
     private String dias_trabajo;
 
     public Empleados() {
     }
     
-    public Empleados(int id_empleado, String nombre, String rol, LocalTime horario_inicio, LocalTime horario_fin, String dias_trabajo) {
+    public Empleados(int id_empleado, String nombre, String rol, LocalDateTime horario_inicio, LocalDateTime horario_fin, String dias_trabajo) {
         this.id_empleado = id_empleado;
         this.nombre = nombre;
         this.rol = rol;
@@ -46,19 +47,19 @@ public class Empleados {
         this.rol = rol;
     }
 
-    public LocalTime getHorario_inicio() {
+    public LocalDateTime getHorario_inicio() {
         return horario_inicio;
     }
 
-    public void setHorario_inicio(LocalTime horario_inicio) {
+    public void setHorario_inicio(LocalDateTime horario_inicio) {
         this.horario_inicio = horario_inicio;
     }
 
-    public LocalTime getHorario_fin() {
+    public LocalDateTime getHorario_fin() {
         return horario_fin;
     }
 
-    public void setHorario_fin(LocalTime horario_fin) {
+    public void setHorario_fin(LocalDateTime horario_fin) {
         this.horario_fin = horario_fin;
     }
 
@@ -69,9 +70,4 @@ public class Empleados {
     public void setDias_trabajo(String dias_trabajo) {
         this.dias_trabajo = dias_trabajo;
     }
-    
-    
-    
 }
-
-

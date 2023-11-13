@@ -11,6 +11,10 @@ public class database {
     private final String user = "sandia";
     private final String password = "ytz12345678";
     
+       public Connection getConnection() {
+        return this.conexion;
+    }
+       
     private Connection conexion;
 
     public database() {

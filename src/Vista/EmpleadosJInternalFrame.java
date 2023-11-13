@@ -2,14 +2,23 @@ package Vista;
 
 import Modelo.DAOEmpleados;
 import Modelo.Empleados;
+import Conexion.database;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import javax.swing.*;
+import java.sql.Time;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
-import javax.swing.table.DefaultTableModel;
 
 public class EmpleadosJInternalFrame extends javax.swing.JInternalFrame {
 
@@ -18,7 +27,8 @@ public class EmpleadosJInternalFrame extends javax.swing.JInternalFrame {
         obtenerDatos();
     }
 
-    // limpiar campos
+    
+    // metodo limpiar campos
     public void limpiarCamposEmpleados() {
         jTextNombre.setText("");
         jTextRol.setText("");
@@ -29,29 +39,36 @@ public class EmpleadosJInternalFrame extends javax.swing.JInternalFrame {
     }
 
     // método obtenerDatos
-    public void obtenerDatos() {
-        List<Empleados> empleados = new DAOEmpleados().obtenerDatos();
+  // método obtenerDatos
+public void obtenerDatos() {
+    // Crear una instancia de DAOEmpleados con la conexión
+    DAOEmpleados daoEmpleados = new DAOEmpleados(new database().getConnection());
 
-        DefaultTableModel modelo = new DefaultTableModel();
-        String[] columnas = {"ID Empleado", "Nombre", "Rol", "Horario Inicio", "Horario Fin", "Días Trabajo"};
-        modelo.setColumnIdentifiers(columnas);
+    // Obtener la lista de empleados
+    List<Empleados> empleados = daoEmpleados.obtenerDatos();
 
-        for (Empleados empleado : empleados) {
-            String[] renglon = {
-                    String.valueOf(empleado.getId_empleado()),
-                    empleado.getNombre(),
-                    empleado.getRol(),
-                    empleado.getHorario_inicio().toString(),
-                    empleado.getHorario_fin().toString(),
-                    empleado.getDias_trabajo()
-            };
-            modelo.addRow(renglon);
-        }
+    DefaultTableModel modelo = new DefaultTableModel();
+    String[] columnas = {"ID Empleado", "Nombre", "Rol", "Horario Inicio", "Horario Fin", "Días Trabajo"};
+    modelo.setColumnIdentifiers(columnas);
 
-        jTableEmpleados.setModel(modelo);
+    for (Empleados empleado : empleados) {
+        // Verificar si horario_inicio o horario_fin es null antes de mostrarlos
+        String horarioInicioStr = (empleado.getHorario_inicio() != null) ? empleado.getHorario_inicio().toString() : "No disponible";
+        String horarioFinStr = (empleado.getHorario_fin() != null) ? empleado.getHorario_fin().toString() : "No disponible";
+
+        String[] renglon = {
+                String.valueOf(empleado.getId_empleado()),
+                empleado.getNombre(),
+                empleado.getRol(),
+                horarioInicioStr,
+                horarioFinStr,
+                empleado.getDias_trabajo()
+        };
+        modelo.addRow(renglon);
     }
 
-    
+    jTableEmpleados.setModel(modelo);
+}
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -420,7 +437,7 @@ public class EmpleadosJInternalFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
-// captura de datos de las cajas de texto
+// Captura de datos de las cajas de texto
 String nombre = jTextNombre.getText();
 String rol = jTextRol.getText();
 String horarioInicioStr = jTextHorarioInicio.getText();
@@ -429,17 +446,19 @@ String diasTrabajo = jTextDiasTrabajo.getText();
 
 try {
     // Comprueba que las cajas de texto no estén vacías
-    if (nombre.isEmpty() || rol.isEmpty() || horarioInicioStr.isEmpty() || horarioFinStr.isEmpty() || diasTrabajo.isEmpty()) {
+    if (nombre.isEmpty() || rol.isEmpty() || horarioInicioStr.isEmpty() || horarioFinStr.isEmpty()
+            || diasTrabajo.isEmpty()) {
         JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
     } else {
-        // Intenta convertir las cadenas de tiempo a objetos LocalTime
+        // Intenta convertir las cadenas de tiempo a objetos LocalDateTime
         try {
-            // Convertir las cadenas de tiempo a objetos LocalTime
-            LocalTime horarioInicio = LocalTime.parse(horarioInicioStr); // Ajustar según el formato de entrada
-            LocalTime horarioFin = LocalTime.parse(horarioFinStr); // Ajustar según el formato de entrada
+            // Convertir las cadenas de tiempo a objetos LocalDateTime
+            LocalDateTime horarioInicio = LocalDateTime.parse(horarioInicioStr); // Ajustar según el formato de entrada
+            LocalDateTime horarioFin = LocalDateTime.parse(horarioFinStr); // Ajustar según el formato de entrada
 
             // Crea un nuevo empleado y llama al método Insertar de DAOEmpleados
-            Empleados empleado = new DAOEmpleados().Insertar(nombre, rol, horarioInicio, horarioFin, diasTrabajo);
+            Empleados empleado = new DAOEmpleados(new database().getConnection()).Insertar(nombre, rol,
+                    horarioInicio, horarioFin, diasTrabajo);
 
             if (empleado != null) {
                 JOptionPane.showMessageDialog(rootPane, "Registro agregado");
@@ -450,7 +469,8 @@ try {
             obtenerDatos();
             limpiarCamposEmpleados();
         } catch (DateTimeParseException e) {
-            JOptionPane.showMessageDialog(rootPane, "Error al procesar los horarios. Asegúrate de ingresar el formato correcto.");
+            JOptionPane.showMessageDialog(rootPane,
+                    "Error al procesar los horarios. Asegúrate de ingresar el formato correcto.");
         }
     }
 } catch (Exception e) {
@@ -460,74 +480,82 @@ try {
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-int filaSeleccionada = this.jTableEmpleados.getSelectedRow();
+// Captura el ID del empleado a editar
+String idEmpleadoStr = jTextId.getText();
 
-    if (filaSeleccionada == -1) {
-        JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla de empleados");
-    } else {
-        try {
-            // Obtener el ID del empleado seleccionado en la tabla
-            int id = Integer.parseInt(this.jTableEmpleados.getValueAt(filaSeleccionada, 0).toString());
+// Verifica que se haya seleccionado un empleado para editar
+if (idEmpleadoStr.isEmpty()) {
+    JOptionPane.showMessageDialog(rootPane, "Selecciona un empleado para editar");
+    return;
+}
 
-            // Verificar que el ID no sea negativo
-            if (id < 0) {
-                JOptionPane.showMessageDialog(rootPane, "Ingrese un ID válido.");
-                return;  // Salir del método si el ID no es válido
-            }
+int idEmpleado = Integer.parseInt(idEmpleadoStr);
 
-            // Obtener los nuevos valores de todas las cajas de texto
-            String nombre = jTextNombre.getText();
-            String rol = jTextRol.getText();
-            String horarioInicio = jTextHorarioInicio.getText();
-            String horarioFin = jTextHorarioFin.getText();
-            String diasTrabajo = jTextDiasTrabajo.getText();
+// Captura de datos de las cajas de texto
+String nombre = jTextNombre.getText();
+String rol = jTextRol.getText();
+String horarioInicioStr = jTextHorarioInicio.getText();
+String horarioFinStr = jTextHorarioFin.getText();
+String diasTrabajo = jTextDiasTrabajo.getText();
 
-            // Verificar que las cadenas de tiempo no sean nulas ni estén vacías
-            if (!horarioInicio.isEmpty() && !horarioFin.isEmpty()) {
-                // Convertir cadenas de tiempo a objetos Time
-                Time timeHorarioInicio = Time.valueOf(horarioInicio + ":00");
-                Time timeHorarioFin = Time.valueOf(horarioFin + ":00");
+try {
+    // Intenta convertir las cadenas de tiempo a objetos LocalTime
+    try {
+        // Convertir las cadenas de tiempo a objetos LocalTime
+        LocalTime horarioInicio = (horarioInicioStr.isEmpty()) ? null : LocalTime.parse(horarioInicioStr); // Ajustar según el formato de entrada
+        LocalTime horarioFin = (horarioFinStr.isEmpty()) ? null : LocalTime.parse(horarioFinStr); // Ajustar según el formato de entrada
 
-                // Actualizar los valores en la base de datos
-                int res = new DAOEmpleados().Actualizar(id, nombre, rol, timeHorarioInicio, timeHorarioFin, diasTrabajo);
+        // Llama al método Actualizar de DAOEmpleados
+        Map<String, Object> cambios = new HashMap<>();
+        cambios.put("nombre", nombre);
+        cambios.put("rol", rol);
+        cambios.put("horario_inicio", horarioInicio);
+        cambios.put("horario_fin", horarioFin);
+        cambios.put("dias_trabajo", diasTrabajo);
 
-                // Verificar el resultado de la actualización
-                if (res == 1) {
-                    JOptionPane.showMessageDialog(rootPane, "Empleado actualizado con éxito");
-                    limpiarCamposEmpleados();  // Asegúrate de que el nombre del método sea correcto
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el empleado.");
-                }
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Ingrese valores válidos para horario de inicio y fin.");
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
+        int filasActualizadas = new DAOEmpleados(new database().getConnection()).Actualizar(idEmpleado, cambios);
+
+        if (filasActualizadas > 0) {
+            JOptionPane.showMessageDialog(rootPane, "Registro actualizado");
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "No se pudo actualizar el registro");
         }
+
+        obtenerDatos();
+        limpiarCamposEmpleados();
+    } catch (DateTimeParseException e) {
+        JOptionPane.showMessageDialog(rootPane,
+                "Error al procesar los horarios. Asegúrate de ingresar el formato correcto.");
     }
+} catch (Exception e) {
+    e.printStackTrace();
+    JOptionPane.showMessageDialog(rootPane, "No se pudo actualizar el registro");
+}
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
 // evento borrar para empleados
-int fila = this.jTableEmpleados.getSelectedRow();
+    int fila = this.jTableEmpleados.getSelectedRow();
 
-if (fila == -1) {
-    JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
-} else {
-    int id = Integer.parseInt((String) this.jTableEmpleados.getValueAt(fila, 0).toString());
-    
-    int confirmacion = JOptionPane.showConfirmDialog(rootPane, "¿Está seguro de eliminar este registro?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+    if (fila == -1) {
+        JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
+    } else {
+        int id = Integer.parseInt((String) this.jTableEmpleados.getValueAt(fila, 0).toString());
 
-    if (confirmacion == JOptionPane.YES_OPTION) {
-        DAOEmpleados dao = new DAOEmpleados();
-        dao.Eliminar(id);
-        obtenerDatos();
-        JOptionPane.showMessageDialog(rootPane, "Empleado eliminado con éxito");
+        int confirmacion = JOptionPane.showConfirmDialog(rootPane, "¿Está seguro de eliminar este registro?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            // Obtener la conexión
+            Connection conexion = new database().getConnection();
+
+            // Crear la instancia de DAOEmpleados con la conexión
+            DAOEmpleados dao = new DAOEmpleados(conexion);
+            
+            dao.Eliminar(id);
+            obtenerDatos();
+            JOptionPane.showMessageDialog(rootPane, "Empleado eliminado con éxito");
+        }
     }
-}
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
@@ -555,27 +583,29 @@ if (fila == -1) {
     }//GEN-LAST:event_jTextHorarioFinActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-   // Obtener la fecha y hora actuales
-    LocalDateTime fechaHoraActual = LocalDateTime.now();
-
-    // Formatear la fecha y hora actuales como cadena en el formato deseado
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String fechaHoraFormateada = fechaHoraActual.format(formatter);
-
-    // Establecer la fecha y hora actuales en jTextHorarioInicio
-    jTextHorarioInicio.setText(fechaHoraFormateada);
-    }//GEN-LAST:event_jButton10ActionPerformed
-
-    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
  // Obtener la fecha y hora actuales
     LocalDateTime fechaHoraActual = LocalDateTime.now();
 
-    // Formatear la fecha y hora actuales como cadena en el formato deseado
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String fechaHoraFormateada = fechaHoraActual.format(formatter);
+    // Formatear la fecha y hora actuales en un formato completo sin guiones en la fecha
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
+LocalDateTime fechaHoraFormateada = LocalDateTime.parse(fechaHoraActual.format(formatter), formatter);
 
-    // Establecer la fecha y hora actuales en jTextHorarioFin
-    jTextHorarioFin.setText(fechaHoraFormateada);
+// Establecer la fecha y hora actuales en jTextHorarioInicio
+jTextHorarioInicio.setText(fechaHoraFormateada.toString());
+
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+// Obtener la fecha y hora actuales
+    LocalDateTime fechaHoraActual = LocalDateTime.now();
+
+    // Formatear la fecha y hora actuales en un formato completo sin guiones en la fecha
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
+LocalDateTime fechaHoraFormateada = LocalDateTime.parse(fechaHoraActual.format(formatter), formatter);
+
+// Establecer la fecha y hora actuales en jTextHorarioFin
+jTextHorarioFin.setText(fechaHoraFormateada.toString());
+
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jTextDiasTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextDiasTrabajoActionPerformed
@@ -587,17 +617,16 @@ if (fila == -1) {
     }//GEN-LAST:event_jTextIdActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-try {
-        // Obtener el ID del empleado a editar
+int filaSeleccionada = this.jTableEmpleados.getSelectedRow();
+
+if (filaSeleccionada == -1) {
+    JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
+} else {
+    try {
+        // Obtener el ID ingresado en jTextId
         int id = Integer.parseInt(jTextId.getText());
 
-        // Verificar que el ID no sea negativo
-        if (id < 0) {
-            JOptionPane.showMessageDialog(rootPane, "Ingrese un ID válido.");
-            return;  // Salir del método si el ID no es válido
-        }
-
-        // Obtener los nuevos valores de las cajas de texto
+        // Obtener los nuevos valores de todas las cajas de texto
         String nombre = jTextNombre.getText();
         String rol = jTextRol.getText();
         String horarioInicio = jTextHorarioInicio.getText();
@@ -608,13 +637,21 @@ try {
         Time timeHorarioInicio = horarioInicio.isEmpty() ? null : Time.valueOf(horarioInicio + ":00");
         Time timeHorarioFin = horarioFin.isEmpty() ? null : Time.valueOf(horarioFin + ":00");
 
+        // Crear un mapa con los cambios
+        Map<String, Object> cambios = new HashMap<>();
+        cambios.put("nombre", nombre);
+        cambios.put("rol", rol);
+        cambios.put("horario_inicio", timeHorarioInicio);
+        cambios.put("horario_fin", timeHorarioFin);
+        cambios.put("dias_trabajo", diasTrabajo);
+
         // Actualizar los valores en la base de datos
-        int res = new DAOEmpleados().Actualizar(id, nombre, rol, timeHorarioInicio, timeHorarioFin, diasTrabajo);
+        int res = new DAOEmpleados(new database().getConnection()).Actualizar(id, cambios);
 
         // Verificar el resultado de la actualización
         if (res == 1) {
             JOptionPane.showMessageDialog(rootPane, "Empleado actualizado con éxito");
-            limpiarCamposEmpleados();  // Asegúrate de que el nombre del método sea correcto
+            limpiarCamposEmpleados();
         } else {
             JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el empleado.");
         }
@@ -624,6 +661,7 @@ try {
         e.printStackTrace();
         JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
     }
+}
     }//GEN-LAST:event_jButton4ActionPerformed
 
 

@@ -7,7 +7,9 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
 
     private ProductosJInternalFrame Productos;
     private EmpleadosJInternalFrame Empleados;
-    
+    private ClientesJInternalFrame Cliente;
+    private ProveedoresJInternalFrame Proveedores;
+    private TransaccionesJInternalFrame Transacciones;
     
     public SistemaSuperComprasMDI() {
         initComponents();
@@ -18,6 +20,15 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
         
         Empleados = new EmpleadosJInternalFrame();
         desktopPane.add(Empleados);
+        
+         Cliente = new ClientesJInternalFrame();
+        desktopPane.add(Cliente);
+        
+         Proveedores = new ProveedoresJInternalFrame();
+        desktopPane.add(Proveedores);
+        
+        Transacciones = new TransaccionesJInternalFrame();
+        desktopPane.add(Transacciones);
     }
     
     
@@ -154,7 +165,8 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TransaccionesMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TransaccionesMenuItemActionPerformed
-
+Transacciones.obtenerDatos();
+Transacciones.setVisible(true);
     }//GEN-LAST:event_TransaccionesMenuItemActionPerformed
 
     private void ProductosMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ProductosMenuItemActionPerformed
@@ -163,11 +175,13 @@ Productos.setVisible(true);
     }//GEN-LAST:event_ProductosMenuItemActionPerformed
 
     private void saveMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveMenuItemActionPerformed
-
+Cliente.obtenerDatos();
+Cliente.setVisible(true);
     }//GEN-LAST:event_saveMenuItemActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-
+Proveedores.obtenerDatos();
+Proveedores.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
