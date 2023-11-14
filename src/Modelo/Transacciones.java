@@ -1,10 +1,10 @@
 package Modelo;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Transacciones {
     private int idTransaccion;
-    private Date fechaHora;
+    private LocalDateTime fechaHora;
     private String tipo;
     private double total;
     private String metodoPago;
@@ -12,7 +12,7 @@ public class Transacciones {
     private int proveedorId;
 
     // Constructor
-    public Transacciones(int idTransaccion, Date fechaHora, String tipo, double total, String metodoPago, int clienteId, int proveedorId) {
+    public Transacciones(int idTransaccion, LocalDateTime fechaHora, String tipo, double total, String metodoPago, int clienteId, int proveedorId) {
         this.idTransaccion = idTransaccion;
         this.fechaHora = fechaHora;
         this.tipo = tipo;
@@ -21,6 +21,7 @@ public class Transacciones {
         this.clienteId = clienteId;
         this.proveedorId = proveedorId;
     }
+
     public int getIdTransaccion() {
         return idTransaccion;
     }
@@ -29,11 +30,11 @@ public class Transacciones {
         this.idTransaccion = idTransaccion;
     }
 
-    public Date getFechaHora() {
+    public LocalDateTime getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(Date fechaHora) {
+    public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
     }
 
@@ -77,3 +78,4 @@ public class Transacciones {
         this.proveedorId = proveedorId;
     }
 }
+

@@ -6,42 +6,33 @@ import Modelo.Cliente;
 import Modelo.DAOCliente;
 import Modelo.Proveedores;
 import Modelo.DAOProveedores;
-import Conexion.database;
 
-import javax.swing.DefaultComboBoxModel;
+
+import Conexion.database;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
-// Agrega las siguientes importaciones para las clases de modelos personalizados
-import java.util.ArrayList;
-
-// Clase de modelo personalizado para JComboBox de Cliente
-class ClienteComboBoxModel extends DefaultComboBoxModel<Cliente> {
-    public ClienteComboBoxModel(Cliente[] items) {
-        super(items);
-    }
-}
-
-// Clase de modelo personalizado para JComboBox de Proveedores
-class ProveedoresComboBoxModel extends DefaultComboBoxModel<Proveedores> {
-    public ProveedoresComboBoxModel(Proveedores[] items) {
-        super(items);
-    }
-}
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class TransaccionesJInternalFrame extends javax.swing.JInternalFrame {
 
     private DAOTransacciones daoTransacciones;
+    private DAOCliente daoClientes;
+    private DAOProveedores daoProveedores;
 
     public TransaccionesJInternalFrame() {
         initComponents();
-        daoTransacciones = new DAOTransacciones(new database().getConnection());
+        database db = new database();
+        daoTransacciones = new DAOTransacciones(db.getConnection());
+        daoClientes = new DAOCliente(db.getConnection());
+        daoProveedores = new DAOProveedores(db.getConnection());
+
         cargarComboboxClientes();
         cargarComboboxProveedores();
         obtenerDatos();
@@ -58,55 +49,62 @@ public class TransaccionesJInternalFrame extends javax.swing.JInternalFrame {
     }
 
     // Método para cargar el JComboBox de clientes
+  // Método obtenerDatos
+public void obtenerDatos() {
+    List<Transacciones> transacciones = daoTransacciones.obtenerDatos();
+
+    DefaultTableModel modelo = new DefaultTableModel();
+    String[] columnas = {"ID Transacción", "Fecha y Hora", "Tipo", "Total", "Método de Pago", "Cliente", "Proveedor"};
+    modelo.setColumnIdentifiers(columnas);
+
+    for (Transacciones transaccion : transacciones) {
+        String fechaHoraStr = transaccion.getFechaHora().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        Cliente cliente = daoClientes.obtenerClientePorId(transaccion.getClienteId());
+        Proveedores proveedor = daoProveedores.obtenerProveedorPorId(transaccion.getProveedorId());
+
+        String[] renglon = {
+                String.valueOf(transaccion.getIdTransaccion()),
+                fechaHoraStr,
+                transaccion.getTipo(),
+                String.valueOf(transaccion.getTotal()),
+                transaccion.getMetodoPago(),
+                cliente != null ? cliente.getNombre() : "", // Evita NPE
+                proveedor != null ? proveedor.getNombre() : "" // Evita NPE
+        };
+        modelo.addRow(renglon);
+    }
+
+    jTableTransacciones.setModel(modelo);
+}
+
     private void cargarComboboxClientes() {
-        DAOCliente daoClientes = new DAOCliente(new database().getConnection());
-        List<Cliente> clientes = daoClientes.obtenerDatos();
-
-        ClienteComboBoxModel model = new ClienteComboBoxModel(clientes.toArray(new Cliente[0]));
-
+        List<String> clientes = daoClientes.obtenerNombresClientes();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(clientes.toArray(new String[0]));
         jComboBoxClientes.setModel(model);
     }
 
-    // Método para cargar el JComboBox de proveedores
     private void cargarComboboxProveedores() {
-        DAOProveedores daoProveedores = new DAOProveedores(new database().getConnection());
-        List<Proveedores> proveedores = daoProveedores.obtenerDatos();
-
-        ProveedoresComboBoxModel model = new ProveedoresComboBoxModel(proveedores.toArray(new Proveedores[0]));
-
+        List<String> proveedores = daoProveedores.obtenerNombresProveedores();
+        DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(proveedores.toArray(new String[0]));
         jComboBoxProveedores.setModel(model);
     }
-
-    // Método para obtener datos y visualizar en la tabla
-    public void obtenerDatos() {
-        // Crear una instancia de DAOTransacciones con la conexión
-        DAOTransacciones daoTransacciones = new DAOTransacciones(new database().getConnection());
-
-        // Obtener la lista de transacciones
-        List<Transacciones> transacciones = daoTransacciones.obtenerDatos();
-
-        DefaultTableModel modelo = new DefaultTableModel();
-        String[] columnas = {"ID Transacción", "Fecha y Hora", "Tipo", "Total", "Método de Pago", "Cliente", "Proveedor"};
-        modelo.setColumnIdentifiers(columnas);
-
-        for (Transacciones transaccion : transacciones) {
-            // Puedes ajustar el formato de fecha y hora según tus necesidades
-            String fechaHoraStr = transaccion.getFechaHora().toString();
-
-            String[] renglon = {
-                    String.valueOf(transaccion.getIdTransaccion()),
-                    fechaHoraStr,
-                    transaccion.getTipo(),
-                    String.valueOf(transaccion.getTotal()),
-                    transaccion.getMetodoPago(),
-                    String.valueOf(transaccion.getClienteId()),
-                    String.valueOf(transaccion.getProveedorId())
-            };
-            modelo.addRow(renglon);
-        }
-
-        jTableTransacciones.setModel(modelo);
-    }
+    //mas metodos xd
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -293,9 +291,9 @@ public class TransaccionesJInternalFrame extends javax.swing.JInternalFrame {
 
         jComboBoxProveedores.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jComboBoxTipoTransaccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Venta a cliente", "Compra a proveedor", " ", " " }));
+        jComboBoxTipoTransaccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Venta a cliente", "Compra a proveedor" }));
 
-        jComboBoxMetodoPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Tarjeta de credito", "Tarjeta de debido", "Transaccion", " " }));
+        jComboBoxMetodoPago.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Efectivo", "Tarjeta de credito", "Tarjeta de debido", "Transaccion" }));
 
         jLabel18.setFont(new java.awt.Font("Yu Gothic UI", 1, 12)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(0, 0, 0));
@@ -482,8 +480,8 @@ public class TransaccionesJInternalFrame extends javax.swing.JInternalFrame {
     String tipo = jComboBoxTipoTransaccion.getSelectedItem().toString();
     String totalStr = jTextTotal.getText();
     String metodoPago = jComboBoxMetodoPago.getSelectedItem().toString();
-    Cliente clienteSeleccionado = (Cliente) jComboBoxTipoTransaccion.getSelectedItem();  // Ajusta según el tipo de objeto que almacena el JComboBox
-    Proveedores proveedorSeleccionado = (Proveedores) jComboBoxMetodoPago.getSelectedItem();  // Ajusta según el tipo de objeto que almacena el JComboBox
+    String clienteSeleccionadoNombre = (String) jComboBoxClientes.getSelectedItem();  
+    String proveedorSeleccionadoNombre = (String) jComboBoxProveedores.getSelectedItem();  
 
     try {
         // Comprueba que las cajas de texto no estén vacías
@@ -498,8 +496,13 @@ public class TransaccionesJInternalFrame extends javax.swing.JInternalFrame {
                 // Convertir la cadena de total a objeto Double
                 double total = Double.parseDouble(totalStr); // Ajustar según el formato de entrada
 
+                // Obtener el objeto Cliente y Proveedor a partir de los nombres
+                Cliente clienteSeleccionado = daoClientes.obtenerClientePorNombre(clienteSeleccionadoNombre);
+                Proveedores proveedorSeleccionado = daoProveedores.obtenerProveedorPorNombre(proveedorSeleccionadoNombre);
+
                 // Crea una nueva transacción y llama al método insertar de DAOTransacciones
-                Transacciones transaccion = daoTransacciones.insertar(clienteSeleccionado, fechaHora, total, metodoPago);
+               Transacciones transaccion = daoTransacciones.insertar(clienteSeleccionado, fechaHora, total, "Descripción");
+
 
                 if (transaccion != null) {
                     JOptionPane.showMessageDialog(rootPane, "Registro agregado");
@@ -541,6 +544,15 @@ public class TransaccionesJInternalFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_jTextFechaTransaccionActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+ // Obtener la fecha y hora actuales
+    LocalDateTime fechaHoraActual = LocalDateTime.now();
+
+    // Formatear la fecha y hora actuales en un formato completo sin guiones en la fecha
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
+LocalDateTime fechaHoraFormateada = LocalDateTime.parse(fechaHoraActual.format(formatter), formatter);
+
+// Establecer la fecha y hora actuales en jTextHorarioInicio
+jTextFechaTransaccion.setText(fechaHoraFormateada.toString());
 
     }//GEN-LAST:event_jButton10ActionPerformed
 

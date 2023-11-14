@@ -13,6 +13,22 @@ import java.util.Map;
 
 
 public class DAOCliente {
+     // Este método devuelve una lista de nombres de clientes
+// Este método devuelve una lista de nombres de clientes
+public List<String> obtenerNombresClientes() {
+    String transaccion = "SELECT nombre FROM Clientes";
+    List<Map<String, Object>> registros = new database().Listar(transaccion);
+    List<String> nombresClientes = new ArrayList<>();
+
+    for (Map<String, Object> registro : registros) {
+        String nombre = (String) registro.get("nombre");
+        nombresClientes.add(nombre);
+    }
+
+    return nombresClientes;
+}
+    
+    
     private Connection connection;
 
     
@@ -23,30 +39,50 @@ public class DAOCliente {
     
     
     // metodo para obtener todos los clientes
-    public List<Cliente> obtenerDatos() {
-        String transaccion = "SELECT * FROM Clientes";
+// método para obtener todos los clientes
+public List<Cliente> obtenerDatos() {
+    String transaccion = "SELECT * FROM Clientes";
 
-        List<Map> registros = new database().Listar(transaccion);
-        List<Cliente> clientes = new ArrayList<>();
+    List<Map<String, Object>> registros = new database().Listar(transaccion);
+    List<Cliente> clientes = new ArrayList<>();
 
-        for (Map registro : registros) {
-            Cliente cliente = new Cliente(
-                    (int) registro.get("id_cliente"),
-                    (String) registro.get("nombre"),
-                    (String) registro.get("direccion"),
-                    (String) registro.get("numero_telefono"),
-                    (String) registro.get("correo_electronico")
-            );
-            clientes.add(cliente);
-        }
-
-        return clientes;
+    for (Map<String, Object> registro : registros) {
+        Cliente cliente = new Cliente(
+                (int) registro.get("id_cliente"),
+                (String) registro.get("nombre"),
+                (String) registro.get("direccion"),
+                (String) registro.get("numero_telefono"),
+                (String) registro.get("correo_electronico")
+        );
+        clientes.add(cliente);
     }
+
+    return clientes;
+}
+    
+    //metodo para Transacciones
+public Cliente obtenerClientePorNombre(String nombre) {
+    String transaccion = "SELECT * FROM Clientes WHERE nombre = ?";
+    List<Map<String, Object>> registros = new database().Listar(transaccion, nombre);
+
+    if (registros != null && registros.size() > 0) {
+        Map<String, Object> registro = registros.get(0);
+        return new Cliente(
+                (int) registro.get("id_cliente"),
+                (String) registro.get("nombre"),
+                (String) registro.get("direccion"),
+                (String) registro.get("numero_telefono"),
+                (String) registro.get("correo_electronico")
+        );
+    }
+
+    return null;
+}
 
     // Método para obtener un cliente por ID
     public Cliente obtenerClientePorId(int id) {
         String transaccion = "SELECT * FROM Clientes WHERE id_cliente = " + id;
-        List<Map> registros = new database().Listar(transaccion);
+        List<Map<String, Object>> registros = new database().Listar(transaccion);
 
         if (registros != null && registros.size() > 0) {
             Map registro = registros.get(0);

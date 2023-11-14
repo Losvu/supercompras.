@@ -9,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.swing.*;
 import java.sql.Time;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.table.DefaultTableModel;
@@ -19,6 +20,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import javax.swing.JOptionPane;
 
 public class EmpleadosJInternalFrame extends javax.swing.JInternalFrame {
 
@@ -68,6 +70,51 @@ public void obtenerDatos() {
 
     jTableEmpleados.setModel(modelo);
 }
+
+//no se que estoy haciendo, pero algo hice
+private String obtenerNuevoValorParaColumna(String columna) {
+    // Implementar la lógica para obtener el nuevo valor de la caja de texto para la columna dada
+    // Devolver el nuevo valor como cadena
+    if (columna.equals("nombre")) {
+        return jTextNombre.getText();
+    } else if (columna.equals("rol")) {
+        return jTextRol.getText();
+    } else if (columna.equals("horario_inicio")) {
+        return jTextHorarioInicio.getText();
+    } else if (columna.equals("horario_fin")) {
+        return jTextHorarioFin.getText();
+    } else if (columna.equals("dias_trabajo")) {
+        return jTextDiasTrabajo.getText();
+    } else {
+        // Manejar otras columnas según sea necesario
+        return null;
+    }
+}
+
+
+
+//obtenercambiosdesde interfaz
+private Map<String, Object> obtenerCambiosDesdeInterfaz() {
+    // Obtener los nombres de las columnas de la tabla
+    List<String> columnas;
+    try {
+        columnas = new DAOEmpleados(new database().getConnection()).obtenerNombresColumnas("Empleados");
+    } catch (SQLException e) {
+        e.printStackTrace();
+        return null;  // Manejar el error según sea necesario
+    }
+
+    Map<String, Object> cambios = new HashMap<>();
+
+    // Iterar sobre las columnas y obtener los nuevos valores de las cajas de texto
+    for (String columna : columnas) {
+        String nuevoValor = obtenerNuevoValorParaColumna(columna);
+        cambios.put(columna, nuevoValor);
+    }
+
+    return cambios;
+}
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -133,7 +180,7 @@ public void obtenerDatos() {
             }
         });
 
-        jButton4.setText("Editar");
+        jButton4.setText("Actualizar");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton4ActionPerformed(evt);
@@ -586,7 +633,7 @@ try {
     LocalDateTime fechaHoraActual = LocalDateTime.now();
 
     // Formatear la fecha y hora actuales en un formato completo sin guiones en la fecha
-DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 LocalDateTime fechaHoraFormateada = LocalDateTime.parse(fechaHoraActual.format(formatter), formatter);
 
 // Establecer la fecha y hora actuales en jTextHorarioInicio
@@ -599,7 +646,7 @@ jTextHorarioInicio.setText(fechaHoraFormateada.toString());
     LocalDateTime fechaHoraActual = LocalDateTime.now();
 
     // Formatear la fecha y hora actuales en un formato completo sin guiones en la fecha
-DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy:MM:dd HH:mm:ss");
 LocalDateTime fechaHoraFormateada = LocalDateTime.parse(fechaHoraActual.format(formatter), formatter);
 
 // Establecer la fecha y hora actuales en jTextHorarioFin
@@ -616,43 +663,38 @@ jTextHorarioFin.setText(fechaHoraFormateada.toString());
     }//GEN-LAST:event_jTextIdActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-int filaSeleccionada = this.jTableEmpleados.getSelectedRow();
+int filaSeleccionada = jTableEmpleados.getSelectedRow();
 
 if (filaSeleccionada == -1) {
     JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
 } else {
     try {
-        // Obtener el ID ingresado en jTextId
-        int id = Integer.parseInt(jTextId.getText());
+        // Obtener el nombre de la tabla
+        String nombreTabla = "Empleados";
 
-        // Obtener los nuevos valores de todas las cajas de texto
-        String nombre = jTextNombre.getText();
-        String rol = jTextRol.getText();
-        String horarioInicio = jTextHorarioInicio.getText();
-        String horarioFin = jTextHorarioFin.getText();
-        String diasTrabajo = jTextDiasTrabajo.getText();
+        // Obtener el ID del registro seleccionado en la tabla
+        Object idObject = jTableEmpleados.getValueAt(filaSeleccionada, 0);
 
-        // Convertir cadenas de tiempo a objetos Time si los campos no están vacíos
-        Time timeHorarioInicio = horarioInicio.isEmpty() ? null : Time.valueOf(horarioInicio + ":00");
-        Time timeHorarioFin = horarioFin.isEmpty() ? null : Time.valueOf(horarioFin + ":00");
+        // Validar que el valor sea numérico antes de intentar la conversión
+        if (idObject instanceof Number) {
+            int id = ((Number) idObject).intValue();
 
-        // Crear un mapa con los cambios
-        Map<String, Object> cambios = new HashMap<>();
-        cambios.put("nombre", nombre);
-        cambios.put("rol", rol);
-        cambios.put("horario_inicio", timeHorarioInicio);
-        cambios.put("horario_fin", timeHorarioFin);
-        cambios.put("dias_trabajo", diasTrabajo);
+            // Crear un mapa con los cambios
+            Map<String, Object> cambios = obtenerCambiosDesdeInterfaz();
 
-        // Actualizar los valores en la base de datos
-        int res = new DAOEmpleados(new database().getConnection()).Actualizar(id, cambios);
+            // Actualizar los valores en la base de datos
+            int res = new DAOEmpleados(new database().getConnection()).ActualizarRegistro(nombreTabla, id, cambios);
 
-        // Verificar el resultado de la actualización
-        if (res == 1) {
-            JOptionPane.showMessageDialog(rootPane, "Empleado actualizado con éxito");
-            limpiarCamposEmpleados();
+            // Verificar el resultado de la actualización
+            if (res == 1) {
+                JOptionPane.showMessageDialog(rootPane, "Registro actualizado con éxito");
+                limpiarCamposEmpleados();
+                obtenerDatos(); // Actualizar la tabla con los nuevos datos
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el registro.");
+            }
         } else {
-            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el empleado.");
+            JOptionPane.showMessageDialog(rootPane, "El valor del ID no es numérico.");
         }
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");

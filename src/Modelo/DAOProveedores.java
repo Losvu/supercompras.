@@ -14,15 +14,12 @@ public class DAOProveedores {
 
     private Connection connection;
 
-    public DAOProveedores() {
-    }
-
     public DAOProveedores(Connection connection) {
         this.connection = connection;
     }
 
     // Método para insertar un nuevo proveedor
-   public Proveedores insertarProveedor(String nombre, String direccion, String numeroTelefono, String correoElectronico, String marcaProveedor) {
+    public Proveedores insertarProveedor(String nombre, String direccion, String numeroTelefono, String correoElectronico, String marcaProveedor) {
         String query = "INSERT INTO Proveedores (nombre, direccion, numero_telefono, correo_electronico, marca_proveedor) VALUES (?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -46,21 +43,21 @@ public class DAOProveedores {
 
         return null;
     }
+
     // Método para obtener todos los proveedores
     public List<Proveedores> obtenerDatos() {
         String transaccion = "SELECT * FROM Proveedores";
 
-        List<Map> registros = new database().Listar(transaccion);
+        List<Map<String, Object>> registros = new database().Listar(transaccion);
         List<Proveedores> proveedores = new ArrayList<>();
 
-        for (Map registro : registros) {
+        for (Map<String, Object> registro : registros) {
             Proveedores proveedor = new Proveedores(
                     (int) registro.get("id_proveedor"),
                     (String) registro.get("nombre"),
                     (String) registro.get("direccion"),
                     (String) registro.get("numero_telefono"),
                     (String) registro.get("correo_electronico"),
- 
                     (String) registro.get("marca_proveedor")
             );
             proveedores.add(proveedor);
@@ -69,25 +66,65 @@ public class DAOProveedores {
         return proveedores;
     }
 
-  //método para obtener un proveedor por ID
-public Proveedores obtenerProveedorPorId(int id) {
-    String transaccion = "SELECT * FROM Proveedores WHERE id_proveedor = " + id;
-    List<Map> registros = new database().Listar(transaccion);
+    // Método para obtener nombres de proveedores
+    public List<String> obtenerNombresProveedores() {
+        String transaccion = "SELECT nombre FROM Proveedores";
+        List<Map<String, Object>> registros = new database().Listar(transaccion);
+        List<String> nombresProveedores = new ArrayList<>();
 
-    if (registros != null && registros.size() > 0) {
-        Map registro = registros.get(0);
-        return new Proveedores(
-                (int) registro.get("id_proveedor"),
-                (String) registro.get("nombre"),
-                (String) registro.get("direccion"),
-                (String) registro.get("numero_telefono"),
-                (String) registro.get("correo_electronico"),
-                (String) registro.get("marca_proveedor")
-        );
+        for (Map<String, Object> registro : registros) {
+            nombresProveedores.add((String) registro.get("nombre"));
+        }
+
+        return nombresProveedores;
+    }
+
+    // Método para obtener un proveedor por ID
+    public Proveedores obtenerProveedorPorId(int id) {
+        String transaccion = "SELECT * FROM Proveedores WHERE id_proveedor = " + id;
+        List<Map<String, Object>> registros = new database().Listar(transaccion);
+
+        if (registros != null && registros.size() > 0) {
+            Map<String, Object> registro = registros.get(0);
+            return new Proveedores(
+                    (int) registro.get("id_proveedor"),
+                    (String) registro.get("nombre"),
+                    (String) registro.get("direccion"),
+                    (String) registro.get("numero_telefono"),
+                    (String) registro.get("correo_electronico"),
+                    (String) registro.get("marca_proveedor")
+            );
+        }
+
+        return null;
+    }
+    //metodo para obtener proveedor por nombre
+    public Proveedores obtenerProveedorPorNombre(String nombre) {
+    String transaccion = "SELECT * FROM Proveedores WHERE nombre = ?";
+    
+    try (PreparedStatement preparedStatement = connection.prepareStatement(transaccion)) {
+        preparedStatement.setString(1, nombre);
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if (resultSet.next()) {
+            return new Proveedores(
+                    resultSet.getInt("id_proveedor"),
+                    resultSet.getString("nombre"),
+                    resultSet.getString("direccion"),
+                    resultSet.getString("numero_telefono"),
+                    resultSet.getString("correo_electronico"),
+                    resultSet.getString("marca_proveedor")
+            );
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
 
     return null;
 }
+    
+    
+
     // Método para actualizar un proveedor
     public int actualizarProveedor(int id, Map<String, Object> cambios) {
         try {

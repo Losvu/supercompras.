@@ -4,18 +4,26 @@ import java.sql.*;
 import java.util.*;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 
 public class database {
-    
+
     private final String url = "jdbc:mysql://localhost:3306/dbsupercompras";
     private final String user = "sandia";
     private final String password = "ytz12345678";
-    
-       public Connection getConnection() {
+
+    private Connection conexion;
+
+    public Connection obtenerConexion() {
         return this.conexion;
     }
-       
-    private Connection conexion;
+     public Connection getConnection() {
+        return this.conexion;
+    }
 
     public database() {
         try {
@@ -38,16 +46,25 @@ public class database {
        }
     }
         //-----------------------------------------------------------------------------------------------
-    //metodo para actualizar datos en la db
-    
-    public int Actualizar(String consulta){
-    try{
-       Statement st=conexion.createStatement();
-       return st.executeUpdate(consulta);
-    }catch (SQLException e){
-       e.printStackTrace();
-    }
-    return 0;
+// Método Actualizar
+ public int Actualizar(String consulta, Object... parametros) {
+        int filasAfectadas = 0;
+        try (Connection conexion = obtenerConexion();
+             PreparedStatement preparedStatement = conexion.prepareStatement(consulta)) {
+
+            // Configurar los parámetros de la consulta
+            for (int i = 0; i < parametros.length; i++) {
+                preparedStatement.setObject(i + 1, parametros[i]);
+            }
+
+            // Ejecutar la consulta
+            filasAfectadas = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return filasAfectadas;
     }
     //---------------------------------------------------------------------------------------------------
     //metodo para organizar datos antes de enlistarlos en las tablas
@@ -72,19 +89,36 @@ private List<Map<String, Object>> organizarDatos(ResultSet rs) {
 
     //-----------------------------------------------------------------------------------------------
 //metodo para listar datos
-public List Listar(String consulta) {
-   ResultSet rs=null;
-   List resultado=new ArrayList();
-   try{
-      Statement st=conexion.createStatement();
-      rs=st.executeQuery(consulta);
-      resultado=organizarDatos(rs);
-   }catch(SQLException e) {
-      System.out.println("No se realizo la consulta");
-      e.printStackTrace();
-   }
-   return resultado;
+public List<Map<String, Object>> Listar(String consulta, Object... parametros) {
+    ResultSet rs = null;
+    List<Map<String, Object>> resultado = new ArrayList<>();
+    try {
+        // Crea el PreparedStatement
+        try (PreparedStatement preparedStatement = conexion.prepareStatement(consulta)) {
+            // Establece los parámetros de la consulta, si los hay
+            for (int i = 0; i < parametros.length; i++) {
+                preparedStatement.setObject(i + 1, parametros[i]);
+            }
+
+            // Ejecuta la consulta
+            rs = preparedStatement.executeQuery();
+
+            // Continúa con el código para organizar los datos
+            resultado = organizarDatos(rs);
+
+        } catch (SQLException e) {
+            System.out.println("Error al ejecutar la consulta preparada");
+            e.printStackTrace();
+        }
+    } catch (Exception e) {
+        System.out.println("No se realizó la conexión");
+        e.printStackTrace();
+    } finally {
+        // Cierra el ResultSet y la conexión aquí si es necesario
+    }
+    return resultado;
 }
+//no entiendo q hice, lo arregle si xd
 //---------------------------------------------------------------------------------------------------
 // clases java
 //quitar
