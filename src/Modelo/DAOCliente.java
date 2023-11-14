@@ -1,7 +1,7 @@
 package Modelo;
 
-import Conexion.database;
 
+import Conexion.database;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

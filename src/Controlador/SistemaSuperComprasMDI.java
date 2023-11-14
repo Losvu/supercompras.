@@ -46,12 +46,12 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
         jMenu5 = new javax.swing.JMenu();
         desktopPane = new javax.swing.JDesktopPane();
         menuBar = new javax.swing.JMenuBar();
-        fileMenu = new javax.swing.JMenu();
-        ProductosMenuItem = new javax.swing.JMenuItem();
         jMenu6 = new javax.swing.JMenu();
         saveMenuItem = new javax.swing.JMenuItem();
         saveAsMenuItem = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
+        fileMenu = new javax.swing.JMenu();
+        ProductosMenuItem = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         TransaccionesMenuItem = new javax.swing.JMenuItem();
         jMenu8 = new javax.swing.JMenu();
@@ -76,6 +76,36 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jMenu6.setText("Admin");
+
+        saveMenuItem.setMnemonic('s');
+        saveMenuItem.setText("Clientes");
+        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu6.add(saveMenuItem);
+
+        saveAsMenuItem.setMnemonic('a');
+        saveAsMenuItem.setText("Empleados");
+        saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsMenuItemActionPerformed(evt);
+            }
+        });
+        jMenu6.add(saveAsMenuItem);
+
+        jMenuItem1.setText("Proveedores");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu6.add(jMenuItem1);
+
+        menuBar.add(jMenu6);
+
         fileMenu.setMnemonic('f');
         fileMenu.setText("Productos");
 
@@ -89,36 +119,6 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
         fileMenu.add(ProductosMenuItem);
 
         menuBar.add(fileMenu);
-
-        jMenu6.setText("Gestion");
-
-        saveMenuItem.setMnemonic('s');
-        saveMenuItem.setText("Gestion de clientes");
-        saveMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveMenuItemActionPerformed(evt);
-            }
-        });
-        jMenu6.add(saveMenuItem);
-
-        saveAsMenuItem.setMnemonic('a');
-        saveAsMenuItem.setText("Gestion de empleados");
-        saveAsMenuItem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveAsMenuItemActionPerformed(evt);
-            }
-        });
-        jMenu6.add(saveAsMenuItem);
-
-        jMenuItem1.setText("Gestion de Proveedores");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu6.add(jMenuItem1);
-
-        menuBar.add(jMenu6);
 
         jMenu7.setText("Transacciones");
 

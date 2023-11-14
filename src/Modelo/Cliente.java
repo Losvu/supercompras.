@@ -57,11 +57,4 @@ public class Cliente {
     public void setCorreo_electronico(String correo_electronico) {
         this.correo_electronico = correo_electronico;
     }
-
-    // Agregar el método getIdCliente()
-    public int getIdCliente() {
-        return id_cliente;
-    }
 }
-
-

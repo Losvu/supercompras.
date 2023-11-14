@@ -1,49 +1,26 @@
 package Modelo;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Transacciones {
-
     private int idTransaccion;
-    private LocalDateTime fechaHora;
+    private Date fechaHora;
     private String tipo;
     private double total;
     private String metodoPago;
-    private Cliente cliente;
-    private Proveedores proveedor;
-    private Producto producto;
+    private int clienteId;
+    private int proveedorId;
 
-    public Transacciones() {
-    }
-
-    public Transacciones(int idTransaccion, LocalDateTime fechaHora, String tipo, double total, String metodoPago,
-                         Cliente cliente, Proveedores proveedor, Producto producto) {
+    // Constructor
+    public Transacciones(int idTransaccion, Date fechaHora, String tipo, double total, String metodoPago, int clienteId, int proveedorId) {
         this.idTransaccion = idTransaccion;
         this.fechaHora = fechaHora;
         this.tipo = tipo;
         this.total = total;
         this.metodoPago = metodoPago;
-        this.cliente = cliente;
-        this.proveedor = proveedor;
-        this.producto = producto;
+        this.clienteId = clienteId;
+        this.proveedorId = proveedorId;
     }
-
-    
-    
-    
-    
-     public int getClienteId() {
-        return cliente.getId_cliente();
-    }
-
-    public int getProveedorId() {
-        return proveedor.getId_proveedor();
-    }
-
-    public int getProductoId() {
-        return producto.getId_producto();
-    }
-
     public int getIdTransaccion() {
         return idTransaccion;
     }
@@ -52,11 +29,11 @@ public class Transacciones {
         this.idTransaccion = idTransaccion;
     }
 
-    public LocalDateTime getFechaHora() {
+    public Date getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(LocalDateTime fechaHora) {
+    public void setFechaHora(Date fechaHora) {
         this.fechaHora = fechaHora;
     }
 
@@ -83,50 +60,20 @@ public class Transacciones {
     public void setMetodoPago(String metodoPago) {
         this.metodoPago = metodoPago;
     }
-    
-    
-    
-    
-    
-    // Métodos getter y setter para los atributos adicionales
 
-    public Cliente getCliente() {
-        return cliente;
+    public int getClienteId() {
+        return clienteId;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setClienteId(int clienteId) {
+        this.clienteId = clienteId;
     }
 
-    public Proveedores getProveedor() {
-        return proveedor;
+    public int getProveedorId() {
+        return proveedorId;
     }
 
-    public void setProveedor(Proveedores proveedor) {
-        this.proveedor = proveedor;
-    }
-
-    public Producto getProducto() {
-        return producto;
-    }
-
-    public void setProducto(Producto producto) {
-        this.producto = producto;
-    }
-
-    // Resto de los métodos getter y setter
-
-    @Override
-    public String toString() {
-        return "Transacciones{" +
-                "idTransaccion=" + idTransaccion +
-                ", fechaHora=" + fechaHora +
-                ", tipo='" + tipo + '\'' +
-                ", total=" + total +
-                ", metodoPago='" + metodoPago + '\'' +
-                ", cliente=" + cliente +
-                ", proveedor=" + proveedor +
-                ", producto=" + producto +
-                '}';
+    public void setProveedorId(int proveedorId) {
+        this.proveedorId = proveedorId;
     }
 }
