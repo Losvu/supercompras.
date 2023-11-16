@@ -47,6 +47,33 @@ public class DAOProducto {
         return productos;
     }
 
+    // Dentro de la clase DAOProducto
+public int ActualizarPrecio(int id, double nuevoPrecio) {
+    String transaccion = "UPDATE Productos SET precio_unitario=? WHERE id_producto=?";
+    return new database().Actualizar(transaccion, nuevoPrecio, id);
+}
+
+//metodo para buscar, como me cago este metodo de mierda ojala le de diarrea al que lo invento
+public Producto obtenerProductoPorId(int id) {
+    String transaccion = "SELECT * FROM Productos WHERE id_producto=?";
+    List<Map<String, Object>> registros = new database().Listar(transaccion, id);
+
+    if (!registros.isEmpty()) {
+        Map<String, Object> registro = registros.get(0);
+        return new Producto(
+                (int) registro.get("id_producto"),
+                (String) registro.get("nombre"),
+                (String) registro.get("categoria"),
+                ((Number) registro.get("precio_unitario")).doubleValue(),
+                (String) registro.get("marca"),
+                (String) registro.get("stock")
+        );
+    }
+
+    return null;
+}
+
+    
     // Método eliminar
     public int Eliminar(int id) {
         String transaccion = "DELETE FROM Productos WHERE id_producto=?";

@@ -14,14 +14,18 @@ import java.util.Map;
 import java.sql.DatabaseMetaData;
 
 public class DAOEmpleados {
+
     private Connection connection;
 
     public DAOEmpleados() {
+        this.connection = new database().getConnection();
     }
+
 
     public DAOEmpleados(Connection connection) {
         this.connection = connection;
     }
+
 
     // Nueva función para obtener el último ID insertado
     private int obtenerUltimoId() {
@@ -133,42 +137,44 @@ private LocalDateTime obtenerLocalDateTimeDesdeObjeto(Object objeto) {
     
     
     //metodo para boton actualizar
-    public int ActualizarRegistro(String nombreTabla, int id, Map<String, Object> cambios) {
-        try {
-            // Construir la consulta SQL de actualización
-            StringBuilder query = new StringBuilder("UPDATE ").append(nombreTabla).append(" SET ");
-
-            for (Map.Entry<String, Object> entry : cambios.entrySet()) {
-                query.append(entry.getKey()).append("=?, ");
-            }
-            query.delete(query.length() - 2, query.length());  // Elimina la última coma
-            query.append(" WHERE id_empleado=?");  // Ajusta según la columna que sea tu ID
-
-            // Ejecutar la consulta preparada
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
-                int parameterIndex = 1;
-
-                // Establecer los valores de los parámetros en la consulta
-                for (Object value : cambios.values()) {
-                    if (value instanceof LocalDateTime) {
-                        preparedStatement.setObject(parameterIndex++, Timestamp.valueOf((LocalDateTime) value));
-                    } else {
-                        preparedStatement.setObject(parameterIndex++, value);
-                    }
-                }
-
-                // Establecer el valor del ID en la condición WHERE
-                preparedStatement.setInt(parameterIndex, id);
-
-                // Ejecutar la consulta de actualización y devolver el resultado
-                return preparedStatement.executeUpdate();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return 0;  // Devuelve 0 para indicar un error
-        }
+   public int ActualizarRegistro(String nombreTabla, int id, Map<String, Object> cambios) throws SQLException {
+    // Validar que haya cambios antes de intentar la actualización
+    if (cambios.isEmpty()) {
+        return 0;  // No hay cambios, retornar 0
     }
 
+    // Crear la consulta de actualización
+    StringBuilder consulta = new StringBuilder("UPDATE " + nombreTabla + " SET ");
+
+    // Agregar las columnas y los nuevos valores a la consulta
+    for (Map.Entry<String, Object> entry : cambios.entrySet()) {
+        consulta.append(entry.getKey()).append(" = ?, ");
+    }
+
+    // Eliminar la coma extra al final
+    consulta.delete(consulta.length() - 2, consulta.length());
+
+    // Agregar la condición WHERE
+    consulta.append(" WHERE id_empleado = ?");
+
+    try (
+        // Crear la conexión y el PreparedStatement
+        Connection conexion = this.connection;
+        PreparedStatement pstmt = conexion.prepareStatement(consulta.toString())
+    ) {
+        // Establecer los nuevos valores en la consulta
+        int i = 1;
+        for (Object valor : cambios.values()) {
+            pstmt.setObject(i++, valor);
+        }
+
+        // Establecer el ID en la condición WHERE
+        pstmt.setInt(i, id);
+
+        // Ejecutar la consulta y devolver el número de filas afectadas
+        return pstmt.executeUpdate();
+    }
+}
     // Método para obtener los nombres de las columnas de una tabla
 public List<String> obtenerNombresColumnas(String nombreTabla) throws SQLException {
     List<String> columnas = new ArrayList<>();

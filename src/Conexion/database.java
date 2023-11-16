@@ -110,7 +110,7 @@ public List<Map<String, Object>> Listar(String consulta, Object... parametros) {
             System.out.println("Error al ejecutar la consulta preparada");
             e.printStackTrace();
         }
-    } catch (Exception e) {
+    } catch (Exception e) { 
         System.out.println("No se realizó la conexión");
         e.printStackTrace();
     } finally {

@@ -32,12 +32,12 @@ public class EmpleadosJInternalFrame extends javax.swing.JInternalFrame {
     
     // metodo limpiar campos
     public void limpiarCamposEmpleados() {
-        jTextNombre.setText("");
+        jTextNombreEmpleado.setText("");
         jTextRol.setText("");
         jTextHorarioInicio.setText("");
         jTextHorarioFin.setText("");
         jTextDiasTrabajo.setText("");
-        jTextId.setText("");
+        jTextIdEmpleado.setText("");
     }
 
   // método obtenerDatos
@@ -76,7 +76,7 @@ private String obtenerNuevoValorParaColumna(String columna) {
     // Implementar la lógica para obtener el nuevo valor de la caja de texto para la columna dada
     // Devolver el nuevo valor como cadena
     if (columna.equals("nombre")) {
-        return jTextNombre.getText();
+        return jTextNombreEmpleado.getText();
     } else if (columna.equals("rol")) {
         return jTextRol.getText();
     } else if (columna.equals("horario_inicio")) {
@@ -128,7 +128,7 @@ private Map<String, Object> obtenerCambiosDesdeInterfaz() {
         jButton4 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
-        jTextNombre = new javax.swing.JTextField();
+        jTextNombreEmpleado = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jTextRol = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
@@ -140,7 +140,7 @@ private Map<String, Object> obtenerCambiosDesdeInterfaz() {
         jButton11 = new javax.swing.JButton();
         jTextDiasTrabajo = new javax.swing.JTextField();
         jLabel15 = new javax.swing.JLabel();
-        jTextId = new javax.swing.JTextField();
+        jTextIdEmpleado = new javax.swing.JTextField();
         jLabel16 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -231,9 +231,9 @@ private Map<String, Object> obtenerCambiosDesdeInterfaz() {
         jLabel9.setForeground(new java.awt.Color(0, 0, 0));
         jLabel9.setText("Nombre:");
 
-        jTextNombre.addActionListener(new java.awt.event.ActionListener() {
+        jTextNombreEmpleado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextNombreActionPerformed(evt);
+                jTextNombreEmpleadoActionPerformed(evt);
             }
         });
 
@@ -300,9 +300,9 @@ private Map<String, Object> obtenerCambiosDesdeInterfaz() {
         jLabel15.setForeground(new java.awt.Color(0, 0, 0));
         jLabel15.setText("Dias trabajados:");
 
-        jTextId.addActionListener(new java.awt.event.ActionListener() {
+        jTextIdEmpleado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextIdActionPerformed(evt);
+                jTextIdEmpleadoActionPerformed(evt);
             }
         });
 
@@ -343,14 +343,14 @@ private Map<String, Object> obtenerCambiosDesdeInterfaz() {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
                                         .addComponent(jLabel16)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addComponent(jTextId, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jTextIdEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel9)
                             .addComponent(jLabel10))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextNombre)
+                            .addComponent(jTextNombreEmpleado)
                             .addComponent(jTextRol)))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel11)
@@ -365,7 +365,7 @@ private Map<String, Object> obtenerCambiosDesdeInterfaz() {
                 .addGap(16, 16, 16)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jTextNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextNombreEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
@@ -392,7 +392,7 @@ private Map<String, Object> obtenerCambiosDesdeInterfaz() {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jTextId, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jTextIdEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel16))
                             .addComponent(jLabel14))
                         .addGap(37, 37, 37))))
@@ -484,7 +484,7 @@ private Map<String, Object> obtenerCambiosDesdeInterfaz() {
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
 // Captura de datos de las cajas de texto
-String nombre = jTextNombre.getText();
+String nombre = jTextNombreEmpleado.getText();
 String rol = jTextRol.getText();
 String horarioInicioStr = jTextHorarioInicio.getText();
 String horarioFinStr = jTextHorarioFin.getText();
@@ -527,7 +527,7 @@ try {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 // Captura el ID del empleado a editar
-String idEmpleadoStr = jTextId.getText();
+String idEmpleadoStr = jTextIdEmpleado.getText();
 
 // Verifica que se haya seleccionado un empleado para editar
 if (idEmpleadoStr.isEmpty()) {
@@ -538,7 +538,7 @@ if (idEmpleadoStr.isEmpty()) {
 int idEmpleado = Integer.parseInt(idEmpleadoStr);
 
 // Captura de datos de las cajas de texto
-String nombre = jTextNombre.getText();
+String nombre = jTextNombreEmpleado.getText();
 String rol = jTextRol.getText();
 String horarioInicioStr = jTextHorarioInicio.getText();
 String horarioFinStr = jTextHorarioFin.getText();
@@ -612,9 +612,9 @@ try {
     JOptionPane.showMessageDialog(rootPane, "Acción cancelada");
     }//GEN-LAST:event_jButton7ActionPerformed
 
-    private void jTextNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextNombreActionPerformed
+    private void jTextNombreEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextNombreEmpleadoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextNombreActionPerformed
+    }//GEN-LAST:event_jTextNombreEmpleadoActionPerformed
 
     private void jTextRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextRolActionPerformed
         // TODO add your handling code here:
@@ -658,51 +658,65 @@ jTextHorarioFin.setText(fechaHoraFormateada.toString());
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextDiasTrabajoActionPerformed
 
-    private void jTextIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextIdActionPerformed
+    private void jTextIdEmpleadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextIdEmpleadoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextIdActionPerformed
+    }//GEN-LAST:event_jTextIdEmpleadoActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-int filaSeleccionada = jTableEmpleados.getSelectedRow();
+int filaSeleccionada = this.jTableEmpleados.getSelectedRow();
 
-if (filaSeleccionada == -1) {
-    JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
-} else {
-    try {
-        // Obtener el nombre de la tabla
-        String nombreTabla = "Empleados";
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
+    } else {
+        try {
+            //obtener el ID ingresado en jTextId
+            int id = Integer.parseInt(jTextIdEmpleado.getText());
 
-        // Obtener el ID del registro seleccionado en la tabla
-        Object idObject = jTableEmpleados.getValueAt(filaSeleccionada, 0);
+            //obtener los nuevos valores de todas las cajas de texto
+            String nombre = jTextNombreEmpleado.getText();
+            String rol = jTextRol.getText();
+            String horarioInicioStr = jTextHorarioInicio.getText();
+            String horarioFinStr = jTextHorarioFin.getText();
+            String diasTrabajo = jTextDiasTrabajo.getText();
 
-        // Validar que el valor sea numérico antes de intentar la conversión
-        if (idObject instanceof Number) {
-            int id = ((Number) idObject).intValue();
-
-            // Crear un mapa con los cambios
-            Map<String, Object> cambios = obtenerCambiosDesdeInterfaz();
-
-            // Actualizar los valores en la base de datos
-            int res = new DAOEmpleados(new database().getConnection()).ActualizarRegistro(nombreTabla, id, cambios);
-
-            // Verificar el resultado de la actualización
-            if (res == 1) {
-                JOptionPane.showMessageDialog(rootPane, "Registro actualizado con éxito");
-                limpiarCamposEmpleados();
-                obtenerDatos(); // Actualizar la tabla con los nuevos datos
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el registro.");
+            //verificar si alguno de los campos está vacío
+            if (nombre.isEmpty() || rol.isEmpty() || horarioInicioStr.isEmpty() || horarioFinStr.isEmpty() || diasTrabajo.isEmpty()) {
+                JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
+                return; // Salir del método si algún campo está vacío
             }
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "El valor del ID no es numérico.");
+
+            LocalDateTime horarioInicio = LocalDateTime.parse(horarioInicioStr);
+            LocalDateTime horarioFin = LocalDateTime.parse(horarioFinStr);
+
+            //actualizar los valores en la base de datos
+            Map<String, Object> cambios = Map.of(
+                "nombre", nombre,
+                "rol", rol,
+                "horario_inicio", horarioInicio,
+                "horario_fin", horarioFin,
+                "dias_trabajo", diasTrabajo
+            );
+            
+DAOEmpleados daoEmpleados = new DAOEmpleados();
+int res = daoEmpleados.Actualizar(id, cambios);
+
+            //verificar el resultado de la actualización
+            if (res == 1) {
+                JOptionPane.showMessageDialog(rootPane, "Empleado actualizado con éxito");
+                limpiarCamposEmpleados();
+                obtenerDatos(); //actualizar la tabla con los datos recién cambiados
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el empleado.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
     }
-}
+    
+    //unas ganas de suicidarme con este proyecto
     }//GEN-LAST:event_jButton4ActionPerformed
 
 
@@ -730,8 +744,8 @@ if (filaSeleccionada == -1) {
     private javax.swing.JTextField jTextDiasTrabajo;
     private javax.swing.JTextField jTextHorarioFin;
     private javax.swing.JTextField jTextHorarioInicio;
-    private javax.swing.JTextField jTextId;
-    private javax.swing.JTextField jTextNombre;
+    private javax.swing.JTextField jTextIdEmpleado;
+    private javax.swing.JTextField jTextNombreEmpleado;
     private javax.swing.JTextField jTextRol;
     // End of variables declaration//GEN-END:variables
 }

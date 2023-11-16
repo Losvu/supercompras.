@@ -17,12 +17,12 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
 
     }
 //metodo limpiarCampos
-    
     public void limpiarCampos() {
         jTextNombre.setText("");
         jTextCategoria.setText("");
         jTextPrecioUnitario.setText("");
         jTextMarca.setText("");
+        jTextStock.setText("");
     }
 
     public void obtenerDatos() {
@@ -57,7 +57,6 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -72,7 +71,7 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
         jButton9 = new javax.swing.JButton();
         jTextStock = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
-        jTextFieldBuscar1 = new javax.swing.JTextField();
+        jTextBuscarId = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
@@ -123,13 +122,6 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton6.setText("Generar informe");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
         jButton7.setText("Cancelar");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,37 +134,34 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButtonAgregar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.DEFAULT_SIZE, 94, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
+                .addGap(70, 70, 70)
+                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(28, 28, 28)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(21, 21, 21))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(33, 33, 33))))
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(47, 47, 47))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14)
+                .addGap(61, 61, 61)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(14, 14, 14)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(38, 38, 38)
+                .addComponent(jButton5)
+                .addGap(51, 51, 51))
         );
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
@@ -289,7 +278,7 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
                                 .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jTextBuscarId, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(21, 21, 21))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -317,7 +306,7 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
                             .addComponent(jTextStock, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -327,7 +316,7 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton9)
-                    .addComponent(jTextFieldBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextBuscarId, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
         );
 
@@ -388,7 +377,7 @@ public class ProductosJInternalFrame extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(18, 18, 18)))
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1);
@@ -461,7 +450,7 @@ int filaSeleccionada = this.jTableProductos.getSelectedRow();
 
     if (filaSeleccionada == -1) {
         JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
-    } else {                                     
+    } else {
         try {
             // Obtener el ID ingresado en jTextId
             int id = Integer.parseInt(jTextId.getText());
@@ -469,19 +458,28 @@ int filaSeleccionada = this.jTableProductos.getSelectedRow();
             // Obtener los nuevos valores de todas las cajas de texto
             String nombre = jTextNombre.getText();
             String categoria = jTextCategoria.getText();
-            double precioUnitario = Double.parseDouble(jTextPrecioUnitario.getText());
+            String precioStr = jTextPrecioUnitario.getText();
             String marca = jTextMarca.getText();
             String stock = jTextStock.getText();
 
-            // actualizar los valores en la base de datos
+            // Verificar si alguno de los campos está vacío
+            if (nombre.isEmpty() || categoria.isEmpty() || precioStr.isEmpty() || marca.isEmpty() || stock.isEmpty()) {
+                JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
+                return; // Salir del método si algún campo está vacío
+            }
+
+            double precioUnitario = Double.parseDouble(precioStr);
+
+            // Actualizar los valores en la base de datos
             int res = new DAOProducto().Actualizar(id, nombre, categoria, precioUnitario, marca, stock);
 
             // Verificar el resultado de la actualización
             if (res == 1) {
                 JOptionPane.showMessageDialog(rootPane, "Producto actualizado con éxito");
                 limpiarCampos();
+                obtenerDatos(); // Actualizar la tabla con los datos recién cambiados
             } else {
-                JOptionPane.showMessageDialog( rootPane, "Ocurrió un ERROR al actualizar el producto.");
+                JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el producto.");
             }
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");
@@ -489,7 +487,7 @@ int filaSeleccionada = this.jTableProductos.getSelectedRow();
             e.printStackTrace();
             JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
         }
-    }                              
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -513,15 +511,38 @@ if (fila == -1) {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-//actualizar inventario
-actualizarProducto();
-obtenerDatos();
-limpiarCampos();
-    }//GEN-LAST:event_jButton5ActionPerformed
+try {
+        // Obtener el ID ingresado en jTextId
+        int id = Integer.parseInt(jTextId.getText());
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
+        // Obtener el nuevo precio de jTextPrecioUnitario
+        String precioStr = jTextPrecioUnitario.getText();
+
+        // Verificar si el campo de precio está vacío
+        if (precioStr.isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "El campo de precio no puede estar vacío");
+            return;
+        }
+
+        double nuevoPrecio = Double.parseDouble(precioStr);
+
+        // Actualizar el precio en la base de datos
+        int res = new DAOProducto().ActualizarPrecio(id, nuevoPrecio);
+
+        // Verificar el resultado de la actualización
+        if (res == 1) {
+            JOptionPane.showMessageDialog(rootPane, "Precio actualizado con éxito");
+            obtenerDatos(); // Actualizar la tabla con el precio recién cambiado
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el precio.");
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido y un precio válido.");
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
+    }
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
 //limpia los campos
@@ -544,7 +565,35 @@ limpiarCampos();
     }//GEN-LAST:event_jTextPrecioUnitarioActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
+try {
+        // Obtener el ID ingresado en jTextBuscarId
+        int idBuscar = Integer.parseInt(jTextBuscarId.getText());
+
+        // Obtener el producto con la ID especificada
+        Producto producto = new DAOProducto().obtenerProductoPorId(idBuscar);
+
+        // Verificar si se encontró el producto
+        if (producto != null) {
+            // Mostrar los detalles del producto en los campos correspondientes
+            jTextId.setText(String.valueOf(producto.getId_producto()));
+            jTextNombre.setText(producto.getNombre());
+            jTextCategoria.setText(producto.getCategoria());
+            jTextPrecioUnitario.setText(String.valueOf(producto.getPrecio_unitario()));
+            jTextMarca.setText(producto.getMarca());
+            jTextStock.setText(producto.getStock());
+
+            // Puedes agregar más campos según sea necesario
+
+            JOptionPane.showMessageDialog(rootPane, "Producto encontrado con éxito");
+        } else {
+            JOptionPane.showMessageDialog(rootPane, "No se encontró un producto con la ID especificada");
+        }
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese una ID válida.");
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
+    }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jTextMarcaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextMarcaActionPerformed
@@ -602,7 +651,6 @@ private int obtenerIdSeleccionado() {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton9;
     private javax.swing.JButton jButtonAgregar;
@@ -625,8 +673,8 @@ private int obtenerIdSeleccionado() {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableProductos;
+    private javax.swing.JTextField jTextBuscarId;
     private javax.swing.JTextField jTextCategoria;
-    private javax.swing.JTextField jTextFieldBuscar1;
     private javax.swing.JTextField jTextId;
     private javax.swing.JTextField jTextMarca;
     private javax.swing.JTextField jTextNombre;

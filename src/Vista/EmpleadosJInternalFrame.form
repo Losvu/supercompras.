@@ -247,7 +247,7 @@
                                               <EmptySpace max="-2" attributes="0"/>
                                           </Group>
                                       </Group>
-                                      <Component id="jTextId" min="-2" pref="192" max="-2" attributes="0"/>
+                                      <Component id="jTextIdEmpleado" min="-2" pref="192" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -258,7 +258,7 @@
                               </Group>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jTextNombre" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="jTextNombreEmpleado" alignment="0" max="32767" attributes="0"/>
                                   <Component id="jTextRol" alignment="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -279,7 +279,7 @@
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel9" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="jTextNombre" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                          <Component id="jTextNombreEmpleado" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
@@ -313,7 +313,7 @@
                               <EmptySpace pref="25" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="jTextId" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                                      <Component id="jTextIdEmpleado" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                                       <Component id="jLabel16" alignment="3" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jLabel14" min="-2" max="-2" attributes="0"/>
@@ -337,9 +337,9 @@
                 <Property name="text" type="java.lang.String" value="Nombre:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextNombre">
+            <Component class="javax.swing.JTextField" name="jTextNombreEmpleado">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextNombreActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextNombreEmpleadoActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel10">
@@ -450,9 +450,9 @@
                 <Property name="text" type="java.lang.String" value="Dias trabajados:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextId">
+            <Component class="javax.swing.JTextField" name="jTextIdEmpleado">
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextIdActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextIdEmpleadoActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel16">

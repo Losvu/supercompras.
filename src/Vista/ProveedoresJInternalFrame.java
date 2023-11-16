@@ -393,34 +393,43 @@ jTableProveedores.getColumnModel().getColumn(5).setWidth(0);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
-// Captura de datos de las cajas de texto
-String nombre = jTextNombre.getText();
-String direccion = jTextDireccion.getText();
-String numeroTelefono = jTextNumero.getText();
-String correoElectronico = jTextCorreo.getText();
-String marcaProveedor = jTextMarcaProveedor.getText();
+//obtener los valores de los campos de texto
+    String nombre = jTextNombre.getText();
+    String direccion = jTextDireccion.getText();
+    String numeroTelefono = jTextNumero.getText();
+    String correoElectronico = jTextCorreo.getText();
+    String marcaProveedor = jTextMarcaProveedor.getText();
 
-try {
-    // Comprueba que las cajas de texto no estén vacías
+    //validar que los campos no estén vacíos
     if (nombre.isEmpty() || direccion.isEmpty() || numeroTelefono.isEmpty() || correoElectronico.isEmpty() || marcaProveedor.isEmpty()) {
-        JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
+        JOptionPane.showMessageDialog(rootPane, "Por favor, complete todos los campos.");
     } else {
-        // Crea un nuevo proveedor y llama al método insertarProveedor de DAOProveedores
-        Proveedores proveedor = new DAOProveedores().insertarProveedor(nombre, direccion, numeroTelefono, correoElectronico, marcaProveedor);
+        try {
+            //crear una conexión
+            Connection conexion = new database().getConnection();
 
-        if (proveedor != null) {
-            JOptionPane.showMessageDialog(rootPane, "Registro agregado");
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "No se pudo agregar el registro");
+            //crear una instancia de DAOProveedores con la conexión
+            DAOProveedores daoProveedores = new DAOProveedores(conexion);
+
+            //insertar el proveedor
+            Proveedores proveedor = daoProveedores.insertarProveedor(nombre, direccion, numeroTelefono, correoElectronico, marcaProveedor);
+
+            //verificar si la inserción fue exitosa
+            if (proveedor != null) {
+                JOptionPane.showMessageDialog(rootPane, "Proveedor agregado con éxito");
+                limpiarCamposProveedores();
+                obtenerDatos(); // Actualizar la tabla con los nuevos datos
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al agregar el proveedor.");
+            }
+
+            //cerrar la conexión
+            conexion.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
         }
-
-        obtenerDatos();
-        limpiarCamposProveedores();
     }
-} catch (Exception e) {
-    e.printStackTrace();
-    JOptionPane.showMessageDialog(rootPane, "No se pudo agregar el registro");
-}
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
