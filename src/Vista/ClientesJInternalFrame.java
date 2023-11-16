@@ -19,8 +19,43 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
         initComponents();
         daoCliente = new DAOCliente(new database().getConnection());
         obtenerDatos();
+        buscarCliente();
     }
 
+     private void buscarCliente() {
+    // Obtén el nombre del cliente ingresado en el campo de texto
+    String nombreCliente = jTextFieldBuscarCliente.getText();
+
+    // Realiza la búsqueda en la base de datos
+    DAOCliente daoCliente = new DAOCliente(new database().getConnection());
+    Cliente clienteEncontrado = daoCliente.obtenerClientePorNombre(nombreCliente);
+
+    // Actualiza la tabla con los resultados de la búsqueda
+    DefaultTableModel modelo = new DefaultTableModel();
+    String[] columnas = {"ID Cliente", "Nombre", "Dirección", "Número Teléfono", "Correo Electrónico"};
+    modelo.setColumnIdentifiers(columnas);
+
+    if (clienteEncontrado != null) {
+        // Agrega el cliente encontrado a la tabla
+        String[] renglon = {
+                String.valueOf(clienteEncontrado.getId_cliente()),
+                clienteEncontrado.getNombre(),
+                clienteEncontrado.getDireccion(),
+                clienteEncontrado.getNumero_telefono(),
+                clienteEncontrado.getCorreo_electronico()
+        };
+        modelo.addRow(renglon);
+    } else {
+        // Muestra un mensaje si no se encontraron resultados
+        JOptionPane.showMessageDialog(rootPane, "No se encontraron clientes con ese nombre.");
+    }
+
+    // Establece el modelo actualizado en la tabla
+    jTableCliente.setModel(modelo);
+}
+    
+    
+    
     //metodo limpiarCampos para clientes
     public void limpiarCamposClientes() {
         jTextNombre.setText("");
@@ -58,7 +93,6 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
         jButtonAgregar = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
@@ -70,7 +104,7 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
         jTextCorreo = new javax.swing.JTextField();
         jTextId = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
-        jTextFieldBuscar1 = new javax.swing.JTextField();
+        jTextFieldBuscarCliente = new javax.swing.JTextField();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jTextDirecc = new javax.swing.JTextField();
@@ -105,13 +139,6 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
             }
         });
 
-        jButton6.setText("Generar informe");
-        jButton6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton6ActionPerformed(evt);
-            }
-        });
-
         jButton7.setText("Cancelar");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,16 +157,11 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(20, 20, 20))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(120, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(106, 106, 106))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(79, 79, 79))))
+                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(106, 106, 106))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -152,9 +174,7 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24))
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
@@ -247,21 +267,19 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(27, 27, 27))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(jLabel15)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextId, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel14)
                                 .addGap(279, 279, 279))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(jLabel15)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextId, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextFieldBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jTextFieldBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(21, 21, 21))))
         );
         jPanel3Layout.setVerticalGroup(
@@ -283,15 +301,15 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
                     .addComponent(jTextCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextId, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel15))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                .addComponent(jLabel14)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton9)
-                    .addComponent(jTextFieldBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jTextId, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel15)))
                 .addGap(15, 15, 15))
         );
 
@@ -380,68 +398,79 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
- // Captura de datos de las cajas de texto
-    int idCliente = Integer.parseInt(jTextId.getText()); // Asegúrate de tener un JTextField para el ID cliente
+// Captura de datos de las cajas de texto
     String nombre = jTextNombre.getText();
     String direccion = jTextDirecc.getText();
-    String numeroTelefono = jTextNumero.getText();
-    String correoElectronico = jTextCorreo.getText();
+    String numero = jTextNumero.getText();
+    String correo = jTextCorreo.getText();
 
-    // Comprobación de campos no vacíos
+    try {
+        // Comprueba que las cajas de texto no estén vacías
+        if (nombre.isEmpty() || direccion.isEmpty() || numero.isEmpty() || correo.isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
+        } else {
+            // Intenta llamar al método Insertar de DAOCliente
+            DAOCliente daoCliente = new DAOCliente(new database().getConnection());
+            Cliente cliente = daoCliente.insertarCliente(nombre, direccion, numero, correo);
 
-    // Inserción del nuevo cliente
-    Cliente cliente = daoCliente.insertarCliente(idCliente, nombre, direccion, numeroTelefono, correoElectronico);
-
-    if (cliente != null) {
-        JOptionPane.showMessageDialog(rootPane, "Cliente agregado");
-        obtenerDatos();
-        limpiarCamposClientes();
-    } else {
+            if (cliente != null) {
+                JOptionPane.showMessageDialog(rootPane, "Cliente agregado con éxito");
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "No se pudo agregar el cliente");
+            }
+//obtener datos y limpiar campos para actualizar la tabla, q bueno q soy
+            obtenerDatos();
+            limpiarCamposClientes();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
         JOptionPane.showMessageDialog(rootPane, "No se pudo agregar el cliente");
     }
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-int filaSeleccionada = this.jTableCliente.getSelectedRow();
+int filaSeleccionada = jTableCliente.getSelectedRow();
 
-if (filaSeleccionada == -1) {
-    JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
-} else {
-    try {
-        // Obtener el ID ingresado en jTextId
-        int id = Integer.parseInt((String) this.jTableCliente.getValueAt(filaSeleccionada, 0).toString());
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla de clientes");
+    } else {
+        try {
+            int id = Integer.parseInt(jTableCliente.getValueAt(filaSeleccionada, 0).toString());
 
-        // Obtener los nuevos valores de todas las cajas de texto
-        String nombre = jTextNombre.getText();
-        String direccion = jTextDirecc.getText();
-        String numeroTelefono = jTextNumero.getText();
-        String correoElectronico = jTextCorreo.getText();
+            String nombre = jTextNombre.getText();
+            String direccion = jTextDirecc.getText();
+            String numero = jTextNumero.getText();
+            String correo = jTextCorreo.getText();
 
-        // Crear un mapa con los cambios
-        Map<String, Object> cambios = new HashMap<>();
-        cambios.put("nombre", nombre);
-        cambios.put("direccion", direccion);
-        cambios.put("numero_telefono", numeroTelefono);
-        cambios.put("correo_electronico", correoElectronico);
+            if (nombre.isEmpty() || direccion.isEmpty() || numero.isEmpty() || correo.isEmpty()) {
+                JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
+                return;
+            }
 
-        // Actualizar los valores en la base de datos
-        int res = daoCliente.actualizarCliente(id, cambios);
+            Map<String, Object> cambios = Map.of(
+                    "nombre", nombre,
+                    "direccion", direccion,
+                    "numero_telefono", numero,
+                    "correo_electronico", correo
+            );
 
-        // Verificar el resultado de la actualización
-        if (res == 1) {
-            JOptionPane.showMessageDialog(rootPane, "Cliente actualizado con éxito");
-            limpiarCamposClientes();
-            obtenerDatos(); // Actualizar la tabla después de la edición
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el cliente.");
+            DAOCliente daoCliente = new DAOCliente(new database().getConnection());
+            int res = daoCliente.actualizarCliente(id, cambios);
+
+            if (res == 1) {
+                JOptionPane.showMessageDialog(rootPane, "Cliente actualizado con éxito");
+                limpiarCamposClientes();
+                obtenerDatos();
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el cliente.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
     }
-}
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -468,10 +497,6 @@ if (fila == -1) {
 }
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton6ActionPerformed
-
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
 // Limpiar los campos
 limpiarCamposClientes();
@@ -496,7 +521,34 @@ JOptionPane.showMessageDialog(rootPane, "Acción cancelada");
     }//GEN-LAST:event_jTextCorreoActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
+try {
+            // Obtener el ID ingresado en jTextBuscarIdCliente
+            int idBuscar = Integer.parseInt(jTextFieldBuscarCliente.getText());
+
+            // Obtener el cliente con la ID especificada
+            Cliente cliente = new DAOCliente(new database().getConnection()).obtenerClientePorId(idBuscar);
+
+            // Verificar si se encontró el cliente
+            if (cliente != null) {
+                // Mostrar los detalles del cliente en los campos correspondientes
+                jTextId.setText(String.valueOf(cliente.getId_cliente()));
+                jTextNombre.setText(cliente.getNombre());
+                jTextDirecc.setText(cliente.getDireccion());
+                jTextNumero.setText(cliente.getNumero_telefono());
+                jTextCorreo.setText(cliente.getCorreo_electronico());
+
+                // Puedes agregar más campos según sea necesario
+
+                JOptionPane.showMessageDialog(rootPane, "Cliente encontrado con éxito");
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "No se encontró un cliente con la ID especificada");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese una ID válida.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jTextDireccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextDireccActionPerformed
@@ -507,7 +559,6 @@ JOptionPane.showMessageDialog(rootPane, "Acción cancelada");
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton9;
     private javax.swing.JButton jButtonAgregar;
@@ -525,7 +576,7 @@ JOptionPane.showMessageDialog(rootPane, "Acción cancelada");
     private javax.swing.JTable jTableCliente;
     private javax.swing.JTextField jTextCorreo;
     private javax.swing.JTextField jTextDirecc;
-    private javax.swing.JTextField jTextFieldBuscar1;
+    private javax.swing.JTextField jTextFieldBuscarCliente;
     private javax.swing.JTextField jTextId;
     private javax.swing.JTextField jTextNombre;
     private javax.swing.JTextField jTextNumero;

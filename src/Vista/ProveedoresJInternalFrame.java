@@ -83,7 +83,7 @@ jTableProveedores.getColumnModel().getColumn(5).setWidth(0);
         jTextNumero = new javax.swing.JTextField();
         jLabel12 = new javax.swing.JLabel();
         jTextCorreo = new javax.swing.JTextField();
-        jTextId = new javax.swing.JTextField();
+        jTextIdProveedor = new javax.swing.JTextField();
         jButton9 = new javax.swing.JButton();
         jTextMarcaProveedor = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
@@ -253,9 +253,9 @@ jTableProveedores.getColumnModel().getColumn(5).setWidth(0);
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(27, 27, 27))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel14)
@@ -263,9 +263,8 @@ jTableProveedores.getColumnModel().getColumn(5).setWidth(0);
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                         .addComponent(jLabel15)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-                                .addComponent(jTextId, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextIdProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
                                 .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jTextFieldBuscar1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -301,7 +300,7 @@ jTableProveedores.getColumnModel().getColumn(5).setWidth(0);
                     .addComponent(jTextMarcaProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextId, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextIdProveedor, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel14)
                     .addComponent(jLabel15))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -435,45 +434,53 @@ jTableProveedores.getColumnModel().getColumn(5).setWidth(0);
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 int filaSeleccionada = this.jTableProveedores.getSelectedRow();
 
-if (filaSeleccionada == -1) {
-    JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
-} else {
-    try {
-        // Obtener el ID ingresado en jTextId
-        int id = Integer.parseInt(jTextId.getText());
+    if (filaSeleccionada == -1) {
+        JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla de proveedores");
+    } else {
+        try {
+            //obtener el ID ingresado en jTextIdProveedor
+            int idProveedor = Integer.parseInt(jTextIdProveedor.getText());
 
-        // Obtener los nuevos valores de todas las cajas de texto
-        String nombre = jTextNombre.getText();
-        String direccion = jTextDireccion.getText();
-        String numeroTelefono = jTextNumero.getText();
-        String correoElectronico = jTextCorreo.getText();
-        String marcaProveedor = jTextMarcaProveedor.getText();
+            // Obtener los nuevos valores de todas las cajas de texto
+            String nombre = jTextNombre.getText();
+            String direccion = jTextDireccion.getText();
+            String numero = jTextNumero.getText();
+            String correo = jTextCorreo.getText();
+            String marcaProveedor = jTextMarcaProveedor.getText();
 
-        // Crear un mapa con los cambios
-        Map<String, Object> cambios = new HashMap<>();
-        cambios.put("nombre", nombre);
-        cambios.put("direccion", direccion);
-        cambios.put("numero_telefono", numeroTelefono);
-        cambios.put("correo_electronico", correoElectronico);
-        cambios.put("marca_proveedor", marcaProveedor);
+            // Verificar si alguno de los campos está vacío
+            if (nombre.isEmpty() || direccion.isEmpty() || numero.isEmpty() || correo.isEmpty() || marcaProveedor.isEmpty()) {
+                JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
+                return; // Salir del método si algún campo está vacío
+            }
 
-        // Actualizar los valores en la base de datos
-        int res = new DAOProveedores(new database().getConnection()).actualizarProveedor(id, cambios);
+            // Actualizar los valores en la base de datos
+            Map<String, Object> cambios = Map.of(
+                "nombre", nombre,
+                "direccion", direccion,
+                "numero_telefono", numero,
+                "correo_electronico", correo,
+                "marca_proveedor", marcaProveedor
+            );
 
-        // Verificar el resultado de la actualización
-        if (res == 1) {
-            JOptionPane.showMessageDialog(rootPane, "Proveedor actualizado con éxito");
-            limpiarCamposProveedores();
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el proveedor.");
+            DAOProveedores daoProveedores = new DAOProveedores(new database().getConnection());
+            int res = daoProveedores.actualizarProveedor(idProveedor, cambios);
+
+            // Verificar el resultado de la actualización
+            if (res == 1) {
+                JOptionPane.showMessageDialog(rootPane, "Proveedor actualizado con éxito");
+                limpiarCamposProveedores();
+                obtenerDatos(); // Actualizar la tabla con los datos recién cambiados
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el proveedor.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
         }
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
-    }
-}    
+    } 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -553,7 +560,7 @@ JOptionPane.showMessageDialog(rootPane, "Acción cancelada");
     private javax.swing.JTextField jTextCorreo;
     private javax.swing.JTextField jTextDireccion;
     private javax.swing.JTextField jTextFieldBuscar1;
-    private javax.swing.JTextField jTextId;
+    private javax.swing.JTextField jTextIdProveedor;
     private javax.swing.JTextField jTextMarcaProveedor;
     private javax.swing.JTextField jTextNombre;
     private javax.swing.JTextField jTextNumero;

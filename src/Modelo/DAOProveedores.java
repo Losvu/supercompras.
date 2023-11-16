@@ -125,30 +125,30 @@ public class DAOProveedores {
     
     
 
-    // Método para actualizar un proveedor
-    public int actualizarProveedor(int id, Map<String, Object> cambios) {
-        try {
-            StringBuilder query = new StringBuilder("UPDATE Proveedores SET ");
-            for (Map.Entry<String, Object> entry : cambios.entrySet()) {
-                query.append(entry.getKey()).append("=?, ");
-            }
-            query.delete(query.length() - 2, query.length()); // Elimina la última coma
-            query.append(" WHERE id_proveedor=?");
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
-                int parameterIndex = 1;
-                for (Object value : cambios.values()) {
-                    preparedStatement.setObject(parameterIndex++, value);
-                }
-                preparedStatement.setInt(parameterIndex, id);
-
-                return preparedStatement.executeUpdate();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0; // Devuelve 0 para indicar un error
+//metodo para actualizar un proveedor, enrealidad es editar, pero actualizar me gusta mas como palabra
+public int actualizarProveedor(int id, Map<String, Object> cambios) {
+    try {
+        StringBuilder query = new StringBuilder("UPDATE Proveedores SET ");
+        for (Map.Entry<String, Object> entry : cambios.entrySet()) {
+            query.append(entry.getKey()).append("=?, ");
         }
+        query.delete(query.length() - 2, query.length()); //elimina la última coma
+        query.append(" WHERE id_proveedor=?");
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
+            int parameterIndex = 1;
+            for (Object value : cambios.values()) {
+                preparedStatement.setObject(parameterIndex++, value);
+            }
+            preparedStatement.setInt(parameterIndex, id);
+
+            return preparedStatement.executeUpdate();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return 0; //devuelve 0 para indicar un error, viste?
     }
+}
 
     // Método para eliminar un proveedor por ID
     public int eliminarProveedor(int id) {

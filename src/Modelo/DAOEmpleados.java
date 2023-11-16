@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.sql.DatabaseMetaData;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 
 public class DAOEmpleados {
 
@@ -197,5 +200,18 @@ public List<String> obtenerNombresColumnas(String nombreTabla) throws SQLExcepti
 
     return columnas;
 }
+
+
+    // Método auxiliar para obtener LocalDateTime desde una cadena
+    public LocalDateTime obtenerLocalDateTimeDesdeString(String cadenaFechaHora) {
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            return LocalDateTime.parse(cadenaFechaHora, formatter);
+        } catch (DateTimeParseException e) {
+            e.printStackTrace();
+            return null;  // Devolver null en caso de error de formato
+        }
+    }
+
 
 }

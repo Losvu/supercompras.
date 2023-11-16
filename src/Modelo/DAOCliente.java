@@ -13,7 +13,8 @@ import java.util.Map;
 
 
 public class DAOCliente {
-     // Este método devuelve una lista de nombres de clientes
+    
+    
 // Este método devuelve una lista de nombres de clientes
 public List<String> obtenerNombresClientes() {
     String transaccion = "SELECT nombre FROM Clientes";
@@ -99,19 +100,23 @@ public Cliente obtenerClientePorNombre(String nombre) {
     }
 
     // Método para insertar un nuevo cliente
- public Cliente insertarCliente(int idCliente, String nombre, String direccion, String numeroTelefono, String correoElectronico) {
-    String query = "INSERT INTO Clientes (id_cliente, nombre, direccion, numero_telefono, correo_electronico) VALUES (?, ?, ?, ?, ?)";
+// Método para insertar un nuevo cliente
+public Cliente insertarCliente(String nombre, String direccion, String numeroTelefono, String correoElectronico) {
+    String query = "INSERT INTO Clientes (nombre, direccion, numero_telefono, correo_electronico) VALUES (?, ?, ?, ?)";
 
-    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-        preparedStatement.setInt(1, idCliente);
-        preparedStatement.setString(2, nombre);
-        preparedStatement.setString(3, direccion);
-        preparedStatement.setString(4, numeroTelefono);
-        preparedStatement.setString(5, correoElectronico);
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        preparedStatement.setString(1, nombre);
+        preparedStatement.setString(2, direccion);
+        preparedStatement.setString(3, numeroTelefono);
+        preparedStatement.setString(4, correoElectronico);
 
         int rowsAffected = preparedStatement.executeUpdate();
         if (rowsAffected > 0) {
-            return new Cliente(idCliente, nombre, direccion, numeroTelefono, correoElectronico);
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int idCliente = generatedKeys.getInt(1);
+                return new Cliente(idCliente, nombre, direccion, numeroTelefono, correoElectronico);
+            }
         }
     } catch (SQLException e) {
         e.printStackTrace();
@@ -121,30 +126,30 @@ public Cliente obtenerClientePorNombre(String nombre) {
 }
     // Método para actualizar un cliente
     public int actualizarCliente(int id, Map<String, Object> cambios) {
-        try {
-            StringBuilder query = new StringBuilder("UPDATE Clientes SET ");
-            for (Map.Entry<String, Object> entry : cambios.entrySet()) {
-                query.append(entry.getKey()).append("=?, ");
-            }
-            query.delete(query.length() - 2, query.length()); // Elimina la última coma
-            query.append(" WHERE id_cliente=?");
-
-            try (PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
-                int parameterIndex = 1;
-                for (Object value : cambios.values()) {
-                    preparedStatement.setObject(parameterIndex++, value);
-                }
-                preparedStatement.setInt(parameterIndex, id);
-
-                return preparedStatement.executeUpdate();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return 0; // Devuelve 0 para indicar un error
+    try {
+        StringBuilder query = new StringBuilder("UPDATE Clientes SET ");
+        for (Map.Entry<String, Object> entry : cambios.entrySet()) {
+            query.append(entry.getKey()).append("=?, ");
         }
-    }
+        query.delete(query.length() - 2, query.length()); // Elimina la última coma
+        query.append(" WHERE id_cliente=?");
 
-    // Método para eliminar un cliente por ID
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query.toString())) {
+            int parameterIndex = 1;
+            for (Object value : cambios.values()) {
+                preparedStatement.setObject(parameterIndex++, value);
+            }
+            preparedStatement.setInt(parameterIndex, id);
+
+            return preparedStatement.executeUpdate();
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        return 0; // Devuelve 0 para indicar un error
+    }
+}
+
+    //metodo para eliminar un cliente por ID
     public int eliminarCliente(int id) {
         String transaccion = "DELETE FROM Clientes WHERE id_cliente=" + id;
         return new database().Actualizar(transaccion);
