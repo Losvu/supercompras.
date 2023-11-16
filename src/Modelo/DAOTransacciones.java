@@ -24,8 +24,6 @@ public class DAOTransacciones {
 
     public DAOTransacciones() {
     }
-
-    
     
     public DAOTransacciones(Connection connection) {
         this.connection = connection;
