@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -23,103 +24,92 @@ import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
 
 public class EmpleadosJInternalFrame extends javax.swing.JInternalFrame {
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private DAOEmpleados daoEmpleados;
 
     public EmpleadosJInternalFrame() {
         initComponents();
+        daoEmpleados = new DAOEmpleados(new database().getConnection());
         obtenerDatos();
     }
 
-    
-    // metodo limpiar campos
+    //metodo limpiarCampos
     public void limpiarCamposEmpleados() {
         jTextNombreEmpleado.setText("");
         jTextRol.setText("");
         jTextHorarioInicio.setText("");
         jTextHorarioFin.setText("");
         jTextDiasTrabajo.setText("");
-        jTextIdEmpleado.setText("");
     }
 
     
-    // Método auxiliar para obtener LocalDateTime desde una cadena de texto
-private LocalDateTime obtenerLocalDateTimeDesdeString(String cadena) {
-    try {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(cadena, formatter);
-    } catch (DateTimeParseException e) {
-        return null; // Manejar el error según sea necesario
-    }
-}
-
-    //obtener cambios desde la interfaz, metodo necesario para lo que estoy haciendo en actualizar precios
-private Map<String, Object> obtenerCambiosDesdeInterfaz() {
+    private Map<String, Object> obtenerCambiosDesdeInterfaz() {
     Map<String, Object> cambios = new HashMap<>();
 
-    // Obtener los nuevos valores de las cajas de texto para los campos relevantes
     String nuevoHorarioInicio = jTextHorarioInicio.getText();
     String nuevoHorarioFin = jTextHorarioFin.getText();
     String nuevoDiasTrabajo = jTextDiasTrabajo.getText();
 
-    // Agregar los nuevos valores al mapa de cambios
-    cambios.put("horario_inicio", nuevoHorarioInicio);
-    cambios.put("horario_fin", nuevoHorarioFin);
+    // Utilizando el método obtenerLocalDateTimeDesdeString de DAOEmpleados
+    cambios.put("horario_inicio", daoEmpleados.obtenerLocalDateTimeDesdeString(nuevoHorarioInicio));
+    cambios.put("horario_fin", daoEmpleados.obtenerLocalDateTimeDesdeString(nuevoHorarioFin));
     cambios.put("dias_trabajo", nuevoDiasTrabajo);
 
     return cambios;
 }
 
-    
-  // método obtenerDatos
-public void obtenerDatos() {
-    // Crear una instancia de DAOEmpleados con la conexión
-    DAOEmpleados daoEmpleados = new DAOEmpleados(new database().getConnection());
+    public void obtenerDatos() {
+        DefaultTableModel modelo = new DefaultTableModel();
+        String[] columnas = {"ID Empleado", "Nombre", "Rol", "Horario Inicio", "Horario Fin", "Días Trabajo"};
+        modelo.setColumnIdentifiers(columnas);
 
-    // Obtener la lista de empleados
-    List<Empleados> empleados = daoEmpleados.obtenerDatos();
+        //crear una instancia de DAOEmpleados
+        DAOEmpleados daoEmpleados = new DAOEmpleados(new database().getConnection());
 
-    DefaultTableModel modelo = new DefaultTableModel();
-    String[] columnas = {"ID Empleado", "Nombre", "Rol", "Horario Inicio", "Horario Fin", "Días Trabajo"};
-    modelo.setColumnIdentifiers(columnas);
+        try {
+            // Obtener la lista de empleados
+            List<Empleados> empleados = daoEmpleados.obtenerDatos();
 
-    for (Empleados empleado : empleados) {
-        // Verificar si horario_inicio o horario_fin es null antes de mostrarlos
-        String horarioInicioStr = (empleado.getHorario_inicio() != null) ? empleado.getHorario_inicio().toString() : "No disponible";
-        String horarioFinStr = (empleado.getHorario_fin() != null) ? empleado.getHorario_fin().toString() : "No disponible";
+            // Dentro del bucle for
+            for (Empleados empleado : empleados) {
+                System.out.println("Fecha y hora de inicio: " + empleado.getHorario_inicio());
+                System.out.println("Fecha y hora de fin: " + empleado.getHorario_fin());
 
-        String[] renglon = {
-                String.valueOf(empleado.getId_empleado()),
-                empleado.getNombre(),
-                empleado.getRol(),
-                horarioInicioStr,
-                horarioFinStr,
-                empleado.getDias_trabajo()
-        };
-        modelo.addRow(renglon);
+                String[] renglon = {
+                        String.valueOf(empleado.getId_empleado()),
+                        empleado.getNombre(),
+                        empleado.getRol(),
+                        (empleado.getHorario_inicio() != null) ? empleado.getHorario_inicio().toLocalDateTime().format(formatter) : "No disponible",
+                        (empleado.getHorario_fin() != null) ? empleado.getHorario_fin().toLocalDateTime().format(formatter) : "No disponible",
+                        empleado.getDias_trabajo()
+                };
+                modelo.addRow(renglon);
+            }
+
+            jTableEmpleados.setModel(modelo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    jTableEmpleados.setModel(modelo);
-}
-
-//no se que estoy haciendo, pero algo hice
-private String obtenerNuevoValorParaColumna(String columna) {
-    // Implementar la lógica para obtener el nuevo valor de la caja de texto para la columna dada
-    // Devolver el nuevo valor como cadena
-    if (columna.equals("nombre")) {
-        return jTextNombreEmpleado.getText();
-    } else if (columna.equals("rol")) {
-        return jTextRol.getText();
-    } else if (columna.equals("horario_inicio")) {
-        return jTextHorarioInicio.getText();
-    } else if (columna.equals("horario_fin")) {
-        return jTextHorarioFin.getText();
-    } else if (columna.equals("dias_trabajo")) {
-        return jTextDiasTrabajo.getText();
-    } else {
-        // Manejar otras columnas según sea necesario
-        return null;
+   private Object obtenerNuevoValorParaColumna(String columna) {
+    switch (columna) {
+        case "nombre":
+            return jTextNombreEmpleado.getText();
+        case "rol":
+            return jTextRol.getText();
+        case "horario_inicio":
+            // Utilizando el método obtenerLocalDateTimeDesdeString de DAOEmpleados
+            return Timestamp.valueOf(daoEmpleados.obtenerLocalDateTimeDesdeString(jTextHorarioInicio.getText()));
+        case "horario_fin":
+            // Utilizando el método obtenerLocalDateTimeDesdeString de DAOEmpleados
+            return Timestamp.valueOf(daoEmpleados.obtenerLocalDateTimeDesdeString(jTextHorarioFin.getText()));
+        case "dias_trabajo":
+            return jTextDiasTrabajo.getText();
+        default:
+            return null;
     }
 }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -319,88 +309,87 @@ private String obtenerNuevoValorParaColumna(String columna) {
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 395, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel14)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jLabel16)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jTextIdEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(27, 27, 27))
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(21, 21, 21)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
-                                .addComponent(jLabel15)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextDiasTrabajo))
-                            .addComponent(jTextHorarioInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel11)
+                                .addGap(18, 18, 18))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addGap(48, 48, 48)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextRol, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextNombreEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel13)
-                                .addGap(18, 18, 18)
-                                .addComponent(jTextHorarioFin, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGap(18, 18, 18))
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel3Layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(jLabel14)
-                                        .addGap(81, 81, 81))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
-                                        .addComponent(jLabel16)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addComponent(jTextIdEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(jLabel15)
+                                .addGap(7, 7, 7)))
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextHorarioInicio)
+                            .addComponent(jTextHorarioFin)
+                            .addComponent(jTextDiasTrabajo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextNombreEmpleado)
-                            .addComponent(jTextRol)))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addGap(178, 178, 178)
-                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(27, 27, 27))
+                            .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(jTextNombreEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextNombreEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel10)
                     .addComponent(jTextRol, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11)
-                    .addComponent(jTextHorarioInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton10))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel13)
-                        .addComponent(jTextHorarioFin, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextHorarioInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)
+                            .addComponent(jButton10))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jTextHorarioFin, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel13)))
                     .addComponent(jButton11))
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+                        .addComponent(jLabel14)
+                        .addGap(16, 16, 16)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel16)
+                            .addComponent(jTextIdEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(21, 21, 21))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel15)
                             .addComponent(jTextDiasTrabajo, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jTextIdEmpleado, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel16))
-                            .addComponent(jLabel14))
-                        .addGap(37, 37, 37))))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         jPanel5.setBackground(new java.awt.Color(204, 204, 204));
@@ -444,7 +433,7 @@ private String obtenerNuevoValorParaColumna(String columna) {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 143, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 128, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -452,14 +441,14 @@ private String obtenerNuevoValorParaColumna(String columna) {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(5, 5, 5))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
                         .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)))
+                        .addGap(18, 18, 18))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(5, 5, 5)))
                 .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
         );
 
@@ -467,111 +456,134 @@ private String obtenerNuevoValorParaColumna(String columna) {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1234, Short.MAX_VALUE)
+            .addGap(0, 1259, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 7, Short.MAX_VALUE)
+                    .addGap(0, 0, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 7, Short.MAX_VALUE)))
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 838, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
-                    .addGap(0, 12, Short.MAX_VALUE)
+                    .addGap(0, 26, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 13, Short.MAX_VALUE)))
+                    .addGap(0, 27, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
-//captura de datos de las cajas de texto
-String nombre = jTextNombreEmpleado.getText();
-String rol = jTextRol.getText();
-String horarioInicioStr = jTextHorarioInicio.getText();
-String horarioFinStr = jTextHorarioFin.getText();
-String diasTrabajo = jTextDiasTrabajo.getText();
+// Captura de datos de las cajas de texto
+    String nombre = jTextNombreEmpleado.getText();
+    String rol = jTextRol.getText();
+    String horarioInicioStr = jTextHorarioInicio.getText();
+    String horarioFinStr = jTextHorarioFin.getText();
+    String diasTrabajo = jTextDiasTrabajo.getText();
 
-try {
-    // Comprueba que las cajas de texto no estén vacías
-    if (nombre.isEmpty() || rol.isEmpty() || horarioInicioStr.isEmpty() || horarioFinStr.isEmpty()
-            || diasTrabajo.isEmpty()) {
-        JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
-    } else {
-        // Intenta convertir las cadenas de tiempo a objetos LocalDateTime
-        try {
-            // Convertir las cadenas de tiempo a objetos LocalDateTime
-            LocalDateTime horarioInicio = LocalDateTime.parse(horarioInicioStr); // Ajustar según el formato de entrada
-            LocalDateTime horarioFin = LocalDateTime.parse(horarioFinStr); // Ajustar según el formato de entrada
+    try {
+        // Comprueba que las cajas de texto no estén vacías
+        if (nombre.isEmpty() || rol.isEmpty() || horarioInicioStr.isEmpty() || horarioFinStr.isEmpty()
+                || diasTrabajo.isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
+        } else {
+            // Intenta convertir las cadenas de tiempo a objetos LocalDateTime
+            try {
+                // Convertir las cadenas de tiempo a objetos Timestamp utilizando DAOEmpleados
+                Timestamp horarioInicio = Timestamp.valueOf(daoEmpleados.obtenerLocalDateTimeDesdeString(horarioInicioStr));
+                Timestamp horarioFin = Timestamp.valueOf(daoEmpleados.obtenerLocalDateTimeDesdeString(horarioFinStr));
 
-            // Crea un nuevo empleado y llama al método Insertar de DAOEmpleados
-            Empleados empleado = new DAOEmpleados(new database().getConnection()).Insertar(nombre, rol,
-                    horarioInicio, horarioFin, diasTrabajo);
+                //creamos un nuevo empleado y llama al método Insertar de DAOEmpleados
+                Empleados empleado = daoEmpleados.Insertar(nombre, rol, horarioInicio, horarioFin, diasTrabajo);
 
-            if (empleado != null) {
-                JOptionPane.showMessageDialog(rootPane, "Registro agregado");
-            } else {
-                JOptionPane.showMessageDialog(rootPane, "No se pudo agregar el registro");
+                if (empleado != null) {
+                    JOptionPane.showMessageDialog(rootPane, "Registro agregado");
+                } else {
+                    JOptionPane.showMessageDialog(rootPane, "No se pudo agregar el registro");
+                }
+
+                obtenerDatos();
+                limpiarCamposEmpleados();
+            } catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(rootPane,
+                        "Error al procesar los horarios. Asegúrate de ingresar el formato correcto.");
             }
-
-            obtenerDatos();
-            limpiarCamposEmpleados();
-        } catch (DateTimeParseException e) {
-            JOptionPane.showMessageDialog(rootPane,
-                    "Error al procesar los horarios. Asegúrate de ingresar el formato correcto.");
         }
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(rootPane, "No se pudo agregar el registro");
     }
-} catch (Exception e) {
-    e.printStackTrace();
-    JOptionPane.showMessageDialog(rootPane, "No se pudo agregar el registro");
-}
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-// Obtener la fila seleccionada
+    //obtener la fila seleccionada en la tabla
     int filaSeleccionada = jTableEmpleados.getSelectedRow();
 
     if (filaSeleccionada == -1) {
-        JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla para editar.");
+        JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
     } else {
-        // Obtener el ID de la fila seleccionada
-        int id = Integer.parseInt(jTableEmpleados.getValueAt(filaSeleccionada, 0).toString());
+        try {
+            //obtener el ID del empleado seleccionado
+            int idEmpleado = Integer.parseInt(jTableEmpleados.getValueAt(filaSeleccionada, 0).toString());
 
-        // Obtener los cambios desde la interfaz
-        Map<String, Object> cambios = obtenerCambiosDesdeInterfaz();
+            // Obtener los nuevos valores de las áreas a modificar
+            String nuevoHorarioInicioStr = jTextHorarioInicio.getText();
+            String nuevoHorarioFinStr = jTextHorarioFin.getText();
+            String nuevosDiasTrabajo = jTextDiasTrabajo.getText();
 
-        // Verificar si hay cambios
-        if (!cambios.isEmpty()) {
-            try {
-                // Actualizar los valores en la base de datos
-                int res = new DAOEmpleados(new database().getConnection()).Actualizar(id, cambios);
-
-                // Verificar el resultado de la actualización
-                if (res == 1) {
-                    JOptionPane.showMessageDialog(rootPane, "Empleado con ID " + id + " actualizado con éxito.");
-                    limpiarCamposEmpleados();
-                    obtenerDatos(); // Actualizar la tabla con los datos recién cambiados
-                } else {
-                    JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el empleado.");
-                }
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");
-            } catch (Exception e) {
-                e.printStackTrace();
-                JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
+            //validar que las áreas no estén vacías
+            if (nuevoHorarioInicioStr.isEmpty() || nuevoHorarioFinStr.isEmpty() || nuevosDiasTrabajo.isEmpty()) {
+                JOptionPane.showMessageDialog(rootPane, "Los campos de horario y días de trabajo no pueden estar vacíos.");
+                return;
             }
-        } else {
-            JOptionPane.showMessageDialog(rootPane, "No se realizaron cambios. Complete al menos un campo para editar.");
+
+            //convertir las cadenas de horario a Timestamp
+            Timestamp nuevoHorarioInicio = Timestamp.valueOf(obtenerLocalDateTimeDesdeString(nuevoHorarioInicioStr));
+            Timestamp nuevoHorarioFin = Timestamp.valueOf(obtenerLocalDateTimeDesdeString(nuevoHorarioFinStr));
+
+            // Actualizar los valores en la base de datos
+            Map<String, Object> cambios = new HashMap<>();
+            cambios.put("horario_inicio", nuevoHorarioInicio);
+            cambios.put("horario_fin", nuevoHorarioFin);
+            cambios.put("dias_trabajo", nuevosDiasTrabajo);
+
+            DAOEmpleados daoEmpleados = new DAOEmpleados(new database().getConnection());
+            int res = daoEmpleados.Actualizar(idEmpleado, cambios);
+
+            // Verificar el resultado de la actualización
+            if (res == 1) {
+                JOptionPane.showMessageDialog(rootPane, "Datos actualizados con éxito");
+                limpiarCamposHorarios(); // Método para limpiar solo los campos de horarios
+                obtenerDatos(); // Actualizar la tabla con los datos recién cambiados
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar los datos.");
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(rootPane, "Por favor, seleccione un registro válido.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
         }
     }
-    //esto e muy complicado
+}
+
+//metodo para convertir una cadena de fecha a LocalDateTime
+private LocalDateTime obtenerLocalDateTimeDesdeString(String fechaStr) {
+    return LocalDateTime.parse(fechaStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+}
+
+//metodo para limpiar solo los campos de horarios
+private void limpiarCamposHorarios() {
+    jTextHorarioInicio.setText("");
+    jTextHorarioFin.setText("");
+    //o tambien podriamos llamar directamente al metodo que tenemos arriba, pero asi queda mas aesthetic el codigo 
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-// evento borrar para empleados
+//evento borrar para empleados
     int fila = this.jTableEmpleados.getSelectedRow();
 
     if (fila == -1) {
@@ -582,7 +594,7 @@ try {
         int confirmacion = JOptionPane.showConfirmDialog(rootPane, "¿Está seguro de eliminar este registro?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
 
         if (confirmacion == JOptionPane.YES_OPTION) {
-            // Obtener la conexión
+            //obtener la conexión
             Connection conexion = new database().getConnection();
 
             // Crear la instancia de DAOEmpleados con la conexión
@@ -620,27 +632,17 @@ try {
     }//GEN-LAST:event_jTextHorarioFinActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-// Obtener la fecha y hora actuales
-    LocalDateTime fechaHoraActual = LocalDateTime.now();
-
-    // Formatear la fecha y hora actuales en el formato deseado
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String fechaHoraFormateada = fechaHoraActual.format(formatter);
-
-    // Establecer la fecha y hora actuales en jTextHorarioInicio
-    jTextHorarioInicio.setText(fechaHoraFormateada);
+LocalDateTime fechaHoraActual = LocalDateTime.now();
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+String fechaHoraFormateada = fechaHoraActual.format(formatter);
+jTextHorarioInicio.setText(fechaHoraFormateada);
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
-// Obtener la fecha y hora actuales
-    LocalDateTime fechaHoraActual = LocalDateTime.now();
-
-    // Formatear la fecha y hora actuales en el formato deseado
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    String fechaHoraFormateada = fechaHoraActual.format(formatter);
-
-    // Establecer la fecha y hora actuales en jTextHorarioInicio
-    jTextHorarioFin.setText(fechaHoraFormateada);
+LocalDateTime fechaHoraActual = LocalDateTime.now();
+DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+String fechaHoraFormateada = fechaHoraActual.format(formatter);
+jTextHorarioFin.setText(fechaHoraFormateada);
     }//GEN-LAST:event_jButton11ActionPerformed
 
     private void jTextDiasTrabajoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextDiasTrabajoActionPerformed
@@ -658,17 +660,17 @@ int filaSeleccionada = this.jTableEmpleados.getSelectedRow();
         JOptionPane.showMessageDialog(rootPane, "Seleccione un registro de la tabla");
     } else {
         try {
-            //obtener el ID ingresado en jTextId
-            int id = Integer.parseInt(jTextIdEmpleado.getText());
+            // Obtener el ID de la fila seleccionada
+            int id = Integer.parseInt(jTableEmpleados.getValueAt(filaSeleccionada, 0).toString());
 
-            //obtener los nuevos valores de todas las cajas de texto
+            // Obtener los nuevos valores de todas las cajas de texto
             String nombre = jTextNombreEmpleado.getText();
             String rol = jTextRol.getText();
             String horarioInicioStr = jTextHorarioInicio.getText();
             String horarioFinStr = jTextHorarioFin.getText();
             String diasTrabajo = jTextDiasTrabajo.getText();
 
-            //verificar si alguno de los campos está vacío
+            // Verificar si alguno de los campos está vacío
             if (nombre.isEmpty() || rol.isEmpty() || horarioInicioStr.isEmpty() || horarioFinStr.isEmpty() || diasTrabajo.isEmpty()) {
                 JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
                 return; // Salir del método si algún campo está vacío
@@ -677,23 +679,23 @@ int filaSeleccionada = this.jTableEmpleados.getSelectedRow();
             LocalDateTime horarioInicio = LocalDateTime.parse(horarioInicioStr);
             LocalDateTime horarioFin = LocalDateTime.parse(horarioFinStr);
 
-            //actualizar los valores en la base de datos
+            // Actualizar los valores en la base de datos
             Map<String, Object> cambios = Map.of(
-                "nombre", nombre,
-                "rol", rol,
-                "horario_inicio", horarioInicio,
-                "horario_fin", horarioFin,
-                "dias_trabajo", diasTrabajo
+                    "nombre", nombre,
+                    "rol", rol,
+                    "horario_inicio", horarioInicio,
+                    "horario_fin", horarioFin,
+                    "dias_trabajo", diasTrabajo
             );
-            
-DAOEmpleados daoEmpleados = new DAOEmpleados();
-int res = daoEmpleados.Actualizar(id, cambios);
 
-            //verificar el resultado de la actualización
+            DAOEmpleados daoEmpleados = new DAOEmpleados();
+            int res = daoEmpleados.Actualizar(id, cambios);
+
+            // Verificar el resultado de la actualización
             if (res == 1) {
                 JOptionPane.showMessageDialog(rootPane, "Empleado actualizado con éxito");
                 limpiarCamposEmpleados();
-                obtenerDatos(); //actualizar la tabla con los datos recién cambiados
+                obtenerDatos(); // Actualizar la tabla con los datos recién cambiados
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar el empleado.");
             }

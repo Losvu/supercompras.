@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class DAOProducto {
 
-    // Método insertar 
+    //metodo insertar 
     public Producto Insertar(String nombre, String categoria, String precio, String marca, String stock) {
         String transaccion = "INSERT INTO Productos (nombre, categoria, precio_unitario, marca, stock) VALUES (?, ?, ?, ?, ?)";
 
@@ -18,7 +18,8 @@ public class DAOProducto {
         return null;
     }
 
-    // Método actualizar
+    
+    //metodo actualizar
     public int Actualizar(int id, String nombre, String categoria, double precio, String marca, String stock) {
         String transaccion = "UPDATE Productos SET nombre=?, categoria=?, precio_unitario=?, marca=?, stock=? WHERE id_producto=?";
 
@@ -47,11 +48,13 @@ public class DAOProducto {
         return productos;
     }
 
-    // Dentro de la clase DAOProducto
+    
+    //metodo para actualizar el precio
 public int ActualizarPrecio(int id, double nuevoPrecio) {
     String transaccion = "UPDATE Productos SET precio_unitario=? WHERE id_producto=?";
     return new database().Actualizar(transaccion, nuevoPrecio, id);
 }
+
 
 //metodo para buscar, como me cago este metodo de mierda ojala le de diarrea al que lo invento
 public Producto obtenerProductoPorId(int id) {

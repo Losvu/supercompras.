@@ -23,20 +23,16 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
     }
 
      private void buscarCliente() {
-    // Obtén el nombre del cliente ingresado en el campo de texto
     String nombreCliente = jTextFieldBuscarCliente.getText();
 
-    // Realiza la búsqueda en la base de datos
     DAOCliente daoCliente = new DAOCliente(new database().getConnection());
     Cliente clienteEncontrado = daoCliente.obtenerClientePorNombre(nombreCliente);
 
-    // Actualiza la tabla con los resultados de la búsqueda
     DefaultTableModel modelo = new DefaultTableModel();
     String[] columnas = {"ID Cliente", "Nombre", "Dirección", "Número Teléfono", "Correo Electrónico"};
     modelo.setColumnIdentifiers(columnas);
 
     if (clienteEncontrado != null) {
-        // Agrega el cliente encontrado a la tabla
         String[] renglon = {
                 String.valueOf(clienteEncontrado.getId_cliente()),
                 clienteEncontrado.getNombre(),
@@ -46,11 +42,10 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
         };
         modelo.addRow(renglon);
     } else {
-        // Muestra un mensaje si no se encontraron resultados
+
         JOptionPane.showMessageDialog(rootPane, "No se encontraron clientes con ese nombre.");
     }
 
-    // Establece el modelo actualizado en la tabla
     jTableCliente.setModel(modelo);
 }
     
@@ -269,7 +264,6 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabel14)
                                 .addGap(279, 279, 279))
                             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -304,12 +298,13 @@ public class ClientesJInternalFrame extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                 .addComponent(jLabel14)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton9)
-                    .addComponent(jTextFieldBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jTextId, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel15)))
+                        .addComponent(jLabel15))
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton9)
+                        .addComponent(jTextFieldBuscarCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(15, 15, 15))
         );
 

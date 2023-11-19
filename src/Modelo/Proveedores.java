@@ -20,6 +20,16 @@ public class Proveedores {
         this.marca_proveedor = marca_proveedor;
     }
 
+    public Proveedores(String nombre, String direccion, String numero_telefono, String correo_electronico, String marca_proveedor) {
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.numero_telefono = numero_telefono;
+        this.correo_electronico = correo_electronico;
+        this.marca_proveedor = marca_proveedor;
+    }
+    
+    
+
     public int getId_proveedor() {
         return id_proveedor;
     }

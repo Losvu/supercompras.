@@ -6,6 +6,7 @@ import Modelo.Cliente;
 import Modelo.DAOCliente;
 import Modelo.Proveedores;
 import Modelo.DAOProveedores;
+import java.sql.Connection;
 
 
 import Conexion.database;
@@ -19,6 +20,8 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
+
 
 public class TransaccionesJInternalFrame extends javax.swing.JInternalFrame {
 
@@ -38,7 +41,7 @@ public class TransaccionesJInternalFrame extends javax.swing.JInternalFrame {
         obtenerDatos();
     }
 
-    // Método para limpiar campos de transacciones
+    //metodo para limpiar campos de transacciones
     public void limpiarCamposTransacciones() {
         jTextFechaTransaccion.setText("");
         jComboBoxTipoTransaccion.setSelectedIndex(0);
@@ -48,8 +51,8 @@ public class TransaccionesJInternalFrame extends javax.swing.JInternalFrame {
         jComboBoxProveedores.setSelectedIndex(0);
     }
 
-    // Método para cargar el JComboBox de clientes
-  // Método obtenerDatos
+    //metodo para cargar el JComboBox de clientes
+  //metodo obtenerDatos
 public void obtenerDatos() {
     List<Transacciones> transacciones = daoTransacciones.obtenerDatos();
 
@@ -89,30 +92,17 @@ public void obtenerDatos() {
         DefaultComboBoxModel<String> model = new DefaultComboBoxModel<>(proveedores.toArray(new String[0]));
         jComboBoxProveedores.setModel(model);
     }
-    //mas metodos xd
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jButtonAgregar = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton7 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
@@ -134,9 +124,21 @@ public void obtenerDatos() {
         jComboBoxMetodoPago = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
+        jTextIdTransaccion = new javax.swing.JTextField();
+        jLabel20 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableTransacciones = new javax.swing.JTable();
+        AbrirReport = new javax.swing.JButton();
+
+        jMenuItem1.setText("Enviar");
+        jMenuItem1.setToolTipText("");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuItem1);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Productos/Inventario", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.BELOW_TOP, new java.awt.Font("Segoe UI", 1, 14), new java.awt.Color(0, 0, 0))); // NOI18N
@@ -148,13 +150,6 @@ public void obtenerDatos() {
         jButtonAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonAgregarActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Actualizar horario laboral");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
             }
         });
 
@@ -197,6 +192,12 @@ public void obtenerDatos() {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jButton8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton9)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -204,40 +205,28 @@ public void obtenerDatos() {
                         .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(113, 113, 113))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(56, 56, 56))))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jButton8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton9)
-                .addGap(27, 27, 27))
+                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(1, 1, 1))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(17, 17, 17)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 73, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28))
+                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(62, 62, 62))
         );
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
@@ -303,6 +292,16 @@ public void obtenerDatos() {
         jLabel19.setForeground(new java.awt.Color(0, 0, 0));
         jLabel19.setText("Proveedor:");
 
+        jTextIdTransaccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextIdTransaccionActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setFont(new java.awt.Font("Yu Gothic UI", 1, 12)); // NOI18N
+        jLabel20.setForeground(new java.awt.Color(0, 0, 0));
+        jLabel20.setText("ID Transaccion:");
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -310,7 +309,7 @@ public void obtenerDatos() {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel14)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(276, 276, 276)
                 .addComponent(jLabel16)
                 .addGap(300, 300, 300))
             .addGroup(jPanel3Layout.createSequentialGroup()
@@ -342,12 +341,19 @@ public void obtenerDatos() {
                             .addComponent(jTextTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBoxMetodoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addComponent(jComboBoxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(62, 62, 62)
-                                .addComponent(jLabel19)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jComboBoxProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(66, Short.MAX_VALUE))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabel20)
+                                    .addComponent(jComboBoxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addGap(62, 62, 62)
+                                        .addComponent(jLabel19)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jComboBoxProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel3Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jTextIdTransaccion, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
+                .addContainerGap(48, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -361,33 +367,34 @@ public void obtenerDatos() {
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jButton10)))
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13)
+                    .addComponent(jComboBoxTipoTransaccion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel15)
+                    .addComponent(jTextTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(8, 8, 8)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxMetodoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel17))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jComboBoxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel18)
+                    .addComponent(jLabel19)
+                    .addComponent(jComboBoxProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel20)
+                        .addComponent(jTextIdTransaccion, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGap(18, 18, Short.MAX_VALUE)
                         .addComponent(jLabel14)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLabel16)
-                        .addGap(58, 58, 58))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel13)
-                            .addComponent(jComboBoxTipoTransaccion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15)
-                            .addComponent(jTextTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(8, 8, 8)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBoxMetodoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jComboBoxClientes, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel18)
-                            .addComponent(jLabel19)
-                            .addComponent(jComboBoxProveedores, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jLabel16)))
+                .addGap(49, 49, 49))
         );
 
         jPanel5.setBackground(new java.awt.Color(204, 204, 204));
@@ -430,32 +437,38 @@ public void obtenerDatos() {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 383, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
-            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(383, 383, 383)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 1334, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(6, 6, 6)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(5, 5, 5))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)))
-                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, 478, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(5, 5, 5)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        AbrirReport.setText("Abrir factura");
+        AbrirReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AbrirReportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1350, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(1109, Short.MAX_VALUE)
+                .addComponent(AbrirReport)
+                .addGap(145, 145, 145))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -463,12 +476,15 @@ public void obtenerDatos() {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 880, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(223, 223, 223)
+                .addComponent(AbrirReport, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(627, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(7, Short.MAX_VALUE)))
         );
 
         pack();
@@ -477,32 +493,34 @@ public void obtenerDatos() {
     private void jButtonAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarActionPerformed
 // Captura de datos de las cajas de texto y JComboBox
     String fechaHoraStr = jTextFechaTransaccion.getText(); // Ajusta según el formato de entrada
-    String tipo = jComboBoxTipoTransaccion.getSelectedItem().toString();
+    String tipo = jComboBoxTipoTransaccion.getSelectedItem().toString();;
     String totalStr = jTextTotal.getText();
     String metodoPago = jComboBoxMetodoPago.getSelectedItem().toString();
-    String clienteSeleccionadoNombre = (String) jComboBoxClientes.getSelectedItem();  
-    String proveedorSeleccionadoNombre = (String) jComboBoxProveedores.getSelectedItem();  
+    String clienteSeleccionadoNombre = (String) jComboBoxClientes.getSelectedItem();
+    String proveedorSeleccionadoNombre = (String) jComboBoxProveedores.getSelectedItem();
 
     try {
-        // Comprueba que las cajas de texto no estén vacías
+        //comprobamos que las cajas de texto no estén vacías, que pendejo, obviamente no van a estar vacias si vamos a agregar algo jaja
         if (fechaHoraStr.isEmpty() || tipo.isEmpty() || totalStr.isEmpty() || metodoPago.isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
         } else {
-            // Intenta convertir las cadenas de tiempo y total a objetos LocalDateTime y Double, respectivamente
+            // Intentamos convertir las cadenas de tiempo y total a objetos LocalDateTime y Double, respectivamente, quien no sabe esto
             try {
-                // Convertir la cadena de tiempo a objeto LocalDateTime
-                LocalDateTime fechaHora = LocalDateTime.parse(fechaHoraStr); // Ajustar según el formato de entrada
+                //define el formato esperado para la fecha y hora
+               DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-                // Convertir la cadena de total a objeto Double
-                double total = Double.parseDouble(totalStr); // Ajustar según el formato de entrada
+                //convertir la cadena de tiempo a objeto LocalDateTime, apache netbeans tiene el poder de hackiar mi compu
+                LocalDateTime fechaHora = LocalDateTime.parse(fechaHoraStr, formatter);
 
-                // Obtener el objeto Cliente y Proveedor a partir de los nombres
+                //convertimos la cadena de total a objeto Double, no se pq se hace esto pero se hace con frecuencia lo de convertir datos
+                double total = Double.parseDouble(totalStr); //tmc ajustamos según el formato de entrada
+
+                //obtiene el objeto Cliente y Proveedor a partir de los nombres, de locos
                 Cliente clienteSeleccionado = daoClientes.obtenerClientePorNombre(clienteSeleccionadoNombre);
                 Proveedores proveedorSeleccionado = daoProveedores.obtenerProveedorPorNombre(proveedorSeleccionadoNombre);
 
-                // Crea una nueva transacción y llama al método insertar de DAOTransacciones
-               Transacciones transaccion = daoTransacciones.insertar(clienteSeleccionado, fechaHora, total, "Descripción");
-
+                //creamos una nueva transacción y esta madre llama al metodo insertar de DAOTransacciones, impresionante la tecnologia como funciona
+              Transacciones transaccion = daoTransacciones.insertar(clienteSeleccionado, fechaHora, total, tipo);
 
                 if (transaccion != null) {
                     JOptionPane.showMessageDialog(rootPane, "Registro agregado");
@@ -523,20 +541,112 @@ public void obtenerDatos() {
     }
     }//GEN-LAST:event_jButtonAgregarActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+
+int fila = this.jTableTransacciones.getSelectedRow();
+
+if (fila == -1) {
+    JOptionPane.showMessageDialog(rootPane, "Seleccione una transacción de la tabla");
+} else {
+    int idTransaccion = Integer.parseInt((String) this.jTableTransacciones.getValueAt(fila, 0).toString());
+
+    int confirmacion = JOptionPane.showConfirmDialog(rootPane, "¿Está seguro de eliminar esta transacción?", "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+
+    if (confirmacion == JOptionPane.YES_OPTION) {
+        // Obtener la conexión
+       Connection conexion = new database().getConnection();
+
+        // Crear la instancia de DAOTransacciones con la conexión
+        DAOTransacciones dao = new DAOTransacciones(conexion);
+
+        dao.eliminar(idTransaccion);
+        obtenerDatos();
+        JOptionPane.showMessageDialog(rootPane, "Transacción eliminada con éxito");
+    }
+}
 
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-
+//limpia los campos
+    limpiarCamposTransacciones();
+    //deselecciona cualquier fila de la tabla si la tienes seleccionadas.
+    jTableTransacciones.clearSelection();
+    JOptionPane.showMessageDialog(rootPane, "Acción cancelada");
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+//lo pongo con muchos comentarios para que se entienda mas o menos como trabaje
+//el codigo, no es lo mejor para la opcion editar pero es bastante funcional
+    try {
+        //obtiene el ID de la transacción desde el campo de texto
+        String idTransaccionStr = jTextIdTransaccion.getText().trim();
 
+        //verifica si el texto es un número, nos ayuda a corregir problemas futuros
+        if (!idTransaccionStr.matches("\\d+")) {
+            //mostrar un mensaje de error si el ID no es válido
+            JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");
+            return;
+        }
+
+        int idTransaccion = Integer.parseInt(idTransaccionStr);
+
+        //obtener los nuevos valores de todas las cajas de texto y combo boxes
+        String fechaStr = jTextFechaTransaccion.getText();
+        String tipo = jComboBoxTipoTransaccion.getSelectedItem().toString();
+        double total = Double.parseDouble(jTextTotal.getText());
+        String metodoPago = jComboBoxMetodoPago.getSelectedItem().toString();
+        String cliente = jComboBoxClientes.getSelectedItem().toString();
+        String proveedor = jComboBoxProveedores.getSelectedItem().toString();
+
+        //verificamos si alguno de los campos está vacío
+        if (fechaStr.isEmpty() || tipo.isEmpty() || metodoPago.isEmpty() || cliente.isEmpty() || proveedor.isEmpty()) {
+            // Mostrar un mensaje de advertencia si algún campo está vacío
+            JOptionPane.showMessageDialog(rootPane, "Todos los campos son obligatorios");
+            return; // Salir del método si algún campo está vacío
+        }
+
+        //ahora convertir la cadena de fecha a objeto LocalDateTime
+        LocalDateTime fecha = LocalDateTime.parse(fechaStr, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+        //obtener los IDs de cliente y proveedor desde los objetos DAO
+        int idCliente = daoClientes.obtenerClientePorNombre(cliente).getId_cliente();
+        int idProveedor = daoProveedores.obtenerProveedorPorNombre(proveedor).getId_proveedor();
+
+        //actualiza los valores en la base de datos
+        Map<String, Object> cambios = Map.of(
+            "fecha_hora", fecha,
+            "total", total,
+            "metodo_pago", metodoPago,
+            "tipo", tipo,
+            "cliente_id", idCliente,
+            "proveedor_id", idProveedor
+        );
+
+        DAOTransacciones daoTransacciones = new DAOTransacciones();
+        
+        //llamada al método para actualizar la transacción, metodo definido en
+        //DAOTransacciones
+        int res = daoTransacciones.actualizarTransaccion(idTransaccion, cambios);
+
+        //verificamos el resultado de la actualización
+        if (res == 1) {
+            //mostrar un mensaje de éxito si la transacción se actualiza correctamente
+            JOptionPane.showMessageDialog(rootPane, "Transacción actualizada con éxito");
+            limpiarCamposTransacciones();
+            obtenerDatos(); // Actualizar la tabla con los datos recién cambiados
+        } else {
+            //mostrar otro mensaje de error si ocurre un problema al actualizar la transacción
+            JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR al actualizar la transacción.");
+        }
+    } catch (NumberFormatException e) {
+        //mostrar un mensaje de error si el ID no es un número válido
+        JOptionPane.showMessageDialog(rootPane, "Por favor, ingrese un ID válido.");
+    } catch (Exception e) {
+        e.printStackTrace();
+        //mostrar un mensaje de error genérico en caso de una excepción inesperada
+        JOptionPane.showMessageDialog(rootPane, "Ocurrió un ERROR inesperado: " + e.getMessage());
+    }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextFechaTransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFechaTransaccionActionPerformed
@@ -544,16 +654,15 @@ public void obtenerDatos() {
     }//GEN-LAST:event_jTextFechaTransaccionActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
- // Obtener la fecha y hora actuales
+// Obtener la fecha y hora actuales
     LocalDateTime fechaHoraActual = LocalDateTime.now();
 
-    // Formatear la fecha y hora actuales en un formato completo sin guiones en la fecha
-DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd HH:mm:ss");
-LocalDateTime fechaHoraFormateada = LocalDateTime.parse(fechaHoraActual.format(formatter), formatter);
+    // Formatear la fecha y hora actuales en el formato deseado
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    String fechaHoraFormateada = fechaHoraActual.format(formatter);
 
-// Establecer la fecha y hora actuales en jTextHorarioInicio
-jTextFechaTransaccion.setText(fechaHoraFormateada.toString());
-
+    // Establecer la fecha y hora actuales en jTextHorarioInicio
+    jTextFechaTransaccion.setText(fechaHoraFormateada);
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jTextTotalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextTotalActionPerformed
@@ -561,17 +670,72 @@ jTextFechaTransaccion.setText(fechaHoraFormateada.toString());
     }//GEN-LAST:event_jTextTotalActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        // TODO add your handling code here:
+ //para q entiendas, primero creamos una instancia del JInternalFrame de Clientes
+    ClientesJInternalFrame clientesFrame = new ClientesJInternalFrame();
+
+    //obtenemos el JDesktopPane del JFrame que contiene el JInternalFrame actual
+    JDesktopPane desktopPane = (JDesktopPane) SwingUtilities.getAncestorOfClass(JDesktopPane.class, this);
+
+    //agregamos el JInternalFrame de Clientes al JDesktopPane
+    desktopPane.add(clientesFrame);
+
+    //hacemos q sea visible el JInternalFrame de Clientes
+    clientesFrame.setVisible(true);
+
+    //cerrar o esconder el JInternalFrame actual (TransaccionesJInternalFrame)
+    this.dispose();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-        // TODO add your handling code here:
+//segundo, creamos una instancia del JInternalFrame de Proveedores
+ProveedoresJInternalFrame proveedoresFrame = new ProveedoresJInternalFrame();
+
+    //obtenemos el JDesktopPane del JFrame que contiene el JInternalFrame actual
+    JDesktopPane desktopPane = (JDesktopPane) SwingUtilities.getAncestorOfClass(JDesktopPane.class, this);
+
+    //agregar el JInternalFrame de Proveedores al JDesktopPane
+    desktopPane.add(proveedoresFrame);
+
+    //hacer visible el JInternalFrame de Proveedores
+    proveedoresFrame.setVisible(true);
+
+    //cerrar o esconder el JInternalFrame actual (TransaccionesJInternalFrame). ya?
+    this.dispose();
     }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void AbrirReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirReportActionPerformed
+        Report reporte = new Report();
+        TransaccionesJInternalFrame.jPanel1.add(reporte);
+        reporte.toFront();
+        reporte.setVisible(true);
+    }//GEN-LAST:event_AbrirReportActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    DefaultTableModel model = (DefaultTableModel) Report.TablaFactura.getModel();
+    int filasele = jTableTransacciones.getSelectedRow();
+    
+    // Corregir el tamaño del array a 3
+    String[] registros = new String[3];
+    
+    registros[0] = jTableTransacciones.getValueAt(filasele, 0).toString();
+    registros[1] = jTableTransacciones.getValueAt(filasele, 1).toString();
+    registros[2] = jTableTransacciones.getValueAt(filasele, 2).toString();
+    
+    model.addRow(registros);
+    
+    // Este paso no es necesario, ya que ya has actualizado el modelo arriba
+    // Report.TablaFactura.setModel(model);
+
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jTextIdTransaccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextIdTransaccionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextIdTransaccionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton AbrirReport;
     private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton7;
@@ -590,13 +754,17 @@ jTextFechaTransaccion.setText(fechaHoraFormateada.toString());
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JPanel jPanel1;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JMenuItem jMenuItem1;
+    public static javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPopupMenu jPopupMenu1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTableTransacciones;
     private javax.swing.JTextField jTextFechaTransaccion;
+    private javax.swing.JTextField jTextIdTransaccion;
     private javax.swing.JTextField jTextTotal;
     // End of variables declaration//GEN-END:variables
 }

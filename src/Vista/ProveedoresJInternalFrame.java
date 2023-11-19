@@ -21,7 +21,7 @@ public ProveedoresJInternalFrame() {
     obtenerDatos();
 }
 
-    // Método para limpiar campos de proveedores
+    //metodo para limpiar campos de proveedores
     public void limpiarCamposProveedores() {
         jTextNombre.setText("");
         jTextDireccion.setText("");
@@ -58,8 +58,7 @@ public void obtenerDatos() {
 
         jTableProveedores.setModel(modelo);
 
-        // Oculta la columna "ID Tabla Relación"
-// Oculta la columna "ID Tabla Relación"
+        //oculta la columna "ID Tabla Relación"
 jTableProveedores.getColumnModel().getColumn(5).setMinWidth(0);
 jTableProveedores.getColumnModel().getColumn(5).setMaxWidth(0);
 jTableProveedores.getColumnModel().getColumn(5).setWidth(0);
@@ -316,29 +315,29 @@ jTableProveedores.getColumnModel().getColumn(5).setWidth(0);
 
         jTableProveedores.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7"
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
             }
         ));
         jScrollPane1.setViewportView(jTableProveedores);

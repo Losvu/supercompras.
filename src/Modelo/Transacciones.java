@@ -22,6 +22,17 @@ public class Transacciones {
         this.proveedorId = proveedorId;
     }
 
+    public Transacciones(LocalDateTime fechaHora, String tipo, double total, String metodoPago, int clienteId, int proveedorId) {
+        this.fechaHora = fechaHora;
+        this.tipo = tipo;
+        this.total = total;
+        this.metodoPago = metodoPago;
+        this.clienteId = clienteId;
+        this.proveedorId = proveedorId;
+    }
+    
+    
+
     public int getIdTransaccion() {
         return idTransaccion;
     }

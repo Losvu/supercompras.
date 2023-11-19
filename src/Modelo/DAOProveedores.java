@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.sql.DatabaseMetaData;
+
 
 public class DAOProveedores {
 
@@ -98,8 +100,8 @@ public class DAOProveedores {
 
         return null;
     }
-    //metodo para obtener proveedor por nombre
-    public Proveedores obtenerProveedorPorNombre(String nombre) {
+    //metodo para obtener proveedor por nombre, presente en Transacciones
+public Proveedores obtenerProveedorPorNombre(String nombre) {
     String transaccion = "SELECT * FROM Proveedores WHERE nombre = ?";
     
     try (PreparedStatement preparedStatement = connection.prepareStatement(transaccion)) {
@@ -113,8 +115,11 @@ public class DAOProveedores {
                     resultSet.getString("direccion"),
                     resultSet.getString("numero_telefono"),
                     resultSet.getString("correo_electronico"),
-                    resultSet.getString("marca_proveedor")
+                    resultSet.getString("marca")
             );
+        } else {
+            // Si no se encuentra un proveedor con el nombre dado, devuelve null o lanza una excepción según tu diseño
+            return null;
         }
     } catch (SQLException e) {
         e.printStackTrace();
@@ -122,8 +127,25 @@ public class DAOProveedores {
 
     return null;
 }
-    
-    
+
+
+// Método para verificar la existencia de una columna en una tabla
+private boolean existeColumna(String nombreColumna, String nombreTabla) {
+    try {
+        DatabaseMetaData metaData = connection.getMetaData();
+        ResultSet resultSet = metaData.getColumns(null, null, nombreTabla, null);
+
+        while (resultSet.next()) {
+            String nombre = resultSet.getString("COLUMN_NAME");
+            if (nombreColumna.equals(nombre)) {
+                return true;
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
 
 //metodo para actualizar un proveedor, enrealidad es editar, pero actualizar me gusta mas como palabra
 public int actualizarProveedor(int id, Map<String, Object> cambios) {

@@ -54,7 +54,6 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
         ProductosMenuItem = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         TransaccionesMenuItem = new javax.swing.JMenuItem();
-        jMenu8 = new javax.swing.JMenu();
         jMenu9 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -132,9 +131,6 @@ public class SistemaSuperComprasMDI extends javax.swing.JFrame {
         jMenu7.add(TransaccionesMenuItem);
 
         menuBar.add(jMenu7);
-
-        jMenu8.setText("Reportes");
-        menuBar.add(jMenu8);
 
         jMenu9.setText("Salir");
 
@@ -237,7 +233,6 @@ Empleados.setVisible(true);
     private javax.swing.JMenu jMenu5;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuBar jMenuBar2;
