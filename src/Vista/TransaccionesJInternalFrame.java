@@ -10,6 +10,9 @@ import java.sql.Connection;
 
 
 import Conexion.database;
+import Vista.ClientesJInternalFrame;
+import Vista.ProveedoresJInternalFrame;
+import Vista.Report;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.Instant;
@@ -108,6 +111,8 @@ public void obtenerDatos() {
         jButton4 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
+        jButtonAgregar1 = new javax.swing.JButton();
+        jButtonReporte = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jTextFechaTransaccion = new javax.swing.JTextField();
@@ -129,7 +134,6 @@ public void obtenerDatos() {
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTableTransacciones = new javax.swing.JTable();
-        AbrirReport = new javax.swing.JButton();
 
         jMenuItem1.setText("Enviar");
         jMenuItem1.setToolTipText("");
@@ -188,45 +192,70 @@ public void obtenerDatos() {
             }
         });
 
+        jButtonAgregar1.setText("Actualizar tabla");
+        jButtonAgregar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgregar1ActionPerformed(evt);
+            }
+        });
+
+        jButtonReporte.setText("Obtener reporte");
+        jButtonReporte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReporteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
+                .addGap(28, 28, 28)
                 .addComponent(jButton8)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton9)
+                .addContainerGap())
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(89, 89, 89)
+                .addComponent(jButtonAgregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(113, 113, 113))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(1, 1, 1))))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(1, 1, 1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButtonReporte)
+                        .addGap(106, 106, 106))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addContainerGap()
                 .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(17, 17, 17)
+                .addGap(21, 21, 21)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonAgregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButtonReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(62, 62, 62))
+                .addGap(37, 37, 37))
         );
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
@@ -454,37 +483,20 @@ public void obtenerDatos() {
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 478, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        AbrirReport.setText("Abrir factura");
-        AbrirReport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                AbrirReportActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(1109, Short.MAX_VALUE)
-                .addComponent(AbrirReport)
-                .addGap(145, 145, 145))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addContainerGap()))
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(223, 223, 223)
-                .addComponent(AbrirReport, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(627, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(7, Short.MAX_VALUE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(7, Short.MAX_VALUE))
         );
 
         pack();
@@ -670,45 +682,48 @@ if (fila == -1) {
     }//GEN-LAST:event_jTextTotalActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
- //para q entiendas, primero creamos una instancia del JInternalFrame de Clientes
+    // Código para abrir el JInternalFrame de Clientes
     ClientesJInternalFrame clientesFrame = new ClientesJInternalFrame();
-
-    //obtenemos el JDesktopPane del JFrame que contiene el JInternalFrame actual
-    JDesktopPane desktopPane = (JDesktopPane) SwingUtilities.getAncestorOfClass(JDesktopPane.class, this);
-
-    //agregamos el JInternalFrame de Clientes al JDesktopPane
-    desktopPane.add(clientesFrame);
-
-    //hacemos q sea visible el JInternalFrame de Clientes
     clientesFrame.setVisible(true);
+    clientesFrame.setSize(800, 600); // Establece el tamaño según tus preferencias
+    clientesFrame.setMaximizable(true);
+    clientesFrame.setResizable(true);
+    clientesFrame.setClosable(true);
 
-    //cerrar o esconder el JInternalFrame actual (TransaccionesJInternalFrame)
-    this.dispose();
+    // Agrega el JInternalFrame al JDesktopPane
+    JDesktopPane desktopPane = getDesktopPane();
+    desktopPane.add(clientesFrame);
+    try {
+        clientesFrame.setSelected(true); // Asegura que el nuevo frame esté seleccionado
+    } catch (java.beans.PropertyVetoException e) {
+        e.printStackTrace();
+    }
+
+    // Llama al método para cargar y mostrar datos en el JInternalFrame de Clientes
+    clientesFrame.obtenerDatos();
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
-//segundo, creamos una instancia del JInternalFrame de Proveedores
-ProveedoresJInternalFrame proveedoresFrame = new ProveedoresJInternalFrame();
-
-    //obtenemos el JDesktopPane del JFrame que contiene el JInternalFrame actual
-    JDesktopPane desktopPane = (JDesktopPane) SwingUtilities.getAncestorOfClass(JDesktopPane.class, this);
-
-    //agregar el JInternalFrame de Proveedores al JDesktopPane
-    desktopPane.add(proveedoresFrame);
-
-    //hacer visible el JInternalFrame de Proveedores
+ // Código para abrir el JInternalFrame de Proveedores
+    ProveedoresJInternalFrame proveedoresFrame = new ProveedoresJInternalFrame();
     proveedoresFrame.setVisible(true);
+    proveedoresFrame.setSize(800, 600); // Establece el tamaño según tus preferencias
+    proveedoresFrame.setMaximizable(true);
+    proveedoresFrame.setResizable(true);
+    proveedoresFrame.setClosable(true);
 
-    //cerrar o esconder el JInternalFrame actual (TransaccionesJInternalFrame). ya?
-    this.dispose();
+    // Agrega el JInternalFrame al JDesktopPane
+    JDesktopPane desktopPane = getDesktopPane();
+    desktopPane.add(proveedoresFrame);
+    try {
+        proveedoresFrame.setSelected(true); // Asegura que el nuevo frame esté seleccionado
+    } catch (java.beans.PropertyVetoException e) {
+        e.printStackTrace();
+    }
+
+    // Llama al método para cargar y mostrar datos en el JInternalFrame de Proveedores
+    proveedoresFrame.obtenerDatos();
     }//GEN-LAST:event_jButton9ActionPerformed
-
-    private void AbrirReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AbrirReportActionPerformed
-        Report reporte = new Report();
-        TransaccionesJInternalFrame.jPanel1.add(reporte);
-        reporte.toFront();
-        reporte.setVisible(true);
-    }//GEN-LAST:event_AbrirReportActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
     DefaultTableModel model = (DefaultTableModel) Report.TablaFactura.getModel();
@@ -732,9 +747,31 @@ ProveedoresJInternalFrame proveedoresFrame = new ProveedoresJInternalFrame();
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextIdTransaccionActionPerformed
 
+    private void jButtonAgregar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregar1ActionPerformed
+obtenerDatos();
+limpiarCamposTransacciones();
+JOptionPane.showMessageDialog(rootPane, "Se ha actualizado la tabla exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_jButtonAgregar1ActionPerformed
+
+    private void jButtonReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReporteActionPerformed
+ Report reporte = new Report();
+    
+    // Asegúrate de que la ventana de reportes se agregue al panel principal
+    // o al contenedor que desees. Puedes ajustar esto según tu diseño.
+    this.getParent().add(reporte);
+
+    // Mueve la ventana de reportes a la posición deseada
+    reporte.setLocation(100, 100);  // Ajusta las coordenadas según sea necesario
+
+    // Asegúrate de que la ventana de reportes esté al frente
+    reporte.toFront();
+    
+    // Hacer visible la ventana de reportes
+    reporte.setVisible(true);
+    }//GEN-LAST:event_jButtonReporteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton AbrirReport;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -742,6 +779,8 @@ ProveedoresJInternalFrame proveedoresFrame = new ProveedoresJInternalFrame();
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
     private javax.swing.JButton jButtonAgregar;
+    private javax.swing.JButton jButtonAgregar1;
+    private javax.swing.JButton jButtonReporte;
     private javax.swing.JComboBox<String> jComboBoxClientes;
     private javax.swing.JComboBox<String> jComboBoxMetodoPago;
     private javax.swing.JComboBox<String> jComboBoxProveedores;

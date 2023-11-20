@@ -1,6 +1,5 @@
 package Controlador;
-import Vista.ProductosJInternalFrame;
-import Vista.EmpleadosJInternalFrame;
+import Vista.TransaccionesJInternalFrame;
 import Vista.*;
 
 public class SistemaSuperComprasMDI extends javax.swing.JFrame {
