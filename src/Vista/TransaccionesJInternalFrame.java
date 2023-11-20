@@ -12,7 +12,6 @@ import java.sql.Connection;
 import Conexion.database;
 import Vista.ClientesJInternalFrame;
 import Vista.ProveedoresJInternalFrame;
-import Vista.Report;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.Instant;
@@ -112,7 +111,6 @@ public void obtenerDatos() {
         jButton8 = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButtonAgregar1 = new javax.swing.JButton();
-        jButtonReporte = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jTextFechaTransaccion = new javax.swing.JTextField();
@@ -199,13 +197,6 @@ public void obtenerDatos() {
             }
         });
 
-        jButtonReporte.setText("Obtener reporte");
-        jButtonReporte.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonReporteActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -222,20 +213,15 @@ public void obtenerDatos() {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jButtonAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(1, 1, 1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButtonReporte)
-                        .addGap(106, 106, 106))))
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(1, 1, 1))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,11 +233,9 @@ public void obtenerDatos() {
                     .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 28, Short.MAX_VALUE)
                 .addComponent(jButtonAgregar1, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButtonReporte, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(82, 82, 82)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -726,20 +710,6 @@ if (fila == -1) {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-    DefaultTableModel model = (DefaultTableModel) Report.TablaFactura.getModel();
-    int filasele = jTableTransacciones.getSelectedRow();
-    
-    // Corregir el tamaño del array a 3
-    String[] registros = new String[3];
-    
-    registros[0] = jTableTransacciones.getValueAt(filasele, 0).toString();
-    registros[1] = jTableTransacciones.getValueAt(filasele, 1).toString();
-    registros[2] = jTableTransacciones.getValueAt(filasele, 2).toString();
-    
-    model.addRow(registros);
-    
-    // Este paso no es necesario, ya que ya has actualizado el modelo arriba
-    // Report.TablaFactura.setModel(model);
 
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -753,23 +723,6 @@ limpiarCamposTransacciones();
 JOptionPane.showMessageDialog(rootPane, "Se ha actualizado la tabla exitosamente", "Éxito", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jButtonAgregar1ActionPerformed
 
-    private void jButtonReporteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReporteActionPerformed
- Report reporte = new Report();
-    
-    // Asegúrate de que la ventana de reportes se agregue al panel principal
-    // o al contenedor que desees. Puedes ajustar esto según tu diseño.
-    this.getParent().add(reporte);
-
-    // Mueve la ventana de reportes a la posición deseada
-    reporte.setLocation(100, 100);  // Ajusta las coordenadas según sea necesario
-
-    // Asegúrate de que la ventana de reportes esté al frente
-    reporte.toFront();
-    
-    // Hacer visible la ventana de reportes
-    reporte.setVisible(true);
-    }//GEN-LAST:event_jButtonReporteActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton10;
@@ -780,7 +733,6 @@ JOptionPane.showMessageDialog(rootPane, "Se ha actualizado la tabla exitosamente
     private javax.swing.JButton jButton9;
     private javax.swing.JButton jButtonAgregar;
     private javax.swing.JButton jButtonAgregar1;
-    private javax.swing.JButton jButtonReporte;
     private javax.swing.JComboBox<String> jComboBoxClientes;
     private javax.swing.JComboBox<String> jComboBoxMetodoPago;
     private javax.swing.JComboBox<String> jComboBoxProveedores;
