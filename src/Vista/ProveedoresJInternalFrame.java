@@ -58,10 +58,10 @@ public void obtenerDatos() {
 
         jTableProveedores.setModel(modelo);
 
-        //oculta la columna "ID Tabla Relación"
-jTableProveedores.getColumnModel().getColumn(5).setMinWidth(0);
-jTableProveedores.getColumnModel().getColumn(5).setMaxWidth(0);
-jTableProveedores.getColumnModel().getColumn(5).setWidth(0);
+// Oculta la columna "Marca Proveedor" (debería ser la columna 6)
+jTableProveedores.getColumnModel().getColumn(6).setMinWidth(0);
+jTableProveedores.getColumnModel().getColumn(6).setMaxWidth(0);
+jTableProveedores.getColumnModel().getColumn(6).setWidth(0);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

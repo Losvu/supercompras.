@@ -491,9 +491,10 @@ public void obtenerDatos() {
     String fechaHoraStr = jTextFechaTransaccion.getText(); // Ajusta según el formato de entrada
     String tipo = jComboBoxTipoTransaccion.getSelectedItem().toString();;
     String totalStr = jTextTotal.getText();
-    String metodoPago = jComboBoxMetodoPago.getSelectedItem().toString();
+    String metodoPago = ((String) jComboBoxMetodoPago.getSelectedItem()).trim();
     String clienteSeleccionadoNombre = (String) jComboBoxClientes.getSelectedItem();
     String proveedorSeleccionadoNombre = (String) jComboBoxProveedores.getSelectedItem();
+System.out.println("Metodo de Pago seleccionado: " + metodoPago);
 
     try {
         //comprobamos que las cajas de texto no estén vacías, que pendejo, obviamente no van a estar vacias si vamos a agregar algo jaja
@@ -516,7 +517,7 @@ public void obtenerDatos() {
                 Proveedores proveedorSeleccionado = daoProveedores.obtenerProveedorPorNombre(proveedorSeleccionadoNombre);
 
                 //creamos una nueva transacción y esta madre llama al metodo insertar de DAOTransacciones, impresionante la tecnologia como funciona
-              Transacciones transaccion = daoTransacciones.insertar(clienteSeleccionado, fechaHora, total, tipo);
+            Transacciones transaccion = daoTransacciones.insertar(clienteSeleccionado, fechaHora, total, tipo, metodoPago);
 
                 if (transaccion != null) {
                     JOptionPane.showMessageDialog(rootPane, "Registro agregado");

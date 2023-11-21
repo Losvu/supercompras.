@@ -33,33 +33,31 @@ public class DAOTransacciones {
         this.connection = connection;
     }
 
-    //metodo para insertar ciones Insertar(Cliente cliente
-    public Transacciones insertar(Cliente cliente, LocalDateTime fecha, double monto, String descripcion) {
-        String query = "INSERT INTO Transacciones (cliente_id, fecha_hora, total, metodo_pago, tipo) VALUES (?, ?, ?, ?, ?)";
+    //metodo para insertar
+public Transacciones insertar(Cliente cliente, LocalDateTime fecha, double monto, String descripcion, String metodoPago) {
+    String query = "INSERT INTO Transacciones (cliente_id, fecha_hora, total, metodo_pago, tipo) VALUES (?, ?, ?, ?, ?)";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setInt(1, cliente.getId_cliente());
-            preparedStatement.setObject(2, java.sql.Timestamp.valueOf(fecha));
-            preparedStatement.setDouble(3, monto);
-            preparedStatement.setString(4, descripcion);
-            preparedStatement.setString(5, "Venta");
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
+        preparedStatement.setInt(1, cliente.getId_cliente());
+        preparedStatement.setObject(2, java.sql.Timestamp.valueOf(fecha));
+        preparedStatement.setDouble(3, monto);
+        preparedStatement.setString(4, metodoPago); // Corregido aquí
+        preparedStatement.setString(5, descripcion);
 
-            int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    int idTransaccion = generatedKeys.getInt(1);
-                    return new Transacciones(idTransaccion, fecha.toLocalDate().atStartOfDay(), "Venta", monto, "Pago en efectivo", cliente.getId_cliente(), 0);
-
-                }
+        int rowsAffected = preparedStatement.executeUpdate();
+        if (rowsAffected > 0) {
+            ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int idTransaccion = generatedKeys.getInt(1);
+                return new Transacciones(idTransaccion, fecha.toLocalDate().atStartOfDay(), "Venta", monto, "Pago en efectivo", cliente.getId_cliente(), 0);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-
-        return null;
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
 
+    return null;
+}
 //metodo actualizar
     public int actualizar(int idTransaccion, Map<String, Object> cambios) {
         try {

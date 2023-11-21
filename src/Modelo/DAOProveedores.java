@@ -47,26 +47,34 @@ public class DAOProveedores {
     }
 
     // Método para obtener todos los proveedores
-    public List<Proveedores> obtenerDatos() {
-        String transaccion = "SELECT * FROM Proveedores";
+public List<Proveedores> obtenerDatos() {
+    String transaccion = "SELECT * FROM Proveedores";
 
-        List<Map<String, Object>> registros = new database().Listar(transaccion);
-        List<Proveedores> proveedores = new ArrayList<>();
+    List<Map<String, Object>> registros = new database().Listar(transaccion);
+    List<Proveedores> proveedores = new ArrayList<>();
 
-        for (Map<String, Object> registro : registros) {
-            Proveedores proveedor = new Proveedores(
-                    (int) registro.get("id_proveedor"),
-                    (String) registro.get("nombre"),
-                    (String) registro.get("direccion"),
-                    (String) registro.get("numero_telefono"),
-                    (String) registro.get("correo_electronico"),
-                    (String) registro.get("marca_proveedor")
-            );
-            proveedores.add(proveedor);
-        }
+    for (Map<String, Object> registro : registros) {
+        Proveedores proveedor = new Proveedores(
+                (int) registro.get("id_proveedor"),
+                (String) registro.get("nombre"),
+                (String) registro.get("direccion"),
+                (String) registro.get("numero_telefono"),
+                (String) registro.get("correo_electronico"),
+                (String) registro.get("marca_proveedor")
+        );
+        proveedores.add(proveedor);
 
-        return proveedores;
+        // Agrega impresiones para depuración
+        System.out.println("Proveedor ID: " + proveedor.getId_proveedor());
+        System.out.println("Nombre: " + proveedor.getNombre());
+        System.out.println("Dirección: " + proveedor.getDireccion());
+        System.out.println("Número de Teléfono: " + proveedor.getNumero_telefono());
+        System.out.println("Correo Electrónico: " + proveedor.getCorreo_electronico());
+        System.out.println("Marca Proveedor: " + proveedor.getMarca_proveedor());
     }
+
+    return proveedores;
+}
 
     // Método para obtener nombres de proveedores
     public List<String> obtenerNombresProveedores() {
@@ -102,30 +110,30 @@ public class DAOProveedores {
     }
     //metodo para obtener proveedor por nombre, presente en Transacciones
 public Proveedores obtenerProveedorPorNombre(String nombre) {
-    String transaccion = "SELECT * FROM Proveedores WHERE nombre = ?";
-    
-    try (PreparedStatement preparedStatement = connection.prepareStatement(transaccion)) {
-        preparedStatement.setString(1, nombre);
-        ResultSet resultSet = preparedStatement.executeQuery();
+    Proveedores proveedor = null;
+    String sql = "SELECT id_proveedor, nombre, direccion, numero_telefono, correo_electronico, marca_proveedor FROM proveedores WHERE nombre = ?";
 
-        if (resultSet.next()) {
-            return new Proveedores(
-                    resultSet.getInt("id_proveedor"),
-                    resultSet.getString("nombre"),
-                    resultSet.getString("direccion"),
-                    resultSet.getString("numero_telefono"),
-                    resultSet.getString("correo_electronico"),
-                    resultSet.getString("marca")
-            );
-        } else {
-            // Si no se encuentra un proveedor con el nombre dado, devuelve null o lanza una excepción según tu diseño
-            return null;
+    try (Connection conexion = new database().obtenerConexion();
+         PreparedStatement preparedStatement = conexion.prepareStatement(sql)) {
+
+        preparedStatement.setString(1, nombre);
+
+        try (ResultSet resultSet = preparedStatement.executeQuery()) {
+            if (resultSet.next()) {
+                int idProveedor = resultSet.getInt("id_proveedor");
+                String direccion = resultSet.getString("direccion");
+                String numeroTelefono = resultSet.getString("numero_telefono");
+                String correoElectronico = resultSet.getString("correo_electronico");
+                String marcaProveedor = resultSet.getString("marca_proveedor");
+
+                proveedor = new Proveedores(idProveedor, nombre, direccion, numeroTelefono, correoElectronico, marcaProveedor);
+            }
         }
     } catch (SQLException e) {
         e.printStackTrace();
     }
 
-    return null;
+    return proveedor;
 }
 
 
